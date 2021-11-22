@@ -1,2 +1,0 @@
-# website
-first GitHub pages
