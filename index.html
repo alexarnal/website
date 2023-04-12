@@ -26,19 +26,36 @@
   <!--The following script adds a crop to the profile image-->
   <style>
     .profilePhoto {
-      width: 200px; /* Set the desired width and height for the masked element */
+      width: 200px;
+      /* Set the desired width and height for the masked element */
       height: 200px;
-      overflow: hidden; /* Hide any overflow outside of the masked element */
-      border-radius: 50%; /* Set the border-radius to 50% to create a circular shape */
-      position: relative; /* Set the position to relative so that the clipped image stays within the div */
+      overflow: hidden;
+      /* Hide any overflow outside of the masked element */
+      border-radius: 50%;
+      /* Set the border-radius to 50% to create a circular shape */
+      position: relative;
+      /* Set the position to relative so that the clipped image stays within the div */
       background-color: transparent;
     }
 
     .profilePhoto img {
-      width: 100%; /* Make the image cover the entire div */
+      width: 100%;
+      /* Make the image cover the entire div */
       height: 100%;
-      object-fit: cover; /* Ensure the image maintains its aspect ratio while covering the entire div */
+      object-fit: cover;
+      /* Ensure the image maintains its aspect ratio while covering the entire div */
       clip-path: circle(50%);
+    }
+
+    .projects4 {
+      max-width: 710px;
+      margin: ;
+      /* other styles */
+    }
+    .projects4 img {
+      max-width: inherit;
+      margin: inherit;
+      /* other styles */
     }
     
   </style>
@@ -180,6 +197,25 @@
       <h2 class="sectionTitle">Recreation</h2>
       <hr class="sectionTitleRule">
       <hr class="sectionTitleRule2">
+      <!-- Second Title & company details  -->
+      <article class="section2Content">
+        <h2 class="sectionContentTitle">Casa de Cuadros</h2>
+        <div class="projects4">
+          <img src="casadecuadros.png" alt="Images with segmented brain regions">
+        </div>
+        <p class="sectionContent">Casa de Cuadros is a photography platform that I started with the goal of providing a
+          space for local photographers in El Paso to showcase their work. As the founder, I have implemented a
+          verification process to ensure that only photographers from El Paso are featured on the website. The platform
+          is designed to be simple and straightforward, allowing users to browse and discover local talent with
+          confidence in their authenticity.</p>
+        <p class="sectionContent">In addition to traditional portrait services, Casa de Cuadros also aims to support
+          photographers who specialize in other types of photography, such as city-themed landscapes.
+          In the future, we envision expanding the platform to allow photographers to directly book sessions and
+          monetize their work through the website.</p>
+        <p class="sectionContent">To learn more about Casa de Cuadros and explore the talented photographers in El Paso,
+          visit our website at <a href="https://casacuadros.com" target="_blank">casacuadros.com</a>.</p>
+      </article>
+
       <article class="section2Content">
         <h2 class="sectionContentTitle">Life Drawings</h2>
         <div class="projects">
