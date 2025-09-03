@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zen Garden Breathing</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'SF Mono', 'Monaco', 'Courier New', monospace;
+            background: #1a1a1a;
+            color: #ffffff;
+            overflow: hidden;
+            height: 100vh;
+            width: 100vw;
+            position: relative;
+        }
+
+        .garden {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            font-family: 'SF Mono', 'Monaco', monospace;
+            font-size: 14px;
+            line-height: 1.4;
+            color: #668681;
+            white-space: pre;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .garden-content {
+            transition: all 1s ease-in-out;
+            text-align: center;
+            transform: scale(1.5);
+        }
+
+        .phase-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10;
+            text-align: center;
+        }
+
+        .phase {
+            font-size: 32px;
+            color: #ffffff;
+            font-weight: 300;
+            margin-bottom: 20px;
+            min-height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .timer {
+            font-size: 64px;
+            font-weight: 300;
+            color: #ffffff;
+        }
+
+        .progress-bar {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: 'SF Mono', 'Monaco', monospace;
+            font-size: 14px;
+            color: #ffffff;
+            z-index: 10;
+            text-align: center;
+        }
+
+        .completion-message {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            z-index: 10;
+            display: none;
+        }
+
+        .completion-message h2 {
+            font-size: 48px;
+            font-weight: 300;
+            margin-bottom: 20px;
+            color: #ffffff;
+        }
+
+        .completion-message p {
+            font-size: 24px;
+            color: #e7e7e7;
+        }
+    </style>
+</head>
+<body>
+    <div class="garden">
+        <div class="garden-content" id="garden"></div>
+    </div>
+    
+    <div class="phase-container">
+        <div class="phase" id="phaseText">
+            <span>Preparing...</span>
+        </div>
+        <div class="timer" id="timer">3</div>
+    </div>
+    
+    <div class="progress-bar" id="progressBar">
+        [■□□□□□□□□□□□□□□□]
+    </div>
+    
+    <div class="completion-message" id="completionMessage">
+        <h2>Complete</h2>
+        <p>Take a moment to notice how you feel</p>
+    </div>
+
+    <script>
+        const phaseText = document.getElementById('phaseText');
+        const timer = document.getElementById('timer');
+        const garden = document.getElementById('garden');
+        const progressBar = document.getElementById('progressBar');
+        const completionMessage = document.getElementById('completionMessage');
+        const phaseContainer = document.querySelector('.phase-container');
+        
+        // Breathing configuration
+        const BREATHE_IN = 4;
+        const HOLD_IN = 4;
+        const BREATHE_OUT = 4;
+        const HOLD_OUT = 4;
+        const TOTAL_CYCLES = 3;
+        
+        let currentCycle = 1;
+        let currentTimer = null;
+        let totalSteps = TOTAL_CYCLES * 4; // 4 phases per cycle
+        let currentStep = 0;
+        
+        // Generate full-screen garden patterns
+        function generatePattern(char, density = 1) {
+            const cols = Math.floor(window.innerWidth / 8); // Approximate character width
+            const rows = Math.floor(window.innerHeight / 20); // Approximate line height
+            
+            let pattern = '';
+            for (let row = 0; row < rows; row++) {
+                for (let col = 0; col < cols; col++) {
+                    if (Math.random() < density) {
+                        pattern += char;
+                    } else {
+                        pattern += ' ';
+                    }
+                }
+                if (row < rows - 1) pattern += '\n';
+            }
+            return pattern;
+        }
+        
+        const smoothSand = generatePattern('·', 0.3);
+        const rakedSand = generatePattern('~', 0.4);
+        
+        // Update progress bar
+        function updateProgressBar() {
+            const progressPercent = Math.floor((currentStep / totalSteps) * 100);
+            const filledBars = Math.floor((currentStep / totalSteps) * 16);
+            const emptyBars = 16 - filledBars;
+            
+            const progressVisual = '■'.repeat(filledBars) + '□'.repeat(emptyBars);
+            progressBar.textContent = `[${progressVisual}]`;
+        }
+        
+        // Animation function to smoothly transition between sand states
+        function animateGarden(fromPattern, toPattern, duration = 4000) {
+            return new Promise((resolve) => {
+                let step = 0;
+                const steps = 15;
+                const interval = duration / steps;
+                
+                const animate = () => {
+                    if (step >= steps) {
+                        garden.textContent = toPattern;
+                        resolve();
+                        return;
+                    }
+                    
+                    // Create intermediate pattern
+                    const fromLines = fromPattern.split('\n');
+                    const toLines = toPattern.split('\n');
+                    let result = '';
+                    
+                    const maxLines = Math.max(fromLines.length, toLines.length);
+                    for (let i = 0; i < maxLines; i++) {
+                        const fromLine = fromLines[i] || '';
+                        const toLine = toLines[i] || '';
+                        const maxLength = Math.max(fromLine.length, toLine.length);
+                        
+                        let line = '';
+                        for (let j = 0; j < maxLength; j++) {
+                            if (Math.random() < step / steps) {
+                                line += toLine[j] || ' ';
+                            } else {
+                                line += fromLine[j] || ' ';
+                            }
+                        }
+                        result += line + (i < maxLines - 1 ? '\n' : '');
+                    }
+                    
+                    garden.textContent = result;
+                    step++;
+                    setTimeout(animate, interval);
+                };
+                
+                animate();
+            });
+        }
+        
+        // Timer function
+        function runTimer(duration) {
+            return new Promise((resolve) => {
+                let timeLeft = duration;
+                timer.textContent = timeLeft;
+                
+                if (currentTimer) clearInterval(currentTimer);
+                
+                currentTimer = setInterval(() => {
+                    timeLeft--;
+                    timer.textContent = timeLeft;
+                    
+                    if (timeLeft <= 0) {
+                        clearInterval(currentTimer);
+                        currentTimer = null;
+                        resolve();
+                    }
+                }, 1000);
+            });
+        }
+        
+        // Breathing phases
+        async function breatheIn() {
+            phaseText.innerHTML = '<span>Breathe In</span>';
+            currentStep++;
+            updateProgressBar();
+            await Promise.all([
+                animateGarden(smoothSand, rakedSand, BREATHE_IN * 1000),
+                runTimer(BREATHE_IN)
+            ]);
+        }
+        
+        async function holdIn() {
+            phaseText.innerHTML = '<span>Hold</span>';
+            currentStep++;
+            updateProgressBar();
+            await runTimer(HOLD_IN);
+        }
+        
+        async function breatheOut() {
+            phaseText.innerHTML = '<span>Breathe Out</span>';
+            currentStep++;
+            updateProgressBar();
+            await Promise.all([
+                animateGarden(rakedSand, smoothSand, BREATHE_OUT * 1000),
+                runTimer(BREATHE_OUT)
+            ]);
+        }
+        
+        async function holdOut() {
+            phaseText.innerHTML = '<span>Hold</span>';
+            currentStep++;
+            updateProgressBar();
+            await runTimer(HOLD_OUT);
+        }
+        
+        // Complete breathing cycle
+        async function completeCycle() {
+            await breatheIn();
+            await holdIn();
+            await breatheOut();
+            await holdOut();
+        }
+        
+        // Run all cycles
+        async function runBreathingSession() {
+            for (let cycle = 1; cycle <= TOTAL_CYCLES; cycle++) {
+                currentCycle = cycle;
+                
+                await completeCycle();
+                
+                if (cycle < TOTAL_CYCLES) {
+                    await new Promise(resolve => setTimeout(resolve, 1000));
+                }
+            }
+            
+            // Session complete
+            phaseContainer.style.display = 'none';
+            progressBar.style.display = 'none';
+            completionMessage.style.display = 'block';
+            
+            // Auto-close after 3 seconds
+            setTimeout(() => {
+                window.close();
+            }, 5000);
+        }
+        
+        // Start the session after initial countdown
+        async function startSession() {
+            // Initialize with smooth sand
+            garden.textContent = smoothSand;
+            updateProgressBar();
+            
+            for (let countdown = 3; countdown > 0; countdown--) {
+                timer.textContent = countdown;
+                phaseText.innerHTML = '<span>Preparing...</span>';
+                await new Promise(resolve => setTimeout(resolve, 1000));
+            }
+            
+            runBreathingSession();
+        }
+        
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            const newSmoothSand = generatePattern('·', 0.3);
+            const newRakedSand = generatePattern('~', 0.4);
+            
+            // Update current pattern
+            if (garden.textContent.includes('~')) {
+                garden.textContent = newRakedSand;
+            } else {
+                garden.textContent = newSmoothSand;
+            }
+        });
+        
+        // Initialize
+        startSession();
+    </script>
+</body>
+</html>
