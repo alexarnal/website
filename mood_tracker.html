@@ -9,7 +9,6 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            to { opacity: 1; transform: translateY(0); }
         }
 
         body {
@@ -84,6 +83,27 @@
 
         .emotion-input-container {
             position: relative;
+            display: flex;
+            gap: 8px;
+        }
+
+        .feelings-wheel-btn {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            border: none;
+            border-radius: 12px;
+            padding: 15px 16px;
+            color: white;
+            cursor: pointer;
+            font-size: 18px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .feelings-wheel-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(79, 172, 254, 0.3);
         }
 
         input[type="text"], textarea {
@@ -150,34 +170,124 @@
             font-weight: 600;
         }
 
-        .suggestions {
-            position: absolute;
-            top: 100%;
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
             left: 0;
             right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 20px;
+        }
+
+        .modal-overlay.show {
+            display: flex;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal {
             background: white;
-            border: 1px solid #e1e5e9;
-            border-top: none;
-            border-radius: 0 0 12px 12px;
-            max-height: 200px;
-            overflow-y: auto;
-            z-index: 10;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            border-radius: 20px;
+            max-width: 600px;
+            width: 100%;
+            max-height: 80vh;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            animation: slideUp 0.3s ease;
         }
 
-        .suggestion-item {
-            padding: 12px 15px;
+        .modal-header {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 20px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
             cursor: pointer;
-            border-bottom: 1px solid #f0f0f0;
-            transition: background 0.2s ease;
+            padding: 5px;
+            border-radius: 50%;
+            transition: background 0.3s ease;
         }
 
-        .suggestion-item:hover {
+        .modal-close:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .modal-body {
+            padding: 20px 25px;
+            max-height: calc(80vh - 80px);
+            overflow-y: auto;
+        }
+
+        .emotions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 12px;
+            margin-top: 10px;
+        }
+
+        .emotion-card {
             background: #f8f9fa;
+            border: 2px solid transparent;
+            border-radius: 12px;
+            padding: 12px 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+            font-weight: 500;
         }
 
-        .suggestion-item:last-child {
-            border-bottom: none;
+        .emotion-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            border-color: rgba(79, 172, 254, 0.3);
+        }
+
+        .emotion-card.recent {
+            background: rgba(79, 172, 254, 0.1);
+            border-color: rgba(79, 172, 254, 0.3);
+            position: relative;
+        }
+
+        .emotion-card.recent::after {
+            content: "★";
+            position: absolute;
+            top: 4px;
+            right: 6px;
+            font-size: 10px;
+            color: #4facfe;
+        }
+
+        .section-title {
+            font-weight: 600;
+            color: #333;
+            margin: 20px 0 10px 0;
+            font-size: 16px;
+            border-bottom: 2px solid #e1e5e9;
+            padding-bottom: 5px;
+        }
+
+        .section-title:first-child {
+            margin-top: 0;
         }
 
         .btn {
@@ -360,8 +470,20 @@
             display: block;
             animation: slideIn 0.3s ease;
         }
+
         @keyframes slideIn {
             from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         @media (max-width: 480px) {
@@ -377,6 +499,16 @@
             .intensity-option {
                 margin: 5px;
                 min-width: 80px;
+            }
+
+            .emotions-grid {
+                grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+                gap: 8px;
+            }
+
+            .emotion-card {
+                font-size: 13px;
+                padding: 10px 6px;
             }
         }
     </style>
@@ -407,7 +539,7 @@
                         <label for="emotion">How do you feel?</label>
                         <div class="emotion-input-container">
                             <input type="text" id="emotion" placeholder="Enter an emotion..." autocomplete="off" required>
-                            <div id="suggestions" class="suggestions"></div>
+                            <button type="button" class="feelings-wheel-btn" onclick="openFeelingsWheel()">🎯</button>
                         </div>
                     </div>
 
@@ -463,32 +595,167 @@
         </div>
     </div>
 
+    <!-- Feelings Wheel Modal -->
+    <div id="feelingsModal" class="modal-overlay">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 class="modal-title">Choose an Emotion</h2>
+                <button class="modal-close" onclick="closeFeelingsWheel()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="emotionsContainer"></div>
+            </div>
+        </div>
+    </div>
+
     <script>
         let moodEntries = JSON.parse(localStorage.getItem('moodEntries')) || [];
         let recentEmotions = JSON.parse(localStorage.getItem('recentEmotions')) || [];
 
         const emotionInput = document.getElementById('emotion');
-        const suggestionsDiv = document.getElementById('suggestions');
         const moodForm = document.getElementById('moodForm');
         const confirmation = document.getElementById('confirmation');
+        const feelingsModal = document.getElementById('feelingsModal');
+
+        // Emotions data with colors
+        // Data structure should accomodate future python integration
+        // Coordinates for a 2D plane can be added later for visualization
+        // eg. { word: "furious", color: "#ff6b6b", x: -0.23, y: 0.87 }
+        const emotions = [
+            // Angry (red/pink)
+            { word: "furious", color: "#ff6b6b" },
+            { word: "livid", color: "#ff6b6b" },
+            { word: "bitter", color: "#ff6b6b" },
+            { word: "mad", color: "#ff6b6b" },
+            { word: "aggressive", color: "#ff6b6b" },
+            { word: "frustrated", color: "#ff6b6b" },
+            { word: "distant", color: "#ff6b6b" },
+            { word: "critical", color: "#ff6b6b" },
+            { word: "angry", color: "#ff6b6b" },
+            { word: "humiliated", color: "#ff6b6b" },
+            { word: "hurt", color: "#ff6b6b" },
+            { word: "jealous", color: "#ff6b6b" },
+            { word: "betrayed", color: "#ff6b6b" },
+            { word: "resentful", color: "#ff6b6b" },
+            { word: "violated", color: "#ff6b6b" },
+            { word: "indignant", color: "#ff6b6b" },
+            { word: "hostile", color: "#ff8787" },
+            { word: "provoked", color: "#ff8787" },
+            { word: "hateful", color: "#ff8787" },
+            { word: "withdrawn", color: "#ff8787" },
+            { word: "numb", color: "#ff8787" },
+            { word: "skeptical", color: "#ff8787" },
+            { word: "dismissive", color: "#ff8787" },
+
+            // Disgusted (brownish-orange)
+            { word: "disgusted", color: "#fd7e14" },
+            { word: "awful", color: "#fd7e14" },
+            { word: "repelled", color: "#fd7e14" },
+            { word: "horrified", color: "#fd7e14" },
+            { word: "nauseated", color: "#fd7e14" },
+            { word: "detestable", color: "#fd7e14" },
+            { word: "hesitant", color: "#fd7e14" },
+            { word: "embarrassed", color: "#fd7e14" },
+            { word: "disappointed", color: "#fd7e14" },
+            { word: "revolted", color: "#fd7e14" },
+
+            // Sad (blue)
+            { word: "sad", color: "#74c0fc" },
+            { word: "despair", color: "#74c0fc" },
+            { word: "grief", color: "#74c0fc" },
+            { word: "powerless", color: "#74c0fc" },
+            { word: "vulnerable", color: "#74c0fc" },
+            { word: "victimized", color: "#74c0fc" },
+            { word: "fragile", color: "#74c0fc" },
+            { word: "guilty", color: "#74c0fc" },
+            { word: "depressed", color: "#74c0fc" },
+            { word: "remorseful", color: "#74c0fc" },
+            { word: "regretful", color: "#74c0fc" },
+            { word: "ashamed", color: "#74c0fc" },
+            { word: "inferior", color: "#74c0fc" },
+            { word: "empty", color: "#74c0fc" },
+            { word: "isolated", color: "#74c0fc" },
+            { word: "abandoned", color: "#74c0fc" },
+            { word: "ignored", color: "#74c0fc" },
+            { word: "lonely", color: "#339af0" },
+            { word: "bored", color: "#339af0" },
+            { word: "indifferent", color: "#339af0" },
+            { word: "apathetic", color: "#339af0" },
+
+            // Fearful (purple)
+            { word: "fearful", color: "#9775fa" },
+            { word: "scared", color: "#9775fa" },
+            { word: "anxious", color: "#9775fa" },
+            { word: "insecure", color: "#9775fa" },
+            { word: "weak", color: "#9775fa" },
+            { word: "rejected", color: "#9775fa" },
+            { word: "threatened", color: "#9775fa" },
+            { word: "nervous", color: "#9775fa" },
+            { word: "exposed", color: "#9775fa" },
+            { word: "persecuted", color: "#9775fa" },
+            { word: "insignificant", color: "#9775fa" },
+            { word: "worthless", color: "#9775fa" },
+            { word: "inadequate", color: "#9775fa" },
+            { word: "overwhelmed", color: "#9775fa" },
+            { word: "out of control", color: "#9775fa" },
+            { word: "sleepy", color: "#9775fa" },
+            { word: "unfocused", color: "#9775fa" },
+            { word: "shocked", color: "#9775fa" },
+            { word: "startled", color: "#9775fa" },
+            { word: "confused", color: "#9775fa" },
+            { word: "disillusioned", color: "#9775fa" },
+            { word: "perplexed", color: "#9775fa" },
+            { word: "amazed", color: "#9775fa" },
+            { word: "stunned", color: "#9775fa" },
+
+            // Happy (yellow/green)
+            { word: "happy", color: "#ffd43b" },
+            { word: "optimistic", color: "#ffd43b" },
+            { word: "trusting", color: "#ffd43b" },
+            { word: "peaceful", color: "#ffd43b" },
+            { word: "powerful", color: "#ffd43b" },
+            { word: "accepted", color: "#ffd43b" },
+            { word: "proud", color: "#ffd43b" },
+            { word: "interested", color: "#ffd43b" },
+            { word: "content", color: "#ffd43b" },
+            { word: "playful", color: "#ffd43b" },
+            { word: "courageous", color: "#ffd43b" },
+            { word: "creative", color: "#ffd43b" },
+            { word: "loving", color: "#ffd43b" },
+            { word: "thankful", color: "#ffd43b" },
+            { word: "sensitive", color: "#ffd43b" },
+            { word: "intimate", color: "#ffd43b" },
+            { word: "hopeful", color: "#ffd43b" },
+            { word: "inspired", color: "#ffd43b" },
+            { word: "respected", color: "#51cf66" },
+            { word: "valued", color: "#51cf66" },
+            { word: "confident", color: "#51cf66" },
+            { word: "successful", color: "#51cf66" },
+            { word: "inquisitive", color: "#51cf66" },
+            { word: "curious", color: "#51cf66" },
+            { word: "joyful", color: "#51cf66" },
+            { word: "free", color: "#51cf66" },
+            { word: "cheerful", color: "#51cf66" },
+            { word: "encouraged", color: "#51cf66" },
+            { word: "festive", color: "#51cf66" },
+            { word: "ecstatic", color: "#51cf66" },
+            { word: "elated", color: "#51cf66" },
+            { word: "overjoyed", color: "#51cf66" },
+            { word: "enthralled", color: "#51cf66" },
+            { word: "enchanted", color: "#51cf66" },
+            { word: "delighted", color: "#51cf66" }
+        ];
 
         // Check for incognito/private browsing mode
         function checkIncognitoMode() {
             try {
                 localStorage.setItem('incognito-test', 'test');
                 localStorage.removeItem('incognito-test');
-                // Additional check for Safari private mode
-                if (window.navigator.standalone === false || 
-                    (window.safari && !window.safari.pushNotification)) {
-                    // Possible Safari private mode
-                }
             } catch (e) {
-                // Definitely in incognito mode
                 document.getElementById('incognitoWarning').classList.add('show');
                 return true;
             }
             
-            // Check for Safari private browsing (different approach)
             try {
                 const storage = window.sessionStorage;
                 storage.setItem('safari-test', '1');
@@ -501,50 +768,77 @@
             return false;
         }
 
-        // Show emotion suggestions
-        function showSuggestions() {
-            if (recentEmotions.length === 0) {
-                suggestionsDiv.style.display = 'none';
-                return;
+        // Feelings wheel functions
+        function openFeelingsWheel() {
+            renderFeelingsWheel();
+            feelingsModal.classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeFeelingsWheel() {
+            feelingsModal.classList.remove('show');
+            document.body.style.overflow = 'auto';
+        }
+
+        function renderFeelingsWheel() {
+            const container = document.getElementById('emotionsContainer');
+            const recentSet = new Set(recentEmotions);
+            
+            let html = '';
+            
+            if (recentEmotions.length > 0) {
+                html += '<div class="section-title">Recently Used</div>';
+                html += '<div class="emotions-grid">';
+                recentEmotions.forEach(emotion => {
+                    const emotionData = emotions.find(e => e.word.toLowerCase() === emotion.toLowerCase());
+                    const color = emotionData ? emotionData.color : '#f8f9fa';
+                    html += '<div class="emotion-card recent" style="border-left: 4px solid ' + color + '" onclick="selectEmotion(\'' + emotion + '\')">' + emotion + '</div>';
+                });
+                html += '</div>';
             }
-
-            const currentValue = emotionInput.value.toLowerCase();
-            const filtered = recentEmotions
-                .filter(emotion => emotion.toLowerCase().includes(currentValue))
-                .slice(0, 5);
-
-            if (filtered.length === 0) {
-                suggestionsDiv.style.display = 'none';
-                return;
-            }
-
-            suggestionsDiv.innerHTML = filtered
-                .map(emotion => `<div class="suggestion-item" onclick="selectEmotion('${emotion}')">${emotion}</div>`)
-                .join('');
-            suggestionsDiv.style.display = 'block';
+            
+            html += '<div class="section-title">All Emotions</div>';
+            html += '<div class="emotions-grid">';
+            
+            emotions.forEach(emotionData => {
+                const isRecent = recentSet.has(emotionData.word);
+                const recentClass = isRecent ? ' recent' : '';
+                html += '<div class="emotion-card' + recentClass + '" style="border-left: 4px solid ' + emotionData.color + '" onclick="selectEmotion(\'' + emotionData.word + '\')">' + emotionData.word + '</div>';
+            });
+            
+            html += '</div>';
+            container.innerHTML = html;
         }
 
         function selectEmotion(emotion) {
             emotionInput.value = emotion;
-            suggestionsDiv.style.display = 'none';
+            closeFeelingsWheel();
+            emotionInput.focus();
         }
 
-        // Hide suggestions when clicking outside
-        document.addEventListener('click', (e) => {
-            if (!e.target.closest('.emotion-input-container')) {
-                suggestionsDiv.style.display = 'none';
+        // Close modal when clicking outside
+        feelingsModal.addEventListener('click', function(e) {
+            if (e.target === feelingsModal) {
+                closeFeelingsWheel();
             }
         });
 
-        emotionInput.addEventListener('input', showSuggestions);
-        emotionInput.addEventListener('focus', showSuggestions);
+        // Close modal with escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && feelingsModal.classList.contains('show')) {
+                closeFeelingsWheel();
+            }
+        });
 
         // Form submission
-        moodForm.addEventListener('submit', (e) => {
+        moodForm.addEventListener('submit', function(e) {
             e.preventDefault();
             
             const emotion = emotionInput.value.trim();
-            const intensity = document.querySelector('input[name="intensity"]:checked').value;
+            const intensityElement = document.querySelector('input[name="intensity"]:checked');
+            if (!intensityElement) return;
+            
+            const intensity = intensityElement.value;
             const context = document.getElementById('context').value.trim();
             const nextStep = document.getElementById('nextStep').value.trim();
 
@@ -570,7 +864,9 @@
 
             // Show confirmation
             confirmation.classList.add('show');
-            setTimeout(() => confirmation.classList.remove('show'), 5000);
+            setTimeout(function() {
+                confirmation.classList.remove('show');
+            }, 5000);
 
             // Reset form
             moodForm.reset();
@@ -592,50 +888,38 @@
             const entriesList = document.getElementById('entriesList');
             
             if (moodEntries.length === 0) {
-                entriesList.innerHTML = `
-                    <div class="empty-state">
-                        <h3>No entries yet</h3>
-                        <p>Start tracking your mood to see patterns over time!</p>
-                    </div>
-                `;
+                entriesList.innerHTML = '<div class="empty-state"><h3>No entries yet</h3><p>Start tracking your mood to see patterns over time!</p></div>';
                 return;
             }
 
-            entriesList.innerHTML = moodEntries.map(entry => {
+            const intensityLabels = ['Not at all', 'A little', 'Moderately', 'Quite a bit', 'Extremely'];
+            
+            let html = '';
+            moodEntries.forEach(function(entry) {
                 const date = new Date(entry.timestamp);
                 const timeString = date.toLocaleDateString() + ' at ' + date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-                const intensityLabels = ['Not at all', 'A little', 'Moderately', 'Quite a bit', 'Extremely'];
                 
-                return `
-                    <div class="entry-card" onclick="toggleEntry(${entry.id})">
-                        <div class="entry-header">
-                            <div>
-                                <span class="entry-emotion">${entry.emotion}</span>
-                                <span class="entry-intensity">${intensityLabels[entry.intensity]}</span>
-                            </div>
-                            <div class="entry-time">${timeString}</div>
-                        </div>
-                        <div id="details-${entry.id}" class="entry-details">
-                            ${entry.context ? `
-                                <div class="detail-section">
-                                    <div class="detail-label">Context:</div>
-                                    <div class="detail-text">${entry.context}</div>
-                                </div>
-                            ` : ''}
-                            ${entry.nextStep ? `
-                                <div class="detail-section">
-                                    <div class="detail-label">Next steps:</div>
-                                    <div class="detail-text">${entry.nextStep}</div>
-                                </div>
-                            ` : ''}
-                        </div>
-                    </div>
-                `;
-            }).join('');
+                html += '<div class="entry-card" onclick="toggleEntry(' + entry.id + ')">';
+                html += '<div class="entry-header">';
+                html += '<div><span class="entry-emotion">' + entry.emotion + '</span>';
+                html += '<span class="entry-intensity">' + intensityLabels[entry.intensity] + '</span></div>';
+                html += '<div class="entry-time">' + timeString + '</div>';
+                html += '</div>';
+                html += '<div id="details-' + entry.id + '" class="entry-details">';
+                if (entry.context) {
+                    html += '<div class="detail-section"><div class="detail-label">Context:</div><div class="detail-text">' + entry.context + '</div></div>';
+                }
+                if (entry.nextStep) {
+                    html += '<div class="detail-section"><div class="detail-label">Next steps:</div><div class="detail-text">' + entry.nextStep + '</div></div>';
+                }
+                html += '</div></div>';
+            });
+            
+            entriesList.innerHTML = html;
         }
 
         function toggleEntry(entryId) {
-            const details = document.getElementById(`details-${entryId}`);
+            const details = document.getElementById('details-' + entryId);
             details.classList.toggle('expanded');
         }
 
@@ -645,58 +929,53 @@
             const url = URL.createObjectURL(dataBlob);
             const link = document.createElement('a');
             link.href = url;
-            link.download = `mood-entries-${new Date().toISOString().split('T')[0]}.json`;
+            link.download = 'mood-entries-' + new Date().toISOString().split('T')[0] + '.json';
             link.click();
             URL.revokeObjectURL(url);
         }
 
-        async function shareData() {
+        function shareData() {
             const dataStr = JSON.stringify(moodEntries, null, 2);
             
-            // Check if Web Share API is supported
             if (navigator.share) {
                 try {
                     const dataBlob = new Blob([dataStr], {type: 'application/json'});
-                    const file = new File([dataBlob], `mood-entries-${new Date().toISOString().split('T')[0]}.json`, {
+                    const file = new File([dataBlob], 'mood-entries-' + new Date().toISOString().split('T')[0] + '.json', {
                         type: 'application/json'
                     });
                     
-                    await navigator.share({
+                    navigator.share({
                         title: 'Mood Tracker Data',
                         text: 'My mood tracking data',
                         files: [file]
-                    });
-                } catch (error) {
-                    // Fallback if file sharing fails, try text sharing
-                    if (error.name !== 'AbortError') {
-                        try {
-                            await navigator.share({
+                    }).catch(function(error) {
+                        if (error.name !== 'AbortError') {
+                            navigator.share({
                                 title: 'Mood Tracker Data',
                                 text: dataStr
+                            }).catch(function() {
+                                exportData();
                             });
-                        } catch (textError) {
-                            // If even text sharing fails, fall back to download
-                            exportData();
                         }
-                    }
+                    });
+                } catch (error) {
+                    exportData();
                 }
             } else {
-                // Fallback for browsers without Web Share API
                 if (navigator.clipboard) {
-                    try {
-                        await navigator.clipboard.writeText(dataStr);
+                    navigator.clipboard.writeText(dataStr).then(function() {
                         alert('Data copied to clipboard!');
-                    } catch (error) {
+                    }).catch(function() {
                         exportData();
-                    }
+                    });
                 } else {
                     exportData();
                 }
             }
         }
 
-        // Focus on emotion input when page loads and check incognito mode
-        document.addEventListener('DOMContentLoaded', () => {
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', function() {
             checkIncognitoMode();
             emotionInput.focus();
         });
