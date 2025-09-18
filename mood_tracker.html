@@ -9,6 +9,7 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            to { opacity: 1; transform: translateY(0); }
         }
 
         body {
@@ -286,14 +287,28 @@
             box-shadow: 0 8px 25px rgba(108, 117, 125, 0.3);
         }
 
-        .export-btn {
+        .export-btn, .share-btn {
             background: #28a745;
+            margin-top: 15px;
+            margin-right: 10px;
+        }
+
+        .export-btn:hover, .share-btn:hover {
+            background: #218838;
+            box-shadow: 0 8px 25px rgba(40, 167, 69, 0.3);
+        }
+
+        .button-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
             margin-top: 15px;
         }
 
-        .export-btn:hover {
-            background: #218838;
-            box-shadow: 0 8px 25px rgba(40, 167, 69, 0.3);
+        .button-row .btn {
+            flex: 1;
+            margin: 0;
+            min-width: 120px;
         }
 
         .empty-state {
@@ -305,6 +320,28 @@
         .empty-state h3 {
             margin-bottom: 10px;
             color: #333;
+        }
+
+        .warning-banner {
+            background: #fff3cd;
+            color: #856404;
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            border: 1px solid #ffeaa7;
+            text-align: center;
+            font-weight: 500;
+            display: none;
+        }
+
+        .warning-banner.show {
+            display: block;
+            animation: slideIn 0.3s ease;
+        }
+
+        .warning-banner strong {
+            display: block;
+            margin-bottom: 5px;
         }
 
         .confirmation {
@@ -319,14 +356,12 @@
             display: none;
         }
 
-        .confirmation.show {
+        .confirmation.show, .warning-banner.show {
             display: block;
             animation: slideIn 0.3s ease;
         }
-
         @keyframes slideIn {
             from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
         }
 
         @media (max-width: 480px) {
@@ -355,6 +390,11 @@
         </div>
 
         <div class="content">
+            <div id="incognitoWarning" class="warning-banner">
+                <strong>⚠️ Private browsing detected</strong>
+                Your mood entries won't be saved between sessions in private/incognito mode. Switch to regular browsing to keep your data.
+            </div>
+
             <div id="confirmation" class="confirmation">
                 <span id="confirmationText">Entry saved successfully!</span>
                 <a href="#" onclick="showEntries()" style="color: #155724; text-decoration: underline; margin-left: 10px;">View all entries</a>
@@ -415,7 +455,10 @@
             <div id="entriesView" class="entries-view">
                 <button class="btn back-btn" onclick="showForm()">← Back to Tracking</button>
                 <div id="entriesList"></div>
-                <button class="btn export-btn" onclick="exportData()">Export Data</button>
+                <div class="button-row">
+                    <button class="btn share-btn" onclick="shareData()">Share Data</button>
+                    <button class="btn export-btn" onclick="exportData()">Download</button>
+                </div>
             </div>
         </div>
     </div>
@@ -428,6 +471,35 @@
         const suggestionsDiv = document.getElementById('suggestions');
         const moodForm = document.getElementById('moodForm');
         const confirmation = document.getElementById('confirmation');
+
+        // Check for incognito/private browsing mode
+        function checkIncognitoMode() {
+            try {
+                localStorage.setItem('incognito-test', 'test');
+                localStorage.removeItem('incognito-test');
+                // Additional check for Safari private mode
+                if (window.navigator.standalone === false || 
+                    (window.safari && !window.safari.pushNotification)) {
+                    // Possible Safari private mode
+                }
+            } catch (e) {
+                // Definitely in incognito mode
+                document.getElementById('incognitoWarning').classList.add('show');
+                return true;
+            }
+            
+            // Check for Safari private browsing (different approach)
+            try {
+                const storage = window.sessionStorage;
+                storage.setItem('safari-test', '1');
+                storage.removeItem('safari-test');
+            } catch (e) {
+                document.getElementById('incognitoWarning').classList.add('show');
+                return true;
+            }
+            
+            return false;
+        }
 
         // Show emotion suggestions
         function showSuggestions() {
@@ -578,8 +650,54 @@
             URL.revokeObjectURL(url);
         }
 
-        // Focus on emotion input when page loads
+        async function shareData() {
+            const dataStr = JSON.stringify(moodEntries, null, 2);
+            
+            // Check if Web Share API is supported
+            if (navigator.share) {
+                try {
+                    const dataBlob = new Blob([dataStr], {type: 'application/json'});
+                    const file = new File([dataBlob], `mood-entries-${new Date().toISOString().split('T')[0]}.json`, {
+                        type: 'application/json'
+                    });
+                    
+                    await navigator.share({
+                        title: 'Mood Tracker Data',
+                        text: 'My mood tracking data',
+                        files: [file]
+                    });
+                } catch (error) {
+                    // Fallback if file sharing fails, try text sharing
+                    if (error.name !== 'AbortError') {
+                        try {
+                            await navigator.share({
+                                title: 'Mood Tracker Data',
+                                text: dataStr
+                            });
+                        } catch (textError) {
+                            // If even text sharing fails, fall back to download
+                            exportData();
+                        }
+                    }
+                }
+            } else {
+                // Fallback for browsers without Web Share API
+                if (navigator.clipboard) {
+                    try {
+                        await navigator.clipboard.writeText(dataStr);
+                        alert('Data copied to clipboard!');
+                    } catch (error) {
+                        exportData();
+                    }
+                } else {
+                    exportData();
+                }
+            }
+        }
+
+        // Focus on emotion input when page loads and check incognito mode
         document.addEventListener('DOMContentLoaded', () => {
+            checkIncognitoMode();
             emotionInput.focus();
         });
     </script>
