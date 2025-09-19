@@ -1,0 +1,18 @@
+mood-tracker/
+├── index.html                    # Main HTML file
+├── styles/
+│   ├── main.css                 # Core styles
+│   ├── modal.css                # Modal-specific styles
+│   └── responsive.css           # Mobile responsiveness
+└── js/
+    ├── data/
+    │   └── emotions.js           # Emotions data
+    ├── utils/
+    │   ├── storage.js           # LocalStorage management
+    │   └── privacy.js           # Incognito detection
+    ├── components/
+    │   ├── feelingsWheel.js     # Feelings wheel modal
+    │   └── entriesView.js       # Entries display
+    ├── managers/
+    │   └── dataManager.js       # Import/export functionality
+    └── app.js                   # Main application controller

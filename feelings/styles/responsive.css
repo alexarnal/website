@@ -1,0 +1,63 @@
+/* Responsive Design */
+@media (max-width: 480px) {
+    .container {
+        margin: 10px;
+        border-radius: 15px;
+    }
+    
+    .intensity-scale {
+        flex-wrap: wrap;
+    }
+    
+    .intensity-option {
+        margin: 5px;
+        min-width: 80px;
+    }
+
+    .emotions-grid {
+        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+        gap: 8px;
+    }
+
+    .emotion-card {
+        font-size: 13px;
+        padding: 10px 6px;
+    }
+
+    .header h1 {
+        font-size: 24px;
+    }
+
+    .content {
+        padding: 20px 15px;
+    }
+
+    .modal {
+        margin: 10px;
+        max-height: 90vh;
+    }
+
+    .modal-body {
+        padding: 15px 20px;
+        max-height: calc(90vh - 70px);
+    }
+}
+
+@media (max-width: 320px) {
+    .header {
+        padding: 20px 15px;
+    }
+
+    .intensity-option {
+        min-width: 60px;
+        padding: 8px;
+    }
+
+    .intensity-option label {
+        font-size: 11px;
+    }
+
+    .emotions-grid {
+        grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+    }
+}
