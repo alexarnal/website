@@ -34,7 +34,7 @@
                         <label for="emotion">How do you feel?</label>
                         <div class="emotion-input-container">
                             <input type="text" id="emotion" placeholder="Enter an emotion..." autocomplete="off" required>
-                            <button type="button" class="feelings-wheel-btn" onclick="feelingsWheel.open()">🔎</button>
+                            <button type="button" class="feelings-wheel-btn" onclick="feelingsWheel.open()">🔍</button>
                         </div>
                     </div>
 
@@ -71,7 +71,10 @@
 
                     <div class="form-group">
                         <label for="nextStep">What might help or what's next?</label>
-                        <textarea id="nextStep" placeholder="Ideas for moving forward, coping strategies, or next steps..."></textarea>
+                        <div class="textarea-input-container">
+                            <textarea id="nextStep" placeholder="Ideas for moving forward, coping strategies, or next steps..."></textarea>
+                            <button type="button" class="coping-wheel-btn" onclick="copingWheel.open()">💡</button>
+                        </div>
                     </div>
 
                     <button type="submit" class="btn">Save Entry</button>
@@ -103,11 +106,26 @@
         </div>
     </div>
 
+    <!-- Coping Mechanisms Modal -->
+    <div id="copingModal" class="modal-overlay">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 class="modal-title">Choose a Coping Strategy</h2>
+                <button class="modal-close" onclick="copingWheel.close()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="copingContainer"></div>
+            </div>
+        </div>
+    </div>
+
     <!-- Load JavaScript modules -->
     <script src="js/data/emotions.js"></script>
+    <script src="js/data/copingMechanisms.js"></script>
     <script src="js/utils/storage.js"></script>
     <script src="js/utils/privacy.js"></script>
     <script src="js/components/feelingsWheel.js"></script>
+    <script src="js/components/copingWheel.js"></script>
     <script src="js/components/entriesView.js"></script>
     <script src="js/managers/dataManager.js"></script>
     <script src="js/app.js"></script>

@@ -5,6 +5,7 @@ const MoodTrackerApp = {
         // Initialize all components
         PrivacyDetector.init();
         FeelingsWheel.init();
+        CopingWheel.init();
         
         // Set up form handling
         this.setupFormHandling();

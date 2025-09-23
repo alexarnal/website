@@ -65,6 +65,7 @@
     overflow-y: auto;
 }
 
+/* Emotions grid (original) */
 .emotions-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
@@ -116,4 +117,104 @@
 
 .section-title:first-child {
     margin-top: 0;
+}
+
+/* Coping mechanisms styles */
+.coping-category {
+    margin-bottom: 25px;
+}
+
+.coping-category:last-child {
+    margin-bottom: 0;
+}
+
+.category-header {
+    display: flex;
+    align-items: center;
+    padding: 12px 15px;
+    background: #f8f9fa;
+    border-radius: 12px;
+    margin-bottom: 15px;
+    border-left: 4px solid #647373;
+}
+
+.category-icon {
+    font-size: 20px;
+    margin-right: 12px;
+}
+
+.category-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+}
+
+.strategies-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 10px;
+}
+
+.strategy-card {
+    background: #f8f8f8;
+    border: 2px solid transparent;
+    border-radius: 10px;
+    padding: 12px 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 14px;
+    line-height: 1.4;
+    position: relative;
+    border-left: 3px solid #647373;
+}
+
+.strategy-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    background: #f0f0f0;
+    border-color: #525f5f;
+}
+
+.external-link {
+    position: absolute;
+    top: 6px;
+    right: 8px;
+    font-size: 12px;
+    opacity: 0.7;
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+    .modal {
+        margin: 10px;
+        max-width: calc(100vw - 20px);
+        max-height: calc(100vh - 20px);
+    }
+    
+    .modal-body {
+        padding: 15px 20px;
+        max-height: calc(100vh - 140px);
+    }
+    
+    .strategies-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .emotions-grid {
+        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+        gap: 8px;
+    }
+    
+    .category-header {
+        padding: 10px 12px;
+    }
+    
+    .category-icon {
+        font-size: 18px;
+        margin-right: 10px;
+    }
+    
+    .category-title {
+        font-size: 15px;
+    }
 }

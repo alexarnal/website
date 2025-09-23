@@ -83,7 +83,14 @@ body {
     gap: 8px;
 }
 
-.feelings-wheel-btn {
+.textarea-input-container {
+    position: relative;
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+}
+
+.feelings-wheel-btn, .coping-wheel-btn {
     background: linear-gradient(135deg, #8a8a8a 0%, #647373 100%);
     border: none;
     border-radius: 12px;
@@ -95,11 +102,17 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-shrink: 0;
 }
 
-.feelings-wheel-btn:hover {
+.feelings-wheel-btn:hover, .coping-wheel-btn:hover {
     transform: translateY(-2px);
     box-shadow: 0 8px 25px rgba(138, 138, 138, 0.3);
+}
+
+.coping-wheel-btn {
+    align-self: flex-start;
+    margin-top: 0;
 }
 
 input[type="text"], textarea {
