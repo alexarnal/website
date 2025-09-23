@@ -31,7 +31,7 @@
 }
 
 .modal-header {
-    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    background: #525f5f; /*linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);*/
     color: white;
     padding: 20px 25px;
     display: flex;
@@ -73,7 +73,7 @@
 }
 
 .emotion-card {
-    background: #f8f9fa;
+    background: #f8f8f8;
     border: 2px solid transparent;
     border-radius: 12px;
     padding: 12px 8px;
@@ -87,12 +87,12 @@
 .emotion-card:hover {
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    border-color: rgba(79, 172, 254, 0.3);
+    border-color: #647373; /*rgba(79, 172, 254, 0.3);*/
 }
 
 .emotion-card.recent {
-    background: rgba(79, 172, 254, 0.1);
-    border-color: rgba(79, 172, 254, 0.3);
+    /*background: #6473732e; rgba(79, 172, 254, 0.1);*/
+    border-color: #647373; /*rgba(79, 172, 254, 0.3);*/
     position: relative;
 }
 
@@ -102,7 +102,7 @@
     top: 4px;
     right: 6px;
     font-size: 10px;
-    color: #4facfe;
+    color: #525f5f;
 }
 
 .section-title {
