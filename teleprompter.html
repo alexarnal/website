@@ -119,12 +119,19 @@
         #scriptContent {
             padding: 40px;
             min-height: 100%;
-            color: #fff;
+            color: #fff !important;
             font-size: 32px;
             line-height: 1.8;
             font-family: Arial, sans-serif;
             white-space: pre-wrap;
             word-wrap: break-word;
+        }
+
+        /* Force all pasted content to use white text */
+        #scriptContent * {
+            color: #fff !important;
+            background: transparent !important;
+            font-family: inherit !important;
         }
 
         #scriptContent:empty::before {
@@ -221,10 +228,8 @@
         </div>
 
         <div class="control-group">
-            <div class="file-input-wrapper">
-                <button>📁 Load Script</button>
-                <input type="file" id="fileInput" accept=".txt">
-            </div>
+            <button id="loadBtn">📁 Load Script</button>
+            <input type="file" id="fileInput" accept=".txt" style="display: none;">
             <button id="clearBtn">🗑 Clear</button>
         </div>
 
@@ -260,6 +265,7 @@
         const scriptContent = document.getElementById('scriptContent');
         const teleprompter = document.getElementById('teleprompter');
         const fileInput = document.getElementById('fileInput');
+        const loadBtn = document.getElementById('loadBtn');
         const clearBtn = document.getElementById('clearBtn');
         const fullscreenBtn = document.getElementById('fullscreenBtn');
         const mirrorBtn = document.getElementById('mirrorBtn');
@@ -344,6 +350,26 @@
             mirrorBtn.classList.toggle('active');
         }
 
+        // Intercept paste events to strip formatting
+        scriptContent.addEventListener('paste', (e) => {
+            e.preventDefault();
+            const text = e.clipboardData.getData('text/plain');
+            
+            // Get current selection
+            const selection = window.getSelection();
+            if (!selection.rangeCount) return;
+            
+            // Delete current selection and insert plain text
+            const range = selection.getRangeAt(0);
+            range.deleteContents();
+            range.insertNode(document.createTextNode(text));
+            
+            // Move cursor to end of inserted text
+            range.collapse(false);
+            selection.removeAllRanges();
+            selection.addRange(range);
+        });
+
         // Button event listeners
         playBtn.addEventListener('click', togglePlay);
         resetBtn.addEventListener('click', reset);
@@ -357,6 +383,11 @@
         });
         fullscreenBtn.addEventListener('click', toggleFullscreen);
         mirrorBtn.addEventListener('click', toggleMirror);
+
+        // Fix for load button - trigger the hidden file input
+        loadBtn.addEventListener('click', () => {
+            fileInput.click();
+        });
 
         fileInput.addEventListener('change', (e) => {
             if (e.target.files.length > 0) {
