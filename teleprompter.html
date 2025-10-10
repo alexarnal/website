@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teleprompter</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+            background: #000;
+            color: #fff;
+            overflow: hidden;
+        }
+
+        #controls {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(30, 30, 30, 0.95);
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            z-index: 1000;
+            transition: transform 0.3s;
+            flex-wrap: wrap;
+        }
+
+        #controls.hidden {
+            transform: translateY(-100%);
+        }
+
+        .control-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .control-group label {
+            font-size: 14px;
+            color: #aaa;
+        }
+
+        button {
+            background: #444;
+            color: #fff;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.2s;
+        }
+
+        button:hover {
+            background: #555;
+        }
+
+        button:active {
+            background: #333;
+        }
+
+        #playBtn {
+            background: #4CAF50;
+            font-weight: bold;
+            padding: 10px 24px;
+        }
+
+        #playBtn:hover {
+            background: #45a049;
+        }
+
+        #playBtn.playing {
+            background: #ff9800;
+        }
+
+        .value-display {
+            min-width: 35px;
+            text-align: center;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        #teleprompter {
+            position: absolute;
+            top: 80px;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            overflow-y: auto;
+            overflow-x: hidden;
+            scroll-behavior: auto;
+        }
+
+        #teleprompter::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        #teleprompter::-webkit-scrollbar-track {
+            background: #1a1a1a;
+        }
+
+        #teleprompter::-webkit-scrollbar-thumb {
+            background: #444;
+            border-radius: 6px;
+        }
+
+        #teleprompter::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+
+        #scriptContent {
+            padding: 40px;
+            min-height: 100%;
+            color: #fff;
+            font-size: 32px;
+            line-height: 1.8;
+            font-family: Arial, sans-serif;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        #scriptContent:empty::before {
+            content: 'Paste your script here or load a text file...\A\AKeyboard Shortcuts:\A• SPACE - Play/Pause\A• ↑/↓ - Speed\A• +/- - Font size\A• R - Reset\A• F - Fullscreen\A• M - Mirror (for teleprompter rigs)\A• H - Toggle hints';
+            color: #555;
+            white-space: pre-wrap;
+        }
+
+        #scriptContent:focus {
+            outline: none;
+        }
+
+        .file-input-wrapper {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+        }
+
+        .file-input-wrapper input[type=file] {
+            position: absolute;
+            left: -9999px;
+        }
+
+        #keyboard-hints {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(30, 30, 30, 0.9);
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 12px;
+            color: #aaa;
+            z-index: 1000;
+            transition: opacity 0.3s;
+        }
+
+        #keyboard-hints.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        #keyboard-hints div {
+            margin: 5px 0;
+        }
+
+        #keyboard-hints kbd {
+            background: #444;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: monospace;
+            color: #fff;
+        }
+
+        .fullscreen #controls {
+            background: rgba(30, 30, 30, 0.7);
+        }
+
+        .fullscreen #keyboard-hints {
+            opacity: 0;
+        }
+
+        #mirrorBtn {
+            background: #555;
+        }
+
+        #mirrorBtn.active {
+            background: #2196F3;
+        }
+
+        .mirrored #scriptContent {
+            transform: scaleX(-1);
+        }
+    </style>
+</head>
+<body>
+    <div id="controls">
+        <div class="control-group">
+            <button id="playBtn">▶ Play</button>
+            <button id="resetBtn">⏮ Reset</button>
+        </div>
+
+        <div class="control-group">
+            <label>Speed:</label>
+            <button id="speedDown">-</button>
+            <span class="value-display" id="speedValue">2</span>
+            <button id="speedUp">+</button>
+        </div>
+
+        <div class="control-group">
+            <label>Font:</label>
+            <button id="fontDown">-</button>
+            <span class="value-display" id="fontValue">32</span>
+            <button id="fontUp">+</button>
+        </div>
+
+        <div class="control-group">
+            <div class="file-input-wrapper">
+                <button>📁 Load Script</button>
+                <input type="file" id="fileInput" accept=".txt">
+            </div>
+            <button id="clearBtn">🗑 Clear</button>
+        </div>
+
+        <div class="control-group">
+            <button id="mirrorBtn">🔄 Mirror</button>
+            <button id="fullscreenBtn">⛶ Fullscreen</button>
+        </div>
+    </div>
+
+    <div id="teleprompter">
+        <div id="scriptContent" contenteditable="true"></div>
+    </div>
+
+    <div id="keyboard-hints">
+        <div><kbd>SPACE</kbd> Play/Pause</div>
+        <div><kbd>↑</kbd> <kbd>↓</kbd> Speed</div>
+        <div><kbd>+</kbd> <kbd>-</kbd> Font</div>
+        <div><kbd>R</kbd> Reset</div>
+        <div><kbd>F</kbd> Fullscreen</div>
+        <div><kbd>M</kbd> Mirror</div>
+        <div><kbd>H</kbd> Hide hints</div>
+    </div>
+
+    <script>
+        const playBtn = document.getElementById('playBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const speedDown = document.getElementById('speedDown');
+        const speedUp = document.getElementById('speedUp');
+        const fontDown = document.getElementById('fontDown');
+        const fontUp = document.getElementById('fontUp');
+        const speedValue = document.getElementById('speedValue');
+        const fontValue = document.getElementById('fontValue');
+        const scriptContent = document.getElementById('scriptContent');
+        const teleprompter = document.getElementById('teleprompter');
+        const fileInput = document.getElementById('fileInput');
+        const clearBtn = document.getElementById('clearBtn');
+        const fullscreenBtn = document.getElementById('fullscreenBtn');
+        const mirrorBtn = document.getElementById('mirrorBtn');
+        const keyboardHints = document.getElementById('keyboard-hints');
+        const controls = document.getElementById('controls');
+
+        let isPlaying = false;
+        let speed = 2;
+        let fontSize = 32;
+        let scrollInterval = null;
+        let isMirrored = false;
+
+        function togglePlay() {
+            isPlaying = !isPlaying;
+            if (isPlaying) {
+                playBtn.textContent = '⏸ Pause';
+                playBtn.classList.add('playing');
+                startScrolling();
+            } else {
+                playBtn.textContent = '▶ Play';
+                playBtn.classList.remove('playing');
+                stopScrolling();
+            }
+        }
+
+        function startScrolling() {
+            scrollInterval = setInterval(() => {
+                teleprompter.scrollTop += speed;
+                
+                if (teleprompter.scrollTop >= teleprompter.scrollHeight - teleprompter.clientHeight) {
+                    togglePlay();
+                }
+            }, 30);
+        }
+
+        function stopScrolling() {
+            if (scrollInterval) {
+                clearInterval(scrollInterval);
+                scrollInterval = null;
+            }
+        }
+
+        function reset() {
+            stopScrolling();
+            isPlaying = false;
+            playBtn.textContent = '▶ Play';
+            playBtn.classList.remove('playing');
+            teleprompter.scrollTop = 0;
+        }
+
+        function changeSpeed(delta) {
+            speed = Math.max(1, Math.min(20, speed + delta));
+            speedValue.textContent = speed;
+        }
+
+        function changeFontSize(delta) {
+            fontSize = Math.max(12, Math.min(120, fontSize + delta));
+            fontValue.textContent = fontSize;
+            scriptContent.style.fontSize = fontSize + 'px';
+        }
+
+        function loadFile(file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                scriptContent.textContent = e.target.result;
+                reset();
+            };
+            reader.readAsText(file);
+        }
+
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen();
+            } else {
+                document.exitFullscreen();
+            }
+        }
+
+        function toggleMirror() {
+            isMirrored = !isMirrored;
+            teleprompter.classList.toggle('mirrored');
+            mirrorBtn.classList.toggle('active');
+        }
+
+        // Button event listeners
+        playBtn.addEventListener('click', togglePlay);
+        resetBtn.addEventListener('click', reset);
+        speedDown.addEventListener('click', () => changeSpeed(-1));
+        speedUp.addEventListener('click', () => changeSpeed(1));
+        fontDown.addEventListener('click', () => changeFontSize(-2));
+        fontUp.addEventListener('click', () => changeFontSize(2));
+        clearBtn.addEventListener('click', () => {
+            scriptContent.textContent = '';
+            reset();
+        });
+        fullscreenBtn.addEventListener('click', toggleFullscreen);
+        mirrorBtn.addEventListener('click', toggleMirror);
+
+        fileInput.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                loadFile(e.target.files[0]);
+            }
+        });
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            // Allow normal typing in the content area
+            if (scriptContent.contains(e.target) && !e.ctrlKey && !e.metaKey && 
+                !['ArrowUp', 'ArrowDown'].includes(e.key) &&
+                e.key !== ' ' && e.key.length === 1) {
+                return;
+            }
+
+            switch(e.key) {
+                case ' ':
+                    e.preventDefault();
+                    togglePlay();
+                    break;
+                case 'ArrowUp':
+                    e.preventDefault();
+                    changeSpeed(1);
+                    break;
+                case 'ArrowDown':
+                    e.preventDefault();
+                    changeSpeed(-1);
+                    break;
+                case '+':
+                case '=':
+                    e.preventDefault();
+                    changeFontSize(2);
+                    break;
+                case '-':
+                case '_':
+                    e.preventDefault();
+                    changeFontSize(-2);
+                    break;
+                case 'r':
+                case 'R':
+                    e.preventDefault();
+                    reset();
+                    break;
+                case 'f':
+                case 'F':
+                    e.preventDefault();
+                    toggleFullscreen();
+                    break;
+                case 'm':
+                case 'M':
+                    e.preventDefault();
+                    toggleMirror();
+                    break;
+                case 'h':
+                case 'H':
+                    e.preventDefault();
+                    keyboardHints.classList.toggle('hidden');
+                    break;
+            }
+        });
+
+        // Hide controls when in fullscreen and scrolling
+        document.addEventListener('fullscreenchange', () => {
+            if (document.fullscreenElement) {
+                document.body.classList.add('fullscreen');
+            } else {
+                document.body.classList.remove('fullscreen');
+            }
+        });
+
+        // Auto-hide controls when scrolling in fullscreen
+        let controlsTimeout;
+        document.addEventListener('mousemove', () => {
+            if (document.fullscreenElement) {
+                controls.classList.remove('hidden');
+                clearTimeout(controlsTimeout);
+                controlsTimeout = setTimeout(() => {
+                    if (isPlaying) {
+                        controls.classList.add('hidden');
+                    }
+                }, 3000);
+            }
+        });
+    </script>
+</body>
+</html>
