@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hypnotic Collage Generator</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #000;
+            color: #fff;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 30px;
+            border-bottom: 1px solid #333;
+        }
+        
+        h1 {
+            font-size: 2rem;
+            font-weight: 300;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            font-size: 0.9rem;
+            color: #888;
+            font-weight: 300;
+            margin-bottom: 15px;
+        }
+        
+        .credit {
+            font-size: 0.85rem;
+            color: #666;
+            margin-top: 10px;
+        }
+        
+        .credit a {
+            color: #fff;
+            text-decoration: none;
+            border-bottom: 1px solid #666;
+            transition: border-color 0.3s;
+        }
+        
+        .credit a:hover {
+            border-color: #fff;
+        }
+        
+        .upload-section {
+            margin-bottom: 40px;
+            text-align: center;
+        }
+        
+        .file-input-wrapper {
+            position: relative;
+            display: inline-block;
+            width: 100%;
+            max-width: 400px;
+        }
+        
+        input[type="file"] {
+            position: absolute;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+        
+        .file-input-label {
+            display: block;
+            padding: 20px;
+            background: #fff;
+            color: #000;
+            border: 2px solid #fff;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+            letter-spacing: 1px;
+        }
+        
+        .file-input-label:hover {
+            background: #000;
+            color: #fff;
+        }
+        
+        .controls {
+            background: #111;
+            padding: 30px;
+            margin-bottom: 40px;
+            border: 1px solid #222;
+        }
+        
+        .control-group {
+            margin-bottom: 25px;
+        }
+        
+        .control-group:last-child {
+            margin-bottom: 0;
+        }
+        
+        .control-label {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        
+        .value-display {
+            color: #fff;
+            font-weight: 500;
+            font-size: 1rem;
+        }
+        
+        input[type="range"] {
+            width: 100%;
+            height: 2px;
+            background: #333;
+            outline: none;
+            -webkit-appearance: none;
+        }
+        
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            background: #fff;
+            cursor: pointer;
+            border-radius: 0;
+        }
+        
+        input[type="range"]::-moz-range-thumb {
+            width: 16px;
+            height: 16px;
+            background: #fff;
+            cursor: pointer;
+            border: none;
+            border-radius: 0;
+        }
+        
+        .btn {
+            background: #fff;
+            color: #000;
+            border: 2px solid #fff;
+            padding: 12px 30px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            font-weight: 500;
+            transition: all 0.3s;
+            display: inline-block;
+            margin-top: 10px;
+        }
+        
+        .btn:hover {
+            background: #000;
+            color: #fff;
+        }
+        
+        .btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+        
+        .canvas-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .canvas-item {
+            background: #111;
+            padding: 20px;
+            border: 1px solid #222;
+        }
+        
+        .canvas-item h3 {
+            font-size: 0.75rem;
+            font-weight: 400;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+            color: #888;
+        }
+        
+        canvas {
+            width: 100%;
+            height: auto;
+            display: none;
+            border: 1px solid #222;
+        }
+        
+        canvas.visible {
+            display: block;
+        }
+        
+        .download-section {
+            text-align: center;
+            padding-top: 20px;
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding: 15px;
+            }
+            
+            h1 {
+                font-size: 1.5rem;
+            }
+            
+            .controls {
+                padding: 20px;
+            }
+            
+            .canvas-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>HYPNOTIC COLLAGE GENERATOR</h1>
+            <p class="credit">Inspired by the collage techniques of <a href="https://www.instagram.com/tete.au.carre" target="_blank" rel="noopener">TÊTE AU CARRÉ</a></p>
+        </header>
+        
+        <div class="upload-section">
+            <div class="file-input-wrapper">
+                <input type="file" id="imageInput" accept="image/*">
+                <label for="imageInput" class="file-input-label">SELECT IMAGE</label>
+            </div>
+        </div>
+        
+        <div class="controls" id="controlsPanel" style="display: none;">
+            <div class="control-group">
+                <div class="control-label">
+                    <span>Vertical Strip Width</span>
+                    <span class="value-display" id="widthValue">20%</span>
+                </div>
+                <input type="range" id="stripWidth" min="2" max="50" value="20" step="1">
+            </div>
+            
+            <div class="control-group">
+                <div class="control-label">
+                    <span>Horizontal Strip Height</span>
+                    <span class="value-display" id="heightValue">20%</span>
+                </div>
+                <input type="range" id="stripHeight" min="2" max="50" value="20" step="1">
+            </div>
+            
+            <button class="btn" id="reprocessBtn">APPLY CHANGES</button>
+        </div>
+        
+        <div class="canvas-grid">
+            <div class="canvas-item">
+                <h3>01 — Radial Duplicate</h3>
+                <canvas id="canvas1"></canvas>
+            </div>
+            <div class="canvas-item">
+                <h3>02 — Vertical Weave</h3>
+                <canvas id="canvas2"></canvas>
+            </div>
+            <div class="canvas-item">
+                <h3>03 — Final Result</h3>
+                <canvas id="canvas3"></canvas>
+            </div>
+        </div>
+        
+        <div class="download-section" id="downloadSection" style="display: none;">
+            <button class="btn" id="downloadBtn">DOWNLOAD IMAGE</button>
+        </div>
+    </div>
+
+    <script>
+        const imageInput = document.getElementById('imageInput');
+        const canvas1 = document.getElementById('canvas1');
+        const ctx1 = canvas1.getContext('2d');
+        const canvas2 = document.getElementById('canvas2');
+        const ctx2 = canvas2.getContext('2d');
+        const canvas3 = document.getElementById('canvas3');
+        const ctx3 = canvas3.getContext('2d');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const reprocessBtn = document.getElementById('reprocessBtn');
+        const stripWidthSlider = document.getElementById('stripWidth');
+        const stripHeightSlider = document.getElementById('stripHeight');
+        const widthValue = document.getElementById('widthValue');
+        const heightValue = document.getElementById('heightValue');
+        const controlsPanel = document.getElementById('controlsPanel');
+        const downloadSection = document.getElementById('downloadSection');
+
+        let currentImage = null;
+
+        stripWidthSlider.addEventListener('input', function() {
+            widthValue.textContent = this.value + '%';
+        });
+
+        stripHeightSlider.addEventListener('input', function() {
+            heightValue.textContent = this.value + '%';
+        });
+
+        imageInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const img = new Image();
+                img.onload = function() {
+                    currentImage = img;
+                    processImage(img);
+                    controlsPanel.style.display = 'block';
+                    downloadSection.style.display = 'block';
+                };
+                img.src = event.target.result;
+            };
+            reader.readAsDataURL(file);
+        });
+
+        reprocessBtn.addEventListener('click', function() {
+            if (currentImage) {
+                processImage(currentImage);
+            }
+        });
+
+        function processImage(img) {
+            const radialCanvas = radialDuplicate(img);
+            const stripReversalCanvas = verticalStripReversal(radialCanvas);
+            horizontalStripReversal(stripReversalCanvas);
+        }
+
+        function radialDuplicate(img) {
+            const w = img.width;
+            const h = img.height;
+            
+            canvas1.width = w * 2;
+            canvas1.height = h * 2;
+            
+            ctx1.drawImage(img, 0, 0, w, h);
+            
+            ctx1.save();
+            ctx1.translate(w * 2, 0);
+            ctx1.scale(-1, 1);
+            ctx1.drawImage(img, 0, 0, w, h);
+            ctx1.restore();
+            
+            ctx1.save();
+            ctx1.translate(0, h * 2);
+            ctx1.scale(1, -1);
+            ctx1.drawImage(img, 0, 0, w, h);
+            ctx1.restore();
+            
+            ctx1.save();
+            ctx1.translate(w * 2, h * 2);
+            ctx1.scale(-1, -1);
+            ctx1.drawImage(img, 0, 0, w, h);
+            ctx1.restore();
+            
+            canvas1.classList.add('visible');
+            return canvas1;
+        }
+
+        function verticalStripReversal(sourceCanvas) {
+            const w = sourceCanvas.width;
+            const h = sourceCanvas.height;
+            
+            const stripWidthPercent = parseInt(stripWidthSlider.value) / 100;
+            const stripWidth = Math.floor(w * stripWidthPercent);
+            const numStrips = Math.floor(w / stripWidth);
+            
+            const croppedWidth = numStrips * stripWidth;
+            
+            canvas2.width = croppedWidth;
+            canvas2.height = h;
+            
+            let leftIdx = 0;
+            let rightIdx = numStrips - 1;
+            
+            for (let dstIdx = 0; dstIdx < numStrips; dstIdx++) {
+                let srcIdx;
+                if (dstIdx % 2 === 0) {
+                    srcIdx = leftIdx;
+                    leftIdx++;
+                } else {
+                    srcIdx = rightIdx;
+                    rightIdx--;
+                }
+                
+                const srcX = srcIdx * stripWidth;
+                const dstX = dstIdx * stripWidth;
+                
+                ctx2.drawImage(
+                    sourceCanvas,
+                    srcX, 0, stripWidth, h,
+                    dstX, 0, stripWidth, h
+                );
+            }
+            
+            canvas2.classList.add('visible');
+            return canvas2;
+        }
+
+        function horizontalStripReversal(sourceCanvas) {
+            const w = sourceCanvas.width;
+            const h = sourceCanvas.height;
+            
+            const stripHeightPercent = parseInt(stripHeightSlider.value) / 100;
+            const stripHeight = Math.floor(h * stripHeightPercent);
+            const numStrips = Math.floor(h / stripHeight);
+            
+            const croppedHeight = numStrips * stripHeight;
+            
+            canvas3.width = w;
+            canvas3.height = croppedHeight;
+            
+            let topIdx = 0;
+            let bottomIdx = numStrips - 1;
+            
+            for (let dstIdx = 0; dstIdx < numStrips; dstIdx++) {
+                let srcIdx;
+                if (dstIdx % 2 === 0) {
+                    srcIdx = topIdx;
+                    topIdx++;
+                } else {
+                    srcIdx = bottomIdx;
+                    bottomIdx--;
+                }
+                
+                const srcY = srcIdx * stripHeight;
+                const dstY = dstIdx * stripHeight;
+                
+                ctx3.drawImage(
+                    sourceCanvas,
+                    0, srcY, w, stripHeight,
+                    0, dstY, w, stripHeight
+                );
+            }
+            
+            canvas3.classList.add('visible');
+        }
+
+        downloadBtn.addEventListener('click', function() {
+            const link = document.createElement('a');
+            link.download = 'hypnotic-collage.png';
+            link.href = canvas3.toDataURL();
+            link.click();
+        });
+    </script>
+</body>
+</html>
