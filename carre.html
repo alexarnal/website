@@ -329,10 +329,44 @@
             reader.onload = function(event) {
                 const img = new Image();
                 img.onload = function() {
-                    currentImage = img;
-                    processImage(img);
-                    controlsPanel.style.display = 'block';
-                    downloadSection.style.display = 'block';
+                    // Resize image if it's too large (especially for mobile)
+                    const maxDimension = 2000;
+                    let resizedImg = img;
+                    
+                    if (img.width > maxDimension || img.height > maxDimension) {
+                        const tempCanvas = document.createElement('canvas');
+                        const tempCtx = tempCanvas.getContext('2d');
+                        
+                        let newWidth = img.width;
+                        let newHeight = img.height;
+                        
+                        if (img.width > img.height) {
+                            newWidth = maxDimension;
+                            newHeight = (img.height / img.width) * maxDimension;
+                        } else {
+                            newHeight = maxDimension;
+                            newWidth = (img.width / img.height) * maxDimension;
+                        }
+                        
+                        tempCanvas.width = newWidth;
+                        tempCanvas.height = newHeight;
+                        tempCtx.drawImage(img, 0, 0, newWidth, newHeight);
+                        
+                        // Create a new image from the resized canvas
+                        const resizedImage = new Image();
+                        resizedImage.onload = function() {
+                            currentImage = resizedImage;
+                            processImage(resizedImage);
+                            controlsPanel.style.display = 'block';
+                            downloadSection.style.display = 'block';
+                        };
+                        resizedImage.src = tempCanvas.toDataURL();
+                    } else {
+                        currentImage = img;
+                        processImage(img);
+                        controlsPanel.style.display = 'block';
+                        downloadSection.style.display = 'block';
+                    }
                 };
                 img.src = event.target.result;
             };
