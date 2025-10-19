@@ -170,6 +170,7 @@
             transition: all 0.3s;
             display: inline-block;
             margin-top: 10px;
+            min-width: 200px;
         }
         
         .btn:hover {
@@ -290,7 +291,8 @@
         </div>
         
         <div class="download-section" id="downloadSection" style="display: none;">
-            <button class="btn" id="downloadBtn">DOWNLOAD IMAGE</button>
+            <button class="btn" id="shareBtn" style="display: none;">SHARE</button>
+            <button class="btn" id="downloadBtn">DOWNLOAD</button>
         </div>
     </div>
 
@@ -303,6 +305,7 @@
         const canvas3 = document.getElementById('canvas3');
         const ctx3 = canvas3.getContext('2d');
         const downloadBtn = document.getElementById('downloadBtn');
+        const shareBtn = document.getElementById('shareBtn');
         const reprocessBtn = document.getElementById('reprocessBtn');
         const stripWidthSlider = document.getElementById('stripWidth');
         const stripHeightSlider = document.getElementById('stripHeight');
@@ -495,12 +498,49 @@
             canvas3.classList.add('visible');
         }
 
-        downloadBtn.addEventListener('click', function() {
+        // Setup both buttons
+        function setupButtons() {
+            // Always show download button
+            downloadBtn.addEventListener('click', downloadImage);
+            
+            // Show share button only if supported
+            const canShare = navigator.share && navigator.canShare;
+            
+            if (canShare) {
+                const testData = { files: [new File([''], 'test.png', { type: 'image/png' })] };
+                if (navigator.canShare(testData)) {
+                    shareBtn.style.display = 'inline-block';
+                    shareBtn.addEventListener('click', shareImage);
+                }
+            }
+        }
+
+        async function shareImage() {
+            try {
+                const blob = await new Promise(resolve => canvas3.toBlob(resolve, 'image/png'));
+                const file = new File([blob], 'hypnotic-collage.png', { type: 'image/png' });
+                
+                await navigator.share({
+                    files: [file],
+                    title: 'Hypnotic Collage',
+                    text: 'Check out this hypnotic collage!'
+                });
+            } catch (err) {
+                if (err.name !== 'AbortError') {
+                    console.log('Share failed:', err);
+                }
+            }
+        }
+
+        function downloadImage() {
             const link = document.createElement('a');
             link.download = 'hypnotic-collage.png';
             link.href = canvas3.toDataURL();
             link.click();
-        });
+        }
+
+        // Initialize buttons when the page loads
+        setupButtons();
     </script>
 </body>
 </html>
