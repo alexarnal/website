@@ -17,6 +17,7 @@
             color: #fff;
             min-height: 100vh;
             padding: 20px;
+            overflow-x: hidden;
         }
         
         .container {
@@ -35,7 +36,8 @@
             font-size: 2rem;
             font-weight: 300;
             letter-spacing: 2px;
-            margin-bottom: 10px;
+            margin-bottom: 24px;
+            margin-top: 24px;
         }
         
         .subtitle {
@@ -185,7 +187,7 @@
         
         .canvas-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(min(250px, 100%), 1fr));
             gap: 30px;
             margin-bottom: 40px;
         }
@@ -194,6 +196,7 @@
             background: #111;
             padding: 20px;
             border: 1px solid #222;
+            overflow: hidden;
         }
         
         .canvas-item h3 {
@@ -210,6 +213,7 @@
             height: auto;
             display: none;
             border: 1px solid #222;
+            max-width: 100%;
         }
         
         canvas.visible {
