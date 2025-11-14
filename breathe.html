@@ -12,7 +12,7 @@
         }
 
         body {
-            font-family: 'SF Mono', 'Monaco', 'Courier New', monospace;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
             background: #1a1a1a;
             color: #ffffff;
             overflow: hidden;
@@ -44,43 +44,45 @@
             transform: scale(1.5);
         }
 
-        .phase-container {
+        .breathing-card {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
+            background: rgba(26, 26, 26, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 48px 64px;
             z-index: 10;
             text-align: center;
+            backdrop-filter: blur(10px);
+            min-width: 320px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
         }
 
         .phase {
-            font-size: 32px;
-            color: #ffffff;
+            font-size: 24px;
+            color: rgba(255, 255, 255, 0.7);
             font-weight: 300;
-            margin-bottom: 20px;
-            min-height: 40px;
+            margin-bottom: 24px;
+            min-height: 32px;
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
         .timer {
-            font-size: 64px;
-            font-weight: 300;
+            font-size: 96px;
+            font-weight: 200;
             color: #ffffff;
+            margin-bottom: 32px;
+            line-height: 1;
         }
 
         .progress-bar {
-            position: absolute;
-            bottom: max(60px, 8vh); /* Use whichever is larger */
-            left: 50%;
-            transform: translateX(-50%);
-            font-family: 'SF Mono', 'Monaco', monospace;
-            font-size: 14px;
-            color: #ffffff;
-            z-index: 10;
-            text-align: center;
-            padding-bottom: env(safe-area-inset-bottom);
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.5);
+            letter-spacing: 2px;
         }
 
         .completion-message {
@@ -88,8 +90,15 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            text-align: center;
+            background: rgba(26, 26, 26, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 48px 64px;
             z-index: 10;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            min-width: 320px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
             display: none;
         }
 
@@ -101,8 +110,44 @@
         }
 
         .completion-message p {
-            font-size: 24px;
-            color: #e7e7e7;
+            font-size: 18px;
+            color: rgba(255, 255, 255, 0.7);
+            font-weight: 300;
+        }
+
+        /* Mobile adjustments */
+        @media (max-width: 768px) {
+            .breathing-card {
+                padding: 32px 40px;
+                min-width: 280px;
+            }
+
+            .phase {
+                font-size: 20px;
+                margin-bottom: 20px;
+            }
+
+            .timer {
+                font-size: 72px;
+                margin-bottom: 24px;
+            }
+
+            .progress-bar {
+                font-size: 11px;
+            }
+
+            .completion-message {
+                padding: 32px 40px;
+                min-width: 280px;
+            }
+
+            .completion-message h2 {
+                font-size: 36px;
+            }
+
+            .completion-message p {
+                font-size: 16px;
+            }
         }
     </style>
 </head>
@@ -111,15 +156,14 @@
         <div class="garden-content" id="garden"></div>
     </div>
     
-    <div class="phase-container">
+    <div class="breathing-card" id="breathingCard">
         <div class="phase" id="phaseText">
             <span>Preparing...</span>
         </div>
         <div class="timer" id="timer">3</div>
-    </div>
-    
-    <div class="progress-bar" id="progressBar">
-        [■□□□□□□□□□□□□□□□]
+        <div class="progress-bar" id="progressBar">
+            [■□□□□□□□□□□□□□□□]
+        </div>
     </div>
     
     <div class="completion-message" id="completionMessage">
@@ -133,7 +177,7 @@
         const garden = document.getElementById('garden');
         const progressBar = document.getElementById('progressBar');
         const completionMessage = document.getElementById('completionMessage');
-        const phaseContainer = document.querySelector('.phase-container');
+        const breathingCard = document.getElementById('breathingCard');
         
         // Breathing configuration
         const BREATHE_IN = 4;
@@ -301,11 +345,10 @@
             }
             
             // Session complete
-            phaseContainer.style.display = 'none';
-            progressBar.style.display = 'none';
+            breathingCard.style.display = 'none';
             completionMessage.style.display = 'block';
             
-            // Auto-close after 3 seconds
+            // Auto-close after 5 seconds
             setTimeout(() => {
                 window.close();
             }, 5000);
