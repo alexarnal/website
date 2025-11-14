@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diet Planner</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Info Button (Fixed Position) -->
+    <button class="info-btn" onclick="openModal()">ℹ️</button>
+
+    <!-- Info Modal -->
+    <div id="infoModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2>Master Valencia Diet Plan</h2>
+            <p><em>Dr. Daniel Valencia</em></p>
+            
+            <h3>Meal Guidelines</h3>
+            
+            <div class="modal-section">
+                <h4>🌅 Breakfast</h4>
+                <p><strong>Timing:</strong> First meal, any time after waking up</p>
+                <ul>
+                    <li>2 servings of low glycemic fruit</li>
+                    <li>1 serving of high glycemic fruit</li>
+                    <li>25g non-meat protein</li>
+                </ul>
+            </div>
+
+            <div class="modal-section">
+                <h4>🍽️ Lunch</h4>
+                <p><strong>Timing:</strong> Heaviest meal, 8 hours before bedtime</p>
+                <ul>
+                    <li>1 serving processed carbohydrate</li>
+                    <li>30g animal protein</li>
+                    <li>2 servings of vegetables</li>
+                </ul>
+            </div>
+
+            <div class="modal-section">
+                <h4>🌙 Dinner</h4>
+                <p><strong>Timing:</strong> Healthiest meal, 3-4 hours before bedtime</p>
+                <ul>
+                    <li>3 servings of vegetables</li>
+                    <li>15g of any protein (NO RED MEAT!)</li>
+                </ul>
+            </div>
+
+            <div class="modal-note">
+                <strong>Note:</strong> Cheat meals - 4 regular lunch meals can be replaced by 4 different cheat meals with up to 800 calories to get the cravings out of the way and continue with the diet.
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Sticky Progress Section -->
+        <div class="progress-section">
+            <div class="meal-tabs">
+                <button class="meal-tab active" data-meal="breakfast">🌅 Breakfast</button>
+                <button class="meal-tab" data-meal="lunch">🍽️ Lunch</button>
+                <button class="meal-tab" data-meal="dinner">🌙 Dinner</button>
+            </div>
+
+            <div class="progress-grid" id="progressGrid">
+                <!-- Progress bars will be inserted here -->
+            </div>
+
+            <button class="reset-btn" onclick="resetMeal()">🔄 Reset</button>
+        </div>
+
+        <!-- Food Selection Grid -->
+        <div class="food-grid" id="foodGrid">
+            <!-- Food tiles will be inserted here -->
+        </div>
+    </div>
+
+    <script type="module" src="app.js"></script>
+</body>
+</html>
