@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>✨ MCAT Study Quiz ✨</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Pacifico&display=swap');
+
+    :root {
+      --bg:        #0f0f1a;
+      --card-bg:   #1a1a2e;
+      --card-border: #2e2e4a;
+      --pink:      #ff6eb4;
+      --pink-light: #ffadd8;
+      --pink-dim:  #c4547e;
+      --pink-glow: rgba(255, 110, 180, 0.18);
+      --text:      #f0e6f6;
+      --text-muted:#a89cc0;
+      --correct:   #6ee7b7;
+      --incorrect: #f87171;
+      --option-bg: #23233a;
+      --option-hover: #2e2e4e;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Nunito', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 24px 16px 60px;
+      background-image:
+        radial-gradient(ellipse at 20% 10%, rgba(255,110,180,0.07) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 80%, rgba(150,80,255,0.06) 0%, transparent 60%);
+    }
+
+    /* ── Header ── */
+    header {
+      text-align: center;
+      margin-bottom: 28px;
+    }
+    header h1 {
+      font-family: 'Pacifico', cursive;
+      font-size: 2.4rem;
+      color: var(--pink);
+      text-shadow: 0 0 24px var(--pink-glow), 0 2px 8px rgba(0,0,0,0.5);
+      letter-spacing: 1px;
+    }
+    header p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      margin-top: 6px;
+    }
+    .sparkles { font-size: 1.4rem; }
+
+    /* ── Progress bar ── */
+    .progress-wrap {
+      width: 100%;
+      max-width: 680px;
+      margin-bottom: 18px;
+    }
+    .progress-info {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+    .progress-bar-bg {
+      background: var(--card-border);
+      border-radius: 99px;
+      height: 8px;
+      overflow: hidden;
+    }
+    .progress-bar-fill {
+      height: 100%;
+      border-radius: 99px;
+      background: linear-gradient(90deg, var(--pink-dim), var(--pink));
+      transition: width 0.4s ease;
+      box-shadow: 0 0 10px var(--pink-glow);
+    }
+
+    /* ── Score badge ── */
+    .score-badge {
+      display: flex;
+      gap: 20px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .badge {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 50px;
+      padding: 6px 18px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--text-muted);
+    }
+    .badge span { color: var(--pink); }
+
+    /* ── Card ── */
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 32px 28px 28px;
+      max-width: 680px;
+      width: 100%;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,110,180,0.05);
+      animation: fadeIn 0.4s ease;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .topic-tag {
+      display: inline-block;
+      background: var(--pink-glow);
+      border: 1px solid var(--pink-dim);
+      color: var(--pink-light);
+      font-size: 0.72rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 3px 12px;
+      border-radius: 99px;
+      margin-bottom: 16px;
+    }
+
+    .question-text {
+      font-size: 1.08rem;
+      font-weight: 700;
+      line-height: 1.6;
+      color: var(--text);
+      margin-bottom: 22px;
+    }
+
+    /* ── Options ── */
+    .options { display: flex; flex-direction: column; gap: 10px; }
+
+    .option-btn {
+      background: var(--option-bg);
+      border: 1.5px solid var(--card-border);
+      border-radius: 12px;
+      padding: 13px 18px;
+      text-align: left;
+      cursor: pointer;
+      font-family: 'Nunito', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text);
+      transition: background 0.15s, border-color 0.15s, transform 0.1s;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .option-btn:hover:not(:disabled) {
+      background: var(--option-hover);
+      border-color: var(--pink-dim);
+      transform: translateX(3px);
+    }
+    .option-btn .letter {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: var(--card-border);
+      font-size: 0.78rem;
+      font-weight: 900;
+      flex-shrink: 0;
+      transition: background 0.15s;
+    }
+    .option-btn.correct {
+      background: rgba(110,231,183,0.12);
+      border-color: var(--correct);
+      color: var(--correct);
+    }
+    .option-btn.correct .letter { background: var(--correct); color: #0f0f1a; }
+    .option-btn.incorrect {
+      background: rgba(248,113,113,0.12);
+      border-color: var(--incorrect);
+      color: var(--incorrect);
+    }
+    .option-btn.incorrect .letter { background: var(--incorrect); color: #0f0f1a; }
+    .option-btn:disabled { cursor: default; }
+
+    /* ── Explanation ── */
+    .explanation {
+      margin-top: 20px;
+      padding: 16px 18px;
+      background: rgba(255,110,180,0.07);
+      border-left: 3px solid var(--pink);
+      border-radius: 0 12px 12px 0;
+      font-size: 0.9rem;
+      line-height: 1.65;
+      color: var(--text-muted);
+      display: none;
+    }
+    .explanation.show { display: block; animation: fadeIn 0.3s ease; }
+    .explanation strong { color: var(--pink-light); }
+
+    /* ── Buttons row ── */
+    .btn-row {
+      display: flex;
+      gap: 12px;
+      margin-top: 24px;
+      flex-wrap: wrap;
+    }
+    .btn {
+      padding: 11px 26px;
+      border-radius: 50px;
+      border: none;
+      font-family: 'Nunito', sans-serif;
+      font-size: 0.92rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: transform 0.1s, box-shadow 0.1s;
+    }
+    .btn:active { transform: scale(0.97); }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--pink-dim), var(--pink));
+      color: #fff;
+      box-shadow: 0 4px 18px rgba(255,110,180,0.35);
+    }
+    .btn-primary:hover { box-shadow: 0 6px 24px rgba(255,110,180,0.5); }
+    .btn-secondary {
+      background: var(--option-bg);
+      border: 1.5px solid var(--card-border);
+      color: var(--text-muted);
+    }
+    .btn-secondary:hover { border-color: var(--pink-dim); color: var(--pink-light); }
+
+    /* ── Results screen ── */
+    #results-screen {
+      display: none;
+      text-align: center;
+      max-width: 680px;
+      width: 100%;
+      animation: fadeIn 0.5s ease;
+    }
+    .result-emoji { font-size: 4rem; margin-bottom: 12px; }
+    .result-title {
+      font-family: 'Pacifico', cursive;
+      font-size: 2rem;
+      color: var(--pink);
+      margin-bottom: 8px;
+    }
+    .result-score {
+      font-size: 3.5rem;
+      font-weight: 900;
+      color: var(--text);
+      line-height: 1;
+    }
+    .result-score small { font-size: 1.2rem; color: var(--text-muted); }
+    .result-msg {
+      margin-top: 10px;
+      color: var(--text-muted);
+      font-size: 1rem;
+    }
+    .result-breakdown {
+      margin-top: 28px;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 20px;
+      text-align: left;
+    }
+    .result-breakdown h3 {
+      color: var(--pink-light);
+      font-size: 0.85rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 12px;
+    }
+    .rb-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 7px 0;
+      border-bottom: 1px solid var(--card-border);
+      font-size: 0.88rem;
+    }
+    .rb-item:last-child { border-bottom: none; }
+    .rb-dot {
+      width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0;
+    }
+    .dot-correct { background: var(--correct); }
+    .dot-incorrect { background: var(--incorrect); }
+    .rb-q { flex: 1; color: var(--text-muted); }
+    .rb-status { font-weight: 800; font-size: 0.82rem; }
+    .status-c { color: var(--correct); }
+    .status-w { color: var(--incorrect); }
+
+    /* ── Decorative doodles ── */
+    .doodle {
+      position: fixed;
+      opacity: 0.06;
+      font-size: 5rem;
+      pointer-events: none;
+      user-select: none;
+    }
+    .d1 { top: 5%; left: 3%; transform: rotate(-20deg); }
+    .d2 { top: 15%; right: 4%; transform: rotate(15deg); }
+    .d3 { bottom: 10%; left: 5%; transform: rotate(10deg); }
+    .d4 { bottom: 20%; right: 3%; transform: rotate(-10deg); }
+
+    /* ── Responsive ── */
+    @media (max-width: 500px) {
+      header h1 { font-size: 1.8rem; }
+      .card { padding: 22px 16px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- decorative background doodles -->
+  <div class="doodle d1">🧬</div>
+  <div class="doodle d2">⚗️</div>
+  <div class="doodle d3">💊</div>
+  <div class="doodle d4">🔬</div>
+
+  <header>
+    <h1>✨ MCAT Quiz ✨</h1>
+    <p class="sparkles">🌸 you've got this, bestie 🌸</p>
+  </header>
+
+  <!-- Quiz screen -->
+  <div id="quiz-screen" style="width:100%;max-width:680px;">
+    <div class="progress-wrap">
+      <div class="progress-info">
+        <span id="q-counter">Question 1 of 1</span>
+        <span id="q-topic"></span>
+      </div>
+      <div class="progress-bar-bg">
+        <div class="progress-bar-fill" id="progress-fill" style="width:0%"></div>
+      </div>
+    </div>
+
+    <div class="score-badge">
+      <div class="badge">✅ Correct: <span id="score-correct">0</span></div>
+      <div class="badge">❌ Wrong: <span id="score-wrong">0</span></div>
+      <div class="badge">📚 Topic: <span id="score-topic">—</span></div>
+    </div>
+
+    <div class="card" id="question-card">
+      <div class="topic-tag" id="topic-tag"></div>
+      <div class="question-text" id="question-text"></div>
+      <div class="options" id="options-list"></div>
+      <div class="explanation" id="explanation"></div>
+      <div class="btn-row">
+        <button class="btn btn-primary" id="next-btn" style="display:none" onclick="nextQuestion()">Next question →</button>
+        <button class="btn btn-secondary" onclick="shuffleAndRestart()">🔀 Shuffle & Restart</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Results screen -->
+  <div id="results-screen">
+    <div class="result-emoji" id="result-emoji">🎉</div>
+    <div class="result-title">Quiz Complete!</div>
+    <div class="result-score" id="result-score">0 <small>/ 0</small></div>
+    <div class="result-msg" id="result-msg"></div>
+    <div class="result-breakdown" id="result-breakdown">
+      <h3>📋 Review</h3>
+      <div id="breakdown-list"></div>
+    </div>
+    <div class="btn-row" style="justify-content:center;margin-top:24px;">
+      <button class="btn btn-primary" onclick="restartQuiz()">🌸 Try Again</button>
+      <button class="btn btn-secondary" onclick="shuffleAndRestart()">🔀 Shuffle</button>
+    </div>
+  </div>
+
+  <script>
+  // ============================================================
+  // QUESTIONS — append new batches above the ===QUESTIONS_END=== marker
+  // ============================================================
+  const ALL_QUESTIONS = [
+
+    // ── Batch 1: Biochem – Amino Acid Structure & Properties (pages 2-3) ──
+    {
+      topic: "Biochem · AA Structure",
+      q: "Which term describes an amino acid that carries both a positive charge on its amino group and a negative charge on its carboxyl group at physiological pH?",
+      opts: [
+        "Isomer",
+        "Zwitterion",
+        "Enantiomer",
+        "Amphoteric ion"
+      ],
+      ans: 1,
+      exp: "<strong>Zwitterion</strong> is correct! At physiological pH (~7.4), the amino group is protonated (–NH₃⁺) and the carboxyl group is deprotonated (–COO⁻). This makes the AA backbone a zwitterion — it carries both charges simultaneously but is overall neutral. This is a key MCAT concept! 🌸"
+    },
+    {
+      topic: "Biochem · AA Structure",
+      q: "The α-carbon of a proteinogenic amino acid is BEST described as:",
+      opts: [
+        "The carbon of the carboxyl group",
+        "The carbon directly attached to the COOH group",
+        "The terminal carbon of the R-group side chain",
+        "The carbon forming the peptide bond"
+      ],
+      ans: 1,
+      exp: "The <strong>α-carbon</strong> is the carbon directly attached to the COOH group. It also bears the amino group, hydrogen, and R-group — giving most AAs their chiral center. The β-carbon is the next one down the side chain. 🔬"
+    },
+    {
+      topic: "Biochem · AA Structure",
+      q: "Which amino acid is the ONLY one among the 20 standard amino acids that lacks a chiral center?",
+      opts: [
+        "Proline",
+        "Alanine",
+        "Glycine",
+        "Lysine"
+      ],
+      ans: 2,
+      exp: "<strong>Glycine</strong> is correct! A chiral center requires 4 unique substituents. Glycine's R-group is just a hydrogen atom (–H), making two of its α-carbon substituents identical (both –H). No chiral center, no enantiomers. All other 19 standard AAs are chiral. ✨"
+    },
+    {
+      topic: "Biochem · AA Structure",
+      q: "Isoleucine is described in your notes as an isomer of leucine. What does 'isomer' mean in this context?",
+      opts: [
+        "Two molecules with the same 3D structure and spatial arrangement",
+        "Two molecules with different molecular formulas but similar properties",
+        "Two different molecules with the same molecular formula",
+        "Two molecules that are mirror images of each other"
+      ],
+      ans: 2,
+      exp: "<strong>Isomers</strong> are different molecules that share the same molecular formula. Isoleucine and leucine are both C₆H₁₃NO₂ — same formula, different connectivity. This makes them constitutional (structural) isomers. Mirror images specifically would be enantiomers. 💡"
+    },
+    {
+      topic: "Biochem · AA Structure",
+      q: "Which of the following amino acids is UNIQUE in having TWO primary amine groups?",
+      opts: [
+        "Arginine",
+        "Proline",
+        "Histidine",
+        "Lysine"
+      ],
+      ans: 3,
+      exp: "<strong>Lysine</strong> is the only standard AA with 2 primary amines — one on the α-carbon and one on its ε (epsilon) side chain. Proline actually has a <em>secondary</em> amine (its R-group cyclizes back onto the nitrogen). Arginine and histidine have nitrogens too, but not two primary amines. 🏆"
+    },
+    {
+      topic: "Biochem · AA Structure",
+      q: "Almost all chiral amino acids found in nature are L-configuration. Of the following, which amino acid is an exception — it is L but has R stereochemical designation?",
+      opts: [
+        "Glycine",
+        "Proline",
+        "Cysteine",
+        "Lysine"
+      ],
+      ans: 2,
+      exp: "<strong>Cysteine</strong> is the exception! Although it is an L-amino acid, its sulfur-containing side chain has higher atomic priority than the carboxyl group by CIP rules, which flips the R/S designation to R. Almost all other L-amino acids are S-configuration. This is a classic MCAT trick! 🌟"
+    },
+    {
+      topic: "Biochem · AA Properties",
+      q: "Methionine contains a sulfur atom yet is still classified as a nonpolar amino acid. What is the best explanation for this?",
+      opts: [
+        "Sulfur forms hydrogen bonds with water, offsetting its nonpolarity",
+        "Sulfur has similar electronegativity to carbon, making the C–S bond essentially nonpolar covalent",
+        "Methionine's side chain is too short to have any polarity",
+        "The sulfur in methionine carries a full negative charge at physiological pH"
+      ],
+      ans: 1,
+      exp: "<strong>Sulfur ≈ carbon in electronegativity</strong> is the key! Unlike oxygen or nitrogen, sulfur's electronegativity is close to carbon's, so the C–S bond doesn't create a significant dipole. This keeps methionine nonpolar despite the sulfur. Compare with cysteine — also has sulfur, but its –SH group has lone electron pairs that allow water interaction, making it polar. 🧪"
+    },
+    {
+      topic: "Biochem · AA Properties",
+      q: "Which of the following sets of amino acids are correctly identified as the THREE branched-chain amino acids (BCAAs)?",
+      opts: [
+        "Valine, Leucine, Isoleucine",
+        "Alanine, Valine, Glycine",
+        "Leucine, Lysine, Methionine",
+        "Isoleucine, Threonine, Serine"
+      ],
+      ans: 0,
+      exp: "<strong>Valine, Leucine, and Isoleucine</strong> are the three branched-chain amino acids. They're all nonpolar, aliphatic (no aromatic ring), and their side chains branch off the main carbon chain. BCAAs are especially important in muscle metabolism — high-yield MCAT topic! 💪"
+    },
+    {
+      topic: "Biochem · AA Properties",
+      q: "Which of the following amino acids has an ionizable side chain but is predominantly UNCHARGED at physiological pH (7.4)?",
+      opts: [
+        "Aspartate",
+        "Lysine",
+        "Histidine",
+        "Glutamate"
+      ],
+      ans: 2,
+      exp: "<strong>Histidine</strong> is correct! Its imidazole side chain has a pKa of ~6.0, which is below physiological pH — meaning at pH 7.4, it is mostly deprotonated and uncharged. Tyrosine and cysteine also have ionizable but predominantly uncharged side chains at physiological pH. Aspartate, glutamate (negative) and lysine (positive) ARE charged at pH 7.4. 📖"
+    },
+    {
+      topic: "Biochem · AA Properties",
+      q: "Serine, Threonine, Asparagine, and Glutamine are all polar amino acids. What is special about their ionization behavior at physiological pH?",
+      opts: [
+        "They are fully protonated and carry a +1 charge",
+        "They are fully deprotonated and carry a −1 charge",
+        "They have no special ionization — their side chains do not ionize under physiological conditions",
+        "They exist as zwitterions with two ionizable side chains"
+      ],
+      ans: 2,
+      exp: "These four polar amino acids — <strong>Ser, Thr, Asn, Gln</strong> — have side chains that are polar (they can hydrogen bond with water) but do NOT ionize at physiological pH. They don't carry a net charge on their side chains at pH 7.4. This distinguishes them from charged AAs like Asp, Glu, Lys, Arg, and His. 🌸"
+    },
+
+  // ===QUESTIONS_END===
+  ]; // end ALL_QUESTIONS
+
+
+  // ============================================================
+  // Quiz engine
+  // ============================================================
+  let questions = [];
+  let current = 0;
+  let correct = 0;
+  let wrong = 0;
+  let answered = [];
+  let selectedIndex = null;
+
+  function shuffle(arr) {
+    const a = [...arr];
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
+  function init(doShuffle) {
+    questions = doShuffle ? shuffle(ALL_QUESTIONS) : [...ALL_QUESTIONS];
+    current = 0; correct = 0; wrong = 0;
+    answered = questions.map(() => null);
+    document.getElementById('results-screen').style.display = 'none';
+    document.getElementById('quiz-screen').style.display = 'block';
+    renderQuestion();
+  }
+
+  function renderQuestion() {
+    const q = questions[current];
+    const total = questions.length;
+
+    document.getElementById('q-counter').textContent = `Question ${current + 1} of ${total}`;
+    document.getElementById('q-topic').textContent = q.topic;
+    document.getElementById('topic-tag').textContent = q.topic;
+    document.getElementById('score-topic').textContent = q.topic.split('·')[1]?.trim() || q.topic;
+    document.getElementById('question-text').textContent = q.q;
+    document.getElementById('score-correct').textContent = correct;
+    document.getElementById('score-wrong').textContent = wrong;
+
+    const fill = ((current) / total) * 100;
+    document.getElementById('progress-fill').style.width = fill + '%';
+
+    const optList = document.getElementById('options-list');
+    optList.innerHTML = '';
+    const letters = ['A', 'B', 'C', 'D', 'E'];
+    q.opts.forEach((opt, i) => {
+      const btn = document.createElement('button');
+      btn.className = 'option-btn';
+      btn.innerHTML = `<span class="letter">${letters[i]}</span> ${opt}`;
+      btn.onclick = () => selectAnswer(i);
+      if (answered[current] !== null) {
+        btn.disabled = true;
+        if (i === q.ans) btn.classList.add('correct');
+        else if (i === answered[current]) btn.classList.add('incorrect');
+      }
+      optList.appendChild(btn);
+    });
+
+    const exp = document.getElementById('explanation');
+    exp.innerHTML = answered[current] !== null ? q.exp : '';
+    exp.className = 'explanation' + (answered[current] !== null ? ' show' : '');
+
+    const nextBtn = document.getElementById('next-btn');
+    nextBtn.style.display = answered[current] !== null ? 'inline-flex' : 'none';
+    nextBtn.textContent = current < total - 1 ? 'Next question →' : 'See results 🎉';
+  }
+
+  function selectAnswer(i) {
+    if (answered[current] !== null) return;
+    const q = questions[current];
+    answered[current] = i;
+    selectedIndex = i;
+
+    if (i === q.ans) correct++; else wrong++;
+
+    const btns = document.querySelectorAll('.option-btn');
+    btns.forEach((btn, idx) => {
+      btn.disabled = true;
+      if (idx === q.ans) btn.classList.add('correct');
+      else if (idx === i) btn.classList.add('incorrect');
+    });
+
+    const exp = document.getElementById('explanation');
+    exp.innerHTML = q.exp;
+    exp.className = 'explanation show';
+    document.getElementById('next-btn').style.display = 'inline-flex';
+    document.getElementById('next-btn').textContent = current < questions.length - 1 ? 'Next question →' : 'See results 🎉';
+    document.getElementById('score-correct').textContent = correct;
+    document.getElementById('score-wrong').textContent = wrong;
+  }
+
+  function nextQuestion() {
+    current++;
+    if (current >= questions.length) {
+      showResults();
+    } else {
+      renderQuestion();
+    }
+  }
+
+  function showResults() {
+    document.getElementById('quiz-screen').style.display = 'none';
+    const rs = document.getElementById('results-screen');
+    rs.style.display = 'block';
+
+    const total = questions.length;
+    const pct = Math.round((correct / total) * 100);
+
+    document.getElementById('result-score').innerHTML = `${correct} <small>/ ${total}</small>`;
+
+    let emoji, msg;
+    if (pct === 100) { emoji = '🏆'; msg = "Perfect score!! You are literally unstoppable 💖"; }
+    else if (pct >= 80) { emoji = '🌟'; msg = "Amazing work!! You're crushing it 🌸"; }
+    else if (pct >= 60) { emoji = '✨'; msg = "Good effort! Review the ones you missed and come back stronger 💪"; }
+    else if (pct >= 40) { emoji = '📖'; msg = "Keep studying, you've got this! Every attempt makes you better 🌷"; }
+    else               { emoji = '💕'; msg = "Don't give up! Go back to your notes and try again, you'll get there 🌸"; }
+
+    document.getElementById('result-emoji').textContent = emoji;
+    document.getElementById('result-msg').textContent = msg;
+
+    const list = document.getElementById('breakdown-list');
+    list.innerHTML = '';
+    questions.forEach((q, i) => {
+      const wasCorrect = answered[i] === q.ans;
+      const div = document.createElement('div');
+      div.className = 'rb-item';
+      div.innerHTML = `
+        <div class="rb-dot ${wasCorrect ? 'dot-correct' : 'dot-incorrect'}"></div>
+        <div class="rb-q">${q.q.slice(0, 70)}…</div>
+        <div class="rb-status ${wasCorrect ? 'status-c' : 'status-w'}">${wasCorrect ? '✓ Correct' : '✗ Wrong'}</div>
+      `;
+      list.appendChild(div);
+    });
+
+    document.getElementById('progress-fill').style.width = '100%';
+  }
+
+  function restartQuiz() { init(false); }
+  function shuffleAndRestart() { init(true); }
+
+  // Start!
+  init(false);
+  </script>
+</body>
+</html>
