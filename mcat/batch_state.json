@@ -1,11 +1,12 @@
 {
   "pdf_path": "mcat/UWORLD.pdf",
-  "next_page": 9,
+  "next_page": 14,
   "batch_size": 5,
   "total_pages": 153,
-  "batches_completed": 2,
+  "batches_completed": 3,
   "history": [
     {"pages": "2-3", "questions_added": 10, "date": "2026-04-17"},
-    {"pages": "4-8", "questions_added": 10, "date": "2026-04-17"}
+    {"pages": "4-8", "questions_added": 10, "date": "2026-04-17"},
+    {"pages": "9-13", "questions_added": 9, "date": "2026-04-17"}
   ]
 }

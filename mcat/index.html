@@ -638,6 +638,115 @@
     exp: "Tertiary structure is stabilized primarily by <strong>hydrogen bonds, salt bridges (electrostatic interactions), and ion-dipole interactions</strong> among distant residues brought together by folding. Disulfide bonds are covalent and also contribute. Peptide bonds define primary structure; van der Waals forces play a role in secondary structure packing."
   },
 
+  // Batch 3: pages 9-13
+  {
+    topic: "Biochem · Protein Structure",
+    q: "In isoelectric focusing, a protein stops migrating through the pH gradient when:",
+    opts: [
+      "The protein reaches the cathode end of the gel",
+      "The surrounding pH equals the protein's isoelectric point (pI)",
+      "The protein binds to the gel matrix via disulfide bonds",
+      "The electric field is turned off"
+    ],
+    ans: 1,
+    exp: "<strong>Isoelectric focusing</strong> separates proteins by pI. A protein carries a net (+) charge below its pI and net (−) charge above it. It migrates until the surrounding pH equals its pI, at which point net charge = 0 and migration stops. It does not physically bind the gel (C) or depend solely on cathode position (A).",
+  },
+  {
+    topic: "Biochem · Protein Structure",
+    q: "α-helices are stabilized primarily by hydrogen bonds between:",
+    opts: [
+      "R-groups of amino acids 4 residues apart",
+      "The carbonyl (C=O) of one residue and the amino (N–H) of a residue 4 units away",
+      "Adjacent β-strands running antiparallel to each other",
+      "Disulfide bonds between cysteine residues"
+    ],
+    ans: 1,
+    exp: "<strong>α-helices</strong> are right-handed coils stabilized by intramolecular H bonds between the <strong>C=O</strong> of residue n and the <strong>N–H</strong> of residue n+4. R-groups (A) project outward and do not form these bonds. Antiparallel β-strand H bonds (C) describe β-sheets, not helices. Disulfide bonds (D) contribute to tertiary, not secondary, structure.",
+  },
+  {
+    topic: "Biochem · Protein Folding",
+    q: "The dominant driving force behind protein folding into its native tertiary structure is:",
+    opts: [
+      "Formation of disulfide bonds between cysteine residues",
+      "Maximization of hydrogen bonds with surrounding water molecules",
+      "The hydrophobic effect, which increases entropy of surrounding water",
+      "Electrostatic attraction between oppositely charged R-groups"
+    ],
+    ans: 2,
+    exp: "The <strong>hydrophobic effect</strong> is the dominant driving force of protein folding. When hydrophobic residues are buried in the protein core, water molecules that were ordered around them are released, increasing water entropy (ΔS > 0). Disulfide bonds (A) stabilize but do not drive folding. Maximizing H bonds with water (B) would keep the protein unfolded. Salt bridges (D) contribute but are secondary.",
+  },
+  {
+    topic: "Biochem · Protein Denaturation",
+    q: "Which of the following correctly describes the mechanism by which elevated temperature denatures a protein?",
+    opts: [
+      "High temperature directly breaks covalent peptide bonds",
+      "Increased kinetic energy causes atoms to move rapidly, disrupting noncovalent interactions",
+      "Heat lowers the pH, which protonates amino acid side chains",
+      "Temperature increase causes oxidation of disulfide bonds"
+    ],
+    ans: 1,
+    exp: "At elevated temperatures, <strong>increased kinetic energy (KE)</strong> causes atoms to move more rapidly, which can overcome the weak noncovalent interactions (H bonds, hydrophobic, van der Waals) that maintain 3° structure, unfolding the protein. Peptide bonds (A) are covalent and not directly broken by heat. Heat does not lower pH (C), and disulfide bonds (D) are not oxidized by heat.",
+  },
+  {
+    topic: "Biochem · Protein Denaturation",
+    q: "Tm for a protein is defined as the temperature at which:",
+    opts: [
+      "100% of protein molecules are fully denatured",
+      "The protein begins to lose secondary structure",
+      "50% of protein molecules are in the denatured state",
+      "The protein reaches its melting point and becomes liquid"
+    ],
+    ans: 2,
+    exp: "<strong>Tm (melting temperature)</strong> is the temperature at which <strong>50% of protein molecules are denatured</strong>. It is used as a measure of conformational stability — a higher Tm indicates a more stable protein that requires more energy (and more denaturing agent) to unfold. It does not mean 100% denaturation (A) or the start of denaturation (B).",
+  },
+  {
+    topic: "Biochem · Post-Translational Modifications",
+    q: "Phosphorylation as a post-translational modification is most commonly added to which amino acid residues?",
+    opts: [
+      "Lysine, Arginine, and Histidine",
+      "Serine, Threonine, and Tyrosine",
+      "Aspartate, Glutamate, and Cysteine",
+      "Glycine, Alanine, and Valine"
+    ],
+    ans: 1,
+    exp: "<strong>Phosphorylation</strong> is mediated by <strong>kinase</strong> enzymes and occurs on amino acids with hydroxyl (–OH) groups in their side chains: <strong>Serine, Threonine, and Tyrosine</strong>. These –OH groups act as nucleophiles attacking the phosphate group. Lysine/Arg/His (A) are positively charged. Asp/Glu/Cys (C) lack the appropriate –OH nucleophile for standard kinase-mediated phosphorylation.",
+  },
+  {
+    topic: "Biochem · Protein-Ligand Interactions",
+    q: "A protein has a dissociation constant (KD) of 1 × 10⁻⁹ M for ligand A and 1 × 10⁻³ M for ligand B. Which statement is correct?",
+    opts: [
+      "The protein binds ligand B more tightly because higher KD = higher affinity",
+      "The protein binds ligand A more tightly because smaller KD = higher binding affinity",
+      "Both ligands bind with equal affinity since KD reflects only rate of association",
+      "The protein cannot bind ligand A because its KD is below 1 molar"
+    ],
+    ans: 1,
+    exp: "<strong>KD (dissociation constant)</strong> = k_off / k_on. A <strong>smaller KD indicates higher binding affinity</strong> — the protein-ligand complex dissociates less readily. Ligand A (KD = 1 nM) binds far more tightly than ligand B (KD = 1 mM). A higher KD (A) means the dissociated state is preferred, reflecting weaker binding.",
+  },
+  {
+    topic: "Biochem · Protein Misfolding",
+    q: "Prion diseases such as Creutzfeldt-Jakob disease and mad cow disease are caused by:",
+    opts: [
+      "A viral infection that degrades normal brain proteins",
+      "Antibody-mediated destruction of neuronal proteins",
+      "A misfolded protein that induces normal proteins to adopt the same misfolded conformation",
+      "Amyloid fibrils formed only by aggregation of unrelated peptide fragments"
+    ],
+    ans: 2,
+    exp: "<strong>Prions</strong> are infectious misfolded proteins. When a prion encounters a normal (correctly folded) version of the same protein, it induces the normal protein to misfold into the prion conformation. This creates a chain reaction. Prion diseases (CJD, mad cow) are not caused by viruses (A) or immune attack (B). Amyloid fibrils (D) can form in prion disease but the mechanism is protein-induced misfolding, not random aggregation.",
+  },
+  {
+    topic: "Biochem · Antibody Structure",
+    q: "In antibody-antigen interactions, the term 'epitope' refers to:",
+    opts: [
+      "The antigen-binding site located on the antibody's variable region",
+      "The portion of the antigen that is recognized and bound by the antibody",
+      "The hinge region connecting heavy and light chains",
+      "The constant region that activates complement"
+    ],
+    ans: 1,
+    exp: "The <strong>epitope</strong> is the portion of the <strong>antigen</strong> that the antibody recognizes and binds. The corresponding site on the antibody is called the <strong>paratope</strong> (found in the variable region of the heavy and light chains). Choice A describes the paratope. The hinge region (C) provides flexibility, and the constant region (D) mediates effector functions like complement activation.",
+  },
   // ===QUESTIONS_END===
   ]; // end ALL_QUESTIONS
 
