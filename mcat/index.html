@@ -509,6 +509,127 @@
       exp: "These four polar amino acids — <strong>Ser, Thr, Asn, Gln</strong> — have side chains that are polar (they can hydrogen bond with water) but do NOT ionize at physiological pH. They don't carry a net charge on their side chains at pH 7.4. This distinguishes them from charged AAs like Asp, Glu, Lys, Arg, and His. 🌸"
     },
 
+  {
+    topic: "Biochem · Acid-Base & AA",
+    q: "Cysteine has a side-chain pKa of 8. At pH 9, approximately what percentage of cysteine side chains are ionized (deprotonated)?",
+    opts: [
+      "50%",
+      "75%",
+      "~91%",
+      "~99%"
+    ],
+    ans: 2,
+    exp: "Using Henderson-Hasselbalch: pH − pKa = 9 − 8 = 1, so [A⁻]/[HA] = 10¹ = 10. % ionization = 10/(10+1) × 100 ≈ <strong>91%</strong>. At 50%, 75%, or 99%, the ratio would need to be 1, 3, or 99, corresponding to pH − pKa of 0, ~0.48, or ~2."
+  },
+  {
+    topic: "Biochem · Acid-Base & AA",
+    q: "Histidine has a side-chain pKa of ~6.0. At physiological pH 7.4, approximately what fraction of histidine side chains carry a positive charge?",
+    opts: [
+      "~50%",
+      "~9%",
+      "~4%",
+      "~1%"
+    ],
+    ans: 2,
+    exp: "pH − pKa = 7.4 − 6.0 = 1.4, so [A⁻]/[HA] = 10^1.4 ≈ 25. Fraction protonated (charged) = 1/(1+25) ≈ <strong>4%</strong>. At pH 7.0, the ratio is 10, giving ~9% charged; roughly 1 in 11 histidines carries a (+) charge at pH 7."
+  },
+  {
+    topic: "Biochem · Acid-Base & AA",
+    q: "For an ionizable amino acid side chain containing only oxygen or sulfur (no nitrogen), which statement correctly describes the charge relationship?",
+    opts: [
+      "The side chain is positively charged when protonated and neutral when deprotonated",
+      "The side chain is neutral when protonated and negatively charged when deprotonated",
+      "The side chain carries no charge in either protonation state",
+      "The side chain is positively charged in both protonation states"
+    ],
+    ans: 1,
+    exp: "O/S-containing side chains (e.g., Tyr, Cys, Asp, Glu) follow the rule: <strong>neutral when protonated, negative (−) when deprotonated</strong>. In contrast, N-containing side chains (Arg, Lys, His) are (+) when protonated and neutral when deprotonated."
+  },
+  {
+    topic: "Biochem · Isoelectric Point",
+    q: "Glutamate has pKa values of 2.2 (α-carboxyl), 4.3 (side-chain carboxyl), and 9.6 (α-amino). What is its isoelectric point (pI)?",
+    opts: [
+      "3.3",
+      "5.4",
+      "6.9",
+      "7.8"
+    ],
+    ans: 0,
+    exp: "pI is the average of the two pKa values that flank the net-zero charge state. Glutamate is neutral between pH 2.2 and 4.3, so pI = (2.2 + 4.3) / 2 = <strong>3.3</strong>. The α-amino pKa (9.6) is not used because at that pH glutamate already carries a net negative charge."
+  },
+  {
+    topic: "Biochem · Isoelectric Point",
+    q: "Lysine has pKa values of 2.2 (α-carboxyl), 9.6 (α-amino), and 10.5 (ε-amino side chain). What is lysine's pI?",
+    opts: [
+      "5.4",
+      "7.8",
+      "9.6",
+      "10.1"
+    ],
+    ans: 3,
+    exp: "Lysine is net neutral between its two amino pKa values (9.6 and 10.5), so pI = (9.6 + 10.5) / 2 = <strong>10.1</strong>. The α-carboxyl pKa (2.2) is not used because at that pH lysine already carries a net positive charge. Basic amino acids (Arg, Lys, His) have pI values well above 7."
+  },
+  {
+    topic: "Biochem · Peptides",
+    q: "Arg-C protease cleaves on the C-terminal side of arginine. Asn-N endopeptidase cleaves on the N-terminal side of aspartate. Which products result from digesting MERGADLFN with Arg-C?",
+    opts: [
+      "MER and GADLFN",
+      "MERGA and DLFN",
+      "M and ERGADLFN",
+      "MERGADL and FN"
+    ],
+    ans: 0,
+    exp: "Arg-C cleaves the peptide bond on the <strong>C-terminal side of Arg</strong>. In MERGADLFN, Arg (R) is the third residue, so cleavage occurs between R and G, yielding <strong>MER</strong> and <strong>GADLFN</strong>. Asp-N would instead cleave before D, giving MERGA and DLFN."
+  },
+  {
+    topic: "Biochem · Peptides",
+    q: "A protein has a molecular weight of 60 kDa. Using the average amino acid mass of 110 Da, approximately how many amino acid residues does it contain?",
+    opts: [
+      "~55",
+      "~110",
+      "~545",
+      "~6,000"
+    ],
+    ans: 2,
+    exp: "Dividing MW by average residue mass: 60,000 Da ÷ 110 Da/residue ≈ <strong>545 residues</strong>. The 110 Da average accounts for the loss of water during peptide bond formation. This approximation is high-yield for quickly estimating residue count from molecular weight."
+  },
+  {
+    topic: "Biochem · Protein Structure",
+    q: "Which statement correctly describes the roles of glycine and proline in secondary protein structure?",
+    opts: [
+      "Glycine rigidly locks the backbone; proline adds flexibility",
+      "Glycine is too flexible (no side chain); proline is too rigid (cyclic) to support regular secondary structure",
+      "Both glycine and proline strongly favor β-sheet formation",
+      "Glycine favors α-helices; proline favors β-sheets"
+    ],
+    ans: 1,
+    exp: "<strong>Glycine</strong> lacks a side chain, making the backbone too flexible/floppy to maintain a stable α-helix or β-sheet. <strong>Proline</strong> is cyclic, creating rigidity and a fixed backbone angle that disrupts regular secondary structures. Both are found in β-turns, where tight bends require these special properties."
+  },
+  {
+    topic: "Biochem · Peptides",
+    q: "Which of the following best describes the thermodynamics and kinetics of peptide bond hydrolysis?",
+    opts: [
+      "Thermodynamically unfavorable and kinetically fast",
+      "Thermodynamically favorable and kinetically fast",
+      "Thermodynamically unfavorable and kinetically slow",
+      "Thermodynamically favorable but kinetically slow"
+    ],
+    ans: 3,
+    exp: "Peptide bond <strong>hydrolysis is thermodynamically favorable (spontaneous)</strong> — it releases energy — but it proceeds extremely slowly under physiological conditions because the activation energy is very high. This is why proteins are stable in aqueous environments yet can be cleaved efficiently by proteases that lower the activation energy."
+  },
+  {
+    topic: "Biochem · Protein Structure",
+    q: "Which interactions primarily stabilize tertiary (3°) protein structure?",
+    opts: [
+      "Peptide bonds between adjacent amino acids",
+      "Hydrogen bonds, salt bridges, and ion-dipole interactions",
+      "Covalent disulfide bonds only",
+      "Van der Waals forces between β-sheet strands"
+    ],
+    ans: 1,
+    exp: "Tertiary structure is stabilized primarily by <strong>hydrogen bonds, salt bridges (electrostatic interactions), and ion-dipole interactions</strong> among distant residues brought together by folding. Disulfide bonds are covalent and also contribute. Peptide bonds define primary structure; van der Waals forces play a role in secondary structure packing."
+  },
+
   // ===QUESTIONS_END===
   ]; // end ALL_QUESTIONS
 
