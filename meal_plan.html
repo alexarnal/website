@@ -1,135 +1,265 @@
 
 <style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: var(--font-sans); }
-  .wrap { padding: 1rem 0; }
-  .day-tabs { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 1.25rem; }
-  .day-tab { padding: 6px 14px; border-radius: var(--border-radius-md); border: 0.5px solid var(--color-border-secondary); font-size: 13px; cursor: pointer; background: var(--color-background-secondary); color: var(--color-text-secondary); transition: all 0.15s; }
-  .day-tab.active { background: var(--color-background-info); color: var(--color-text-info); border-color: transparent; font-weight: 500; }
-  .macro-bar { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 1.25rem; }
-  .macro-card { background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: 10px 12px; }
-  .macro-label { font-size: 11px; color: var(--color-text-tertiary); text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 4px; }
-  .macro-val { font-size: 18px; font-weight: 500; color: var(--color-text-primary); }
-  .macro-target { font-size: 11px; color: var(--color-text-tertiary); }
-  .macro-fill { height: 3px; border-radius: 2px; margin-top: 6px; background: var(--color-border-tertiary); }
-  .macro-fill-bar { height: 100%; border-radius: 2px; }
-  .meals { display: flex; flex-direction: column; gap: 10px; }
-  .meal-card { background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); padding: 14px 16px; }
-  .meal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
-  .meal-name { font-size: 13px; font-weight: 500; color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: 0.05em; }
-  .meal-macros { display: flex; gap: 10px; }
-  .meal-macro { font-size: 12px; color: var(--color-text-tertiary); }
-  .meal-macro span { font-weight: 500; color: var(--color-text-secondary); }
-  .meal-title { font-size: 15px; font-weight: 500; color: var(--color-text-primary); margin-bottom: 4px; }
-  .meal-items { font-size: 13px; color: var(--color-text-secondary); line-height: 1.6; }
-  .meal-kcal { font-size: 12px; color: var(--color-text-tertiary); margin-top: 6px; }
+  .mp {
+    --mp-bg:       #ffffff;
+    --mp-surface:  #f4f4f5;
+    --mp-border:   #e4e4e7;
+    --mp-text1:    #18181b;
+    --mp-text2:    #52525b;
+    --mp-text3:    #a1a1aa;
+    --mp-tab-bg:   #eff6ff;
+    --mp-tab-fg:   #1d4ed8;
+    --mp-tab-bdr:  #bfdbfe;
+    --mp-r-md: 8px;
+    --mp-r-lg: 12px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  }
+   @media (prefers-color-scheme: dark) {
+    .mp {
+      --mp-bg:       #18181b;
+      --mp-surface:  #27272a;
+      --mp-border:   #3f3f46;
+      --mp-text1:    #fafafa;
+      --mp-text2:    #a1a1aa;
+      --mp-text3:    #71717a;
+      --mp-tab-bg:   #1e3a5f;
+      --mp-tab-fg:   #93c5fd;
+      --mp-tab-bdr:  #1e3a5f;
+    }
+  } 
+
+  .mp * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  .mp { padding: 1rem 0; color: var(--mp-text1); }
+
+  .mp-tabs-wrap {
+    position: sticky;
+    top: 0;
+    /* background: var(--mp-sticky-bg); */
+    z-index: 10;
+    padding: 8px 0 10px;
+    margin-bottom: 1rem;
+    /* border-bottom: 1px solid var(--mp-border); */
+  }
+  .mp-tabs {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    gap: 6px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .mp-tabs::-webkit-scrollbar { display: none; }
+  .mp-tab {
+    padding: 8px 16px;
+    min-height: 44px;
+    border-radius: var(--mp-r-md);
+    border: 1px solid var(--mp-border);
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    background: var(--mp-surface);
+    color: var(--mp-text2);
+    transition: all 0.15s;
+    white-space: nowrap;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .mp-tab.active {
+    background: var(--mp-tab-bg);
+    color: var(--mp-tab-fg);
+    border-color: var(--mp-tab-bdr);
+    font-weight: 600;
+  }
+
+  .mp-macros {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    margin-bottom: 1.25rem;
+  }
+  @media (max-width: 480px) {
+    .mp-macros { grid-template-columns: repeat(2, 1fr); }
+  }
+  .mp-macro-card {
+    background: var(--mp-surface);
+    border: 1px solid var(--mp-border);
+    border-radius: var(--mp-r-md);
+    padding: 10px 12px;
+  }
+  .mp-macro-label { font-size: 11px; color: var(--mp-text3); text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 4px; }
+  .mp-macro-val { font-size: 20px; font-weight: 700; color: var(--mp-text1); }
+  .mp-macro-val small { font-size: 12px; font-weight: 400; color: var(--mp-text3); }
+  .mp-macro-fill { height: 3px; border-radius: 2px; margin-top: 6px; background: var(--mp-border); }
+  .mp-macro-fill-bar { height: 100%; border-radius: 2px; }
+  .mp-macro-target { font-size: 11px; color: var(--mp-text3); margin-top: 3px; }
+
+  .mp-meals { display: flex; flex-direction: column; gap: 10px; }
+  .mp-meal-card {
+    background: var(--mp-bg);
+    border: 1px solid var(--mp-border);
+    border-radius: var(--mp-r-lg);
+    padding: 14px 16px;
+  }
+  .mp-meal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 8px;
+    margin-bottom: 6px;
+    flex-wrap: wrap;
+  }
+  .mp-meal-type { font-size: 11px; font-weight: 700; color: var(--mp-text2); text-transform: uppercase; letter-spacing: 0.07em; }
+  .mp-meal-macs { display: flex; gap: 8px; flex-wrap: wrap; }
+  .mp-meal-mac { font-size: 12px; color: var(--mp-text3); }
+  .mp-meal-mac strong { font-weight: 600; color: var(--mp-text2); }
+  .mp-meal-title { font-size: 15px; font-weight: 600; color: var(--mp-text1); margin-bottom: 8px; }
+  .mp-meal-items { font-size: 13px; color: var(--mp-text2); }
+  .mp-meal-items ul { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 3px; }
+  .mp-meal-items li { display: flex; gap: 7px; line-height: 1.45; }
+  .mp-meal-items li::before { content: "\00B7"; color: var(--mp-text3); flex-shrink: 0; font-weight: 700; }
+  .mp-meal-kcal { font-size: 12px; color: var(--mp-text3); margin-top: 8px; font-weight: 500; }
 </style>
-<div class="wrap">
-  <h2 class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden">7-day meal plan for Saralis, ~1800 kcal/day with 150g protein</h2>
-  <div class="day-tabs" id="tabs"></div>
-  <div class="macro-bar" id="macros"></div>
-  <div class="meals" id="meals"></div>
+
+<div class="mp">
+  <div class="mp-tabs-wrap">
+    <div class="mp-tabs" id="mp-tabs"></div>
+  </div>
+  <div class="mp-macros" id="mp-macros"></div>
+  <div class="mp-meals"  id="mp-meals"></div>
 </div>
+
 <script>
-const plan = [
-  { day: "Mon", kcal: 1800, p: 152, c: 173, f: 64, meals: [
-    { type: "Breakfast", title: "Greek yogurt protein bowl", items: "1 cup non-fat Greek yogurt, 1 scoop whey protein (vanilla), ½ cup blueberries, 2 tbsp chia seeds, ¼ cup oats", kcal: 420, p: 44, c: 42, f: 9 },
-    { type: "Lunch", title: "Chicken & quinoa power bowl", items: "150g grilled chicken breast, ½ cup cooked quinoa, 1 cup spinach, ½ cup chickpeas, cherry tomatoes, lemon-olive oil dressing (1 tsp)", kcal: 480, p: 46, c: 42, f: 14 },
-    { type: "Snack", title: "Cottage cheese & apple", items: "¾ cup low-fat cottage cheese, 1 medium apple, 10 almonds", kcal: 265, p: 22, c: 26, f: 8 },
-    { type: "Dinner", title: "Baked salmon with roasted veg", items: "170g salmon fillet, 1 cup broccoli, ½ cup roasted sweet potato, 1 tsp olive oil, herbs", kcal: 480, p: 40, c: 30, f: 18 },
-    { type: "Eve snack", title: "Casein shake", items: "1 scoop casein protein + water or unsweetened almond milk", kcal: 155, p: 26, c: 6, f: 3 }
-  ]},
-  { day: "Tue", kcal: 1790, p: 151, c: 168, f: 65, meals: [
-    { type: "Breakfast", title: "Egg white omelette + toast", items: "4 egg whites + 1 whole egg, ½ cup sautéed spinach & mushrooms, 1 slice whole-grain toast, ½ avocado (¼ used)", kcal: 385, p: 36, c: 28, f: 14 },
-    { type: "Lunch", title: "Turkey & veggie wrap", items: "120g lean turkey breast, whole-wheat tortilla, romaine, tomato, cucumber, mustard, ¼ avocado", kcal: 445, p: 38, c: 40, f: 12 },
-    { type: "Snack", title: "Edamame + string cheese", items: "½ cup shelled edamame, 1 low-fat string cheese", kcal: 220, p: 20, c: 12, f: 8 },
-    { type: "Dinner", title: "Lean beef stir-fry", items: "150g 93% lean ground beef, 2 cups mixed veggies (peppers, snap peas, broccoli), 1 tbsp low-sodium soy sauce, ½ cup brown rice", kcal: 490, p: 42, c: 48, f: 14 },
-    { type: "Eve snack", title: "Casein pudding", items: "1 scoop casein + 2–3 tbsp water mixed thick, optional cinnamon", kcal: 150, p: 25, c: 6, f: 3 }
-  ]},
-  { day: "Wed", kcal: 1810, p: 153, c: 175, f: 63, meals: [
-    { type: "Breakfast", title: "Protein overnight oats", items: "½ cup rolled oats, 1 scoop whey, 1 cup unsweetened almond milk, ½ cup raspberries, 1 tbsp flaxseed", kcal: 415, p: 38, c: 44, f: 9 },
-    { type: "Lunch", title: "Tuna salad over greens", items: "170g canned tuna in water, 2 cups mixed greens, ½ cup white beans, cherry tomatoes, red onion, 1 tbsp olive oil + vinegar", kcal: 465, p: 46, c: 30, f: 14 },
-    { type: "Snack", title: "Protein smoothie", items: "1 scoop whey, 1 cup unsweetened almond milk, ½ banana, handful spinach", kcal: 255, p: 28, c: 22, f: 4 },
-    { type: "Dinner", title: "Herb-roasted chicken thighs", items: "150g skinless chicken thighs, ½ cup lentils, roasted zucchini & peppers, 1 tsp olive oil", kcal: 495, p: 42, c: 34, f: 18 },
-    { type: "Eve snack", title: "Low-fat Greek yogurt", items: "¾ cup low-fat Greek yogurt, sprinkle cinnamon, 1 tsp honey", kcal: 120, p: 14, c: 12, f: 1 }
-  ]},
-  { day: "Thu", kcal: 1795, p: 150, c: 172, f: 64, meals: [
-    { type: "Breakfast", title: "Cottage cheese pancakes", items: "½ cup low-fat cottage cheese, 2 eggs, ¼ cup oat flour, ½ cup strawberries — cooked in non-stick pan", kcal: 390, p: 34, c: 32, f: 12 },
-    { type: "Lunch", title: "Shrimp & black bean bowl", items: "150g cooked shrimp, ½ cup black beans, ½ cup brown rice, 1 cup salsa, jalapeño, cilantro, lime", kcal: 455, p: 44, c: 50, f: 6 },
-    { type: "Snack", title: "Hard-boiled eggs + veggie sticks", items: "2 hard-boiled eggs, celery & carrot sticks, 2 tbsp hummus", kcal: 240, p: 18, c: 14, f: 12 },
-    { type: "Dinner", title: "Cod with Mediterranean veg", items: "170g baked cod, roasted eggplant, zucchini & tomatoes, ½ cup cooked couscous, 1 tsp olive oil, lemon, herbs", kcal: 460, p: 40, c: 40, f: 10 },
-    { type: "Eve snack", title: "Casein shake", items: "1 scoop casein protein + water", kcal: 150, p: 25, c: 6, f: 3 }
-  ]},
-  { day: "Fri", kcal: 1805, p: 153, c: 170, f: 66, meals: [
-    { type: "Breakfast", title: "Smoked salmon & egg scramble", items: "3 egg whites + 1 whole egg scrambled, 60g smoked salmon, ½ cup sautéed kale, 1 slice rye bread", kcal: 400, p: 40, c: 26, f: 14 },
-    { type: "Lunch", title: "Chicken Caesar salad (lightened)", items: "140g grilled chicken, 2 cups romaine, 1 tbsp light Caesar dressing, 2 tbsp parmesan, whole-grain croutons (small)", kcal: 430, p: 42, c: 24, f: 14 },
-    { type: "Snack", title: "Protein bar", items: "Choose a bar with ~20g protein, <10g sugar, ~200 kcal (e.g. Quest, RXBar, KIND Protein)", kcal: 205, p: 20, c: 22, f: 7 },
-    { type: "Dinner", title: "Turkey meatballs & zucchini pasta", items: "150g lean turkey meatballs, spiralized zucchini (2 cups), ½ cup marinara, 1 tbsp parmesan, fresh basil", kcal: 465, p: 42, c: 30, f: 16 },
-    { type: "Eve snack", title: "Skyr with berries", items: "¾ cup Icelandic skyr, ¼ cup mixed berries", kcal: 130, p: 16, c: 12, f: 1 }
-  ]},
-  { day: "Sat", kcal: 1820, p: 155, c: 178, f: 65, meals: [
-    { type: "Breakfast", title: "High-protein French toast", items: "2 slices whole-grain bread dipped in egg white + cinnamon batter, cooked in non-stick, top with Greek yogurt & blueberries", kcal: 430, p: 36, c: 46, f: 10 },
-    { type: "Lunch", title: "Lentil & veggie soup + side salad", items: "1.5 cups lentil soup (home or low-sodium canned), large side salad with 1 tbsp olive oil dressing, 1 oz walnuts", kcal: 480, p: 26, c: 52, f: 18 },
-    { type: "Snack", title: "Tuna on rice cakes", items: "85g canned tuna in water, 2 plain rice cakes, mustard or hot sauce", kcal: 190, p: 24, c: 16, f: 2 },
-    { type: "Dinner", title: "Grilled steak & roasted veg", items: "140g lean sirloin (trimmed), 1 cup asparagus, ½ cup roasted cherry tomatoes, small baked potato (100g), 1 tsp olive oil", kcal: 510, p: 46, c: 40, f: 16 },
-    { type: "Eve snack", title: "Casein shake", items: "1 scoop casein protein + water", kcal: 150, p: 24, c: 6, f: 3 }
-  ]},
-  { day: "Sun", kcal: 1800, p: 152, c: 172, f: 63, meals: [
-    { type: "Breakfast", title: "Veggie & egg white frittata", items: "5 egg whites + 1 whole egg, ½ cup bell peppers, mushrooms, onion, spinach, 1 oz low-fat feta, 1 slice whole-grain toast", kcal: 380, p: 36, c: 26, f: 10 },
-    { type: "Lunch", title: "Chicken & white bean stew", items: "140g diced chicken breast, ½ cup white beans, 1 cup diced tomatoes, celery, carrot, garlic, 1 tsp olive oil, herbs", kcal: 460, p: 44, c: 36, f: 10 },
-    { type: "Snack", title: "Protein smoothie bowl", items: "1 scoop whey, ½ frozen banana, ½ cup frozen mango, almond milk — thick blend, topped with 1 tbsp chia", kcal: 290, p: 28, c: 30, f: 5 },
-    { type: "Dinner", title: "Baked chicken breast & tabbouleh", items: "160g baked chicken breast, ¾ cup tabbouleh (bulgur, parsley, tomato, lemon, 1 tsp olive oil), side cucumber salad", kcal: 480, p: 44, c: 38, f: 12 },
-    { type: "Eve snack", title: "Cottage cheese & pineapple", items: "¾ cup low-fat cottage cheese, ½ cup pineapple chunks", kcal: 150, p: 18, c: 16, f: 2 }
-  ]}
-];
-
-const pColor = '#185FA5', cColor = '#0F6E56', fColor = '#BA7517', kColor = '#993556';
-
-let active = 0;
-
-function pct(val, target) { return Math.min(100, Math.round((val / target) * 100)); }
-
-function renderMacros(d) {
-  const targets = { kcal: 1800, p: 152, c: 173, f: 65 };
-  const items = [
-    { label: 'Calories', val: d.kcal, unit: 'kcal', target: targets.kcal, color: kColor },
-    { label: 'Protein', val: d.p, unit: 'g', target: targets.p, color: pColor },
-    { label: 'Carbs', val: d.c, unit: 'g', target: targets.c, color: cColor },
-    { label: 'Fat', val: d.f, unit: 'g', target: targets.f, color: fColor }
+(function () {
+  const plan = [
+    { day: "Mon", kcal: 1800, p: 152, c: 173, f: 64, meals: [
+      { type: "Breakfast", title: "Greek yogurt protein bowl",       items: "1 cup non-fat Greek yogurt, 1 scoop whey protein (vanilla), &frac12; cup blueberries, 2 tbsp chia seeds, &frac14; cup oats",                                                   kcal: 420, p: 44, c: 42, f: 9  },
+      { type: "Lunch",     title: "Chicken &amp; quinoa power bowl", items: "150g grilled chicken breast, &frac12; cup cooked quinoa, 1 cup spinach, &frac12; cup chickpeas, cherry tomatoes, lemon-olive oil dressing (1 tsp)",                              kcal: 480, p: 46, c: 42, f: 14 },
+      { type: "Snack",     title: "Cottage cheese &amp; apple",      items: "&frac34; cup low-fat cottage cheese, 1 medium apple, 10 almonds",                                                                                                                   kcal: 265, p: 22, c: 26, f: 8  },
+      { type: "Dinner",    title: "Baked salmon with roasted veg",   items: "170g salmon fillet, 1 cup broccoli, &frac12; cup roasted sweet potato, 1 tsp olive oil, herbs",                                                                                    kcal: 480, p: 40, c: 30, f: 18 },
+      { type: "Eve snack", title: "Casein shake",                    items: "1 scoop casein protein + water or unsweetened almond milk",                                                                                                                         kcal: 155, p: 26, c: 6,  f: 3  }
+    ]},
+    { day: "Tue", kcal: 1790, p: 151, c: 168, f: 65, meals: [
+      { type: "Breakfast", title: "Egg white omelette + toast",       items: "4 egg whites + 1 whole egg, &frac12; cup saut&eacute;ed spinach &amp; mushrooms, 1 slice whole-grain toast, &frac12; avocado (&frac14; used)",                                    kcal: 385, p: 36, c: 28, f: 14 },
+      { type: "Lunch",     title: "Turkey &amp; veggie wrap",         items: "120g lean turkey breast, whole-wheat tortilla, romaine, tomato, cucumber, mustard, &frac14; avocado",                                                                             kcal: 445, p: 38, c: 40, f: 12 },
+      { type: "Snack",     title: "Edamame + string cheese",          items: "&frac12; cup shelled edamame, 1 low-fat string cheese",                                                                                                                            kcal: 220, p: 20, c: 12, f: 8  },
+      { type: "Dinner",    title: "Lean beef stir-fry",               items: "150g 93% lean ground beef, 2 cups mixed veggies (peppers, snap peas, broccoli), 1 tbsp low-sodium soy sauce, &frac12; cup brown rice",                                           kcal: 490, p: 42, c: 48, f: 14 },
+      { type: "Eve snack", title: "Casein pudding",                   items: "1 scoop casein + 2&ndash;3 tbsp water mixed thick, optional cinnamon",                                                                                                            kcal: 150, p: 25, c: 6,  f: 3  }
+    ]},
+    { day: "Wed", kcal: 1810, p: 153, c: 175, f: 63, meals: [
+      { type: "Breakfast", title: "Protein overnight oats",            items: "&frac12; cup rolled oats, 1 scoop whey, 1 cup unsweetened almond milk, &frac12; cup raspberries, 1 tbsp flaxseed",                                                               kcal: 415, p: 38, c: 44, f: 9  },
+      { type: "Lunch",     title: "Tuna salad over greens",            items: "170g canned tuna in water, 2 cups mixed greens, &frac12; cup white beans, cherry tomatoes, red onion, 1 tbsp olive oil + vinegar",                                              kcal: 465, p: 46, c: 30, f: 14 },
+      { type: "Snack",     title: "Protein smoothie",                  items: "1 scoop whey, 1 cup unsweetened almond milk, &frac12; banana, handful spinach",                                                                                                  kcal: 255, p: 28, c: 22, f: 4  },
+      { type: "Dinner",    title: "Herb-roasted chicken thighs",       items: "150g skinless chicken thighs, &frac12; cup lentils, roasted zucchini &amp; peppers, 1 tsp olive oil",                                                                           kcal: 495, p: 42, c: 34, f: 18 },
+      { type: "Eve snack", title: "Low-fat Greek yogurt",              items: "&frac34; cup low-fat Greek yogurt, sprinkle cinnamon, 1 tsp honey",                                                                                                               kcal: 120, p: 14, c: 12, f: 1  }
+    ]},
+    { day: "Thu", kcal: 1795, p: 150, c: 172, f: 64, meals: [
+      { type: "Breakfast", title: "Cottage cheese pancakes",           items: "&frac12; cup low-fat cottage cheese, 2 eggs, &frac14; cup oat flour, &frac12; cup strawberries &mdash; cooked in non-stick pan",                                                 kcal: 390, p: 34, c: 32, f: 12 },
+      { type: "Lunch",     title: "Shrimp &amp; black bean bowl",      items: "150g cooked shrimp, &frac12; cup black beans, &frac12; cup brown rice, 1 cup salsa, jalape&ntilde;o, cilantro, lime",                                                           kcal: 455, p: 44, c: 50, f: 6  },
+      { type: "Snack",     title: "Hard-boiled eggs + veggie sticks",  items: "2 hard-boiled eggs, celery &amp; carrot sticks, 2 tbsp hummus",                                                                                                                  kcal: 240, p: 18, c: 14, f: 12 },
+      { type: "Dinner",    title: "Cod with Mediterranean veg",        items: "170g baked cod, roasted eggplant, zucchini &amp; tomatoes, &frac12; cup cooked couscous, 1 tsp olive oil, lemon, herbs",                                                        kcal: 460, p: 40, c: 40, f: 10 },
+      { type: "Eve snack", title: "Casein shake",                      items: "1 scoop casein protein + water",                                                                                                                                                  kcal: 150, p: 25, c: 6,  f: 3  }
+    ]},
+    { day: "Fri", kcal: 1805, p: 153, c: 170, f: 66, meals: [
+      { type: "Breakfast", title: "Smoked salmon &amp; egg scramble",  items: "3 egg whites + 1 whole egg scrambled, 60g smoked salmon, &frac12; cup saut&eacute;ed kale, 1 slice rye bread",                                                                  kcal: 400, p: 40, c: 26, f: 14 },
+      { type: "Lunch",     title: "Chicken Caesar salad (lightened)",  items: "140g grilled chicken, 2 cups romaine, 1 tbsp light Caesar dressing, 2 tbsp parmesan, whole-grain croutons (small)",                                                             kcal: 430, p: 42, c: 24, f: 14 },
+      { type: "Snack",     title: "Protein bar",                       items: "Choose a bar with ~20g protein, &lt;10g sugar, ~200 kcal (e.g. Quest, RXBar, KIND Protein)",                                                                                     kcal: 205, p: 20, c: 22, f: 7  },
+      { type: "Dinner",    title: "Turkey meatballs &amp; zucchini pasta", items: "150g lean turkey meatballs, spiralized zucchini (2 cups), &frac12; cup marinara, 1 tbsp parmesan, fresh basil",                                                             kcal: 465, p: 42, c: 30, f: 16 },
+      { type: "Eve snack", title: "Skyr with berries",                 items: "&frac34; cup Icelandic skyr, &frac14; cup mixed berries",                                                                                                                         kcal: 130, p: 16, c: 12, f: 1  }
+    ]},
+    { day: "Sat", kcal: 1820, p: 155, c: 178, f: 65, meals: [
+      { type: "Breakfast", title: "High-protein French toast",         items: "2 slices whole-grain bread dipped in egg white + cinnamon batter, cooked in non-stick, top with Greek yogurt &amp; blueberries",                                                 kcal: 430, p: 36, c: 46, f: 10 },
+      { type: "Lunch",     title: "Lentil &amp; veggie soup + side salad", items: "1.5 cups lentil soup (home or low-sodium canned), large side salad with 1 tbsp olive oil dressing, 1 oz walnuts",                                                           kcal: 480, p: 26, c: 52, f: 18 },
+      { type: "Snack",     title: "Tuna on rice cakes",                items: "85g canned tuna in water, 2 plain rice cakes, mustard or hot sauce",                                                                                                             kcal: 190, p: 24, c: 16, f: 2  },
+      { type: "Dinner",    title: "Grilled steak &amp; roasted veg",   items: "140g lean sirloin (trimmed), 1 cup asparagus, &frac12; cup roasted cherry tomatoes, small baked potato (100g), 1 tsp olive oil",                                                kcal: 510, p: 46, c: 40, f: 16 },
+      { type: "Eve snack", title: "Casein shake",                      items: "1 scoop casein protein + water",                                                                                                                                                  kcal: 150, p: 24, c: 6,  f: 3  }
+    ]},
+    { day: "Sun", kcal: 1800, p: 152, c: 172, f: 63, meals: [
+      { type: "Breakfast", title: "Veggie &amp; egg white frittata",   items: "5 egg whites + 1 whole egg, &frac12; cup bell peppers, mushrooms, onion, spinach, 1 oz low-fat feta, 1 slice whole-grain toast",                                                 kcal: 380, p: 36, c: 26, f: 10 },
+      { type: "Lunch",     title: "Chicken &amp; white bean stew",     items: "140g diced chicken breast, &frac12; cup white beans, 1 cup diced tomatoes, celery, carrot, garlic, 1 tsp olive oil, herbs",                                                     kcal: 460, p: 44, c: 36, f: 10 },
+      { type: "Snack",     title: "Protein smoothie bowl",             items: "1 scoop whey, &frac12; frozen banana, &frac12; cup frozen mango, almond milk &mdash; thick blend, topped with 1 tbsp chia",                                                     kcal: 290, p: 28, c: 30, f: 5  },
+      { type: "Dinner",    title: "Baked chicken breast &amp; tabbouleh", items: "160g baked chicken breast, &frac34; cup tabbouleh (bulgur, parsley, tomato, lemon, 1 tsp olive oil), side cucumber salad",                                                   kcal: 480, p: 44, c: 38, f: 12 },
+      { type: "Eve snack", title: "Cottage cheese &amp; pineapple",    items: "&frac34; cup low-fat cottage cheese, &frac12; cup pineapple chunks",                                                                                                              kcal: 150, p: 18, c: 16, f: 2  }
+    ]}
   ];
-  document.getElementById('macros').innerHTML = items.map(i => `
-    <div class="macro-card">
-      <div class="macro-label">${i.label}</div>
-      <div class="macro-val">${i.val}<span style="font-size:12px;font-weight:400;color:var(--color-text-tertiary)">${i.unit}</span></div>
-      <div class="macro-fill"><div class="macro-fill-bar" style="width:${pct(i.val, i.target)}%;background:${i.color}"></div></div>
-      <div class="macro-target">target: ${i.target}${i.unit}</div>
-    </div>`).join('');
-}
 
-function renderMeals(d) {
-  document.getElementById('meals').innerHTML = d.meals.map(m => `
-    <div class="meal-card">
-      <div class="meal-header">
-        <span class="meal-name">${m.type}</span>
-        <div class="meal-macros">
-          <span class="meal-macro"><span>${m.p}g</span> protein</span>
-          <span class="meal-macro"><span>${m.c}g</span> carbs</span>
-          <span class="meal-macro"><span>${m.f}g</span> fat</span>
+  const pColor = '#185FA5', cColor = '#0F6E56', fColor = '#BA7517', kColor = '#993556';
+  const dayToIdx = [6, 0, 1, 2, 3, 4, 5]; // JS getDay() 0=Sun → plan idx
+  const todayIdx = dayToIdx[new Date().getDay()];
+  let active = todayIdx;
+
+  function pct(v, t) { return Math.min(100, Math.round(v / t * 100)); }
+
+  function itemsList(items) {
+    const parts = [];
+    let depth = 0, start = 0;
+    for (let i = 0; i < items.length; i++) {
+      if (items[i] === '(') depth++;
+      else if (items[i] === ')') depth--;
+      else if (items[i] === ',' && depth === 0 && items[i + 1] === ' ') {
+        parts.push(items.slice(start, i).trim());
+        start = i + 2;
+      }
+    }
+    parts.push(items.slice(start).trim());
+    return '<ul>' + parts.map(p => `<li>${p}</li>`).join('') + '</ul>';
+  }
+
+  function renderMacros(d) {
+    const rows = [
+      { label: 'Calories', val: d.kcal, unit: 'kcal', target: 1800, color: kColor },
+      { label: 'Protein',  val: d.p,    unit: 'g',    target: 152,  color: pColor },
+      { label: 'Carbs',    val: d.c,    unit: 'g',    target: 173,  color: cColor },
+      { label: 'Fat',      val: d.f,    unit: 'g',    target: 65,   color: fColor }
+    ];
+    document.getElementById('mp-macros').innerHTML = rows.map(r => `
+      <div class="mp-macro-card">
+        <div class="mp-macro-label">${r.label}</div>
+        <div class="mp-macro-val">${r.val}<small> ${r.unit}</small></div>
+        <div class="mp-macro-fill"><div class="mp-macro-fill-bar" style="width:${pct(r.val,r.target)}%;background:${r.color}"></div></div>
+        <div class="mp-macro-target">/ ${r.target}${r.unit}</div>
+      </div>`).join('');
+  }
+
+  function renderMeals(d) {
+    document.getElementById('mp-meals').innerHTML = d.meals.map(m => `
+      <div class="mp-meal-card">
+        <div class="mp-meal-header">
+          <span class="mp-meal-type">${m.type}</span>
+          <div class="mp-meal-macs">
+            <span class="mp-meal-mac"><strong>${m.p}g</strong> pro</span>
+            <span class="mp-meal-mac"><strong>${m.c}g</strong> carb</span>
+            <span class="mp-meal-mac"><strong>${m.f}g</strong> fat</span>
+          </div>
         </div>
-      </div>
-      <div class="meal-title">${m.title}</div>
-      <div class="meal-items">${m.items}</div>
-      <div class="meal-kcal">${m.kcal} kcal</div>
-    </div>`).join('');
-}
+        <div class="mp-meal-title">${m.title}</div>
+        <div class="mp-meal-items">${itemsList(m.items)}</div>
+        <div class="mp-meal-kcal">${m.kcal} kcal</div>
+      </div>`).join('');
+  }
 
-function render(i) {
-  active = i;
-  document.querySelectorAll('.day-tab').forEach((t, j) => t.className = 'day-tab' + (j === i ? ' active' : ''));
-  renderMacros(plan[i]);
-  renderMeals(plan[i]);
-}
+  function render(i) {
+    active = i;
+    document.querySelectorAll('.mp-tab').forEach((t, j) => {
+      t.className = 'mp-tab' + (j === i ? ' active' : '');
+    });
+    renderMacros(plan[i]);
+    renderMeals(plan[i]);
+  }
 
-document.getElementById('tabs').innerHTML = plan.map((d, i) => `<button class="day-tab" onclick="render(${i})">${d.day}</button>`).join('');
-render(0);
+  const tabsEl = document.getElementById('mp-tabs');
+  tabsEl.innerHTML = plan.map((d, i) => `
+    <button class="mp-tab" data-idx="${i}">
+      ${d.day}
+    </button>`).join('');
+  tabsEl.addEventListener('click', e => {
+    const btn = e.target.closest('.mp-tab');
+    if (btn) render(+btn.dataset.idx);
+  });
+
+  render(active);
+  document.querySelectorAll('.mp-tab')[active]?.scrollIntoView({ inline: 'center', block: 'nearest' });
+}());
 </script>
