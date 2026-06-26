@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Tuner</title>
+<style>
+  :root {
+    --wood-dark: #2b1d14;
+    --wood: #4a3221;
+    --wood-light: #6b4a30;
+    --face: #ede3d0;
+    --face-shadow: #c9bb9e;
+    --needle: #b5482e;
+    --needle-glow: #e0784f;
+    --ink: #2b1d14;
+    --ink-soft: #6b5b45;
+    --green: #4d7a5a;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    height: 100%;
+    background: radial-gradient(ellipse at top, var(--wood-light), var(--wood-dark) 75%);
+    font-family: 'Georgia', 'Iowan Old Style', serif;
+    color: var(--face);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .unit {
+    width: min(420px, 92vw);
+    background: linear-gradient(160deg, var(--wood-light), var(--wood) 60%, var(--wood-dark));
+    border-radius: 28px;
+    padding: 28px 26px 22px;
+    box-shadow:
+      0 30px 60px -20px rgba(0,0,0,0.6),
+      inset 0 1px 0 rgba(255,255,255,0.08),
+      inset 0 -8px 20px rgba(0,0,0,0.35);
+    border: 1px solid rgba(0,0,0,0.4);
+  }
+
+  .brand {
+    text-align: center;
+    font-size: 11px;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: var(--face-shadow);
+    margin-bottom: 14px;
+    opacity: 0.85;
+  }
+
+  .face {
+    background: linear-gradient(180deg, var(--face), #e2d5ba);
+    border-radius: 16px;
+    padding: 18px 18px 14px;
+    box-shadow:
+      inset 0 2px 6px rgba(0,0,0,0.25),
+      inset 0 -2px 0 rgba(255,255,255,0.4),
+      0 1px 0 rgba(255,255,255,0.06);
+    position: relative;
+  }
+
+  .gauge-wrap {
+    position: relative;
+    height: 150px;
+    margin-bottom: 6px;
+  }
+
+  svg.gauge { width: 100%; height: 100%; overflow: visible; }
+
+  .tick { stroke: var(--ink); stroke-width: 1.4; }
+  .tick.center { stroke: var(--green); stroke-width: 2.6; }
+  .tick-label {
+    fill: var(--ink-soft);
+    font-size: 9px;
+    text-anchor: middle;
+    font-family: Georgia, serif;
+  }
+
+  .needle {
+    transform-origin: 150px 150px;
+    transition: transform 0.08s ease-out;
+  }
+  .needle-body {
+    fill: var(--needle);
+  }
+  .needle-hub {
+    fill: var(--ink);
+  }
+
+  .readout {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 10px;
+    margin-top: -8px;
+  }
+
+  .note {
+    font-size: 64px;
+    font-weight: 700;
+    letter-spacing: -2px;
+    color: var(--ink);
+    min-width: 70px;
+    text-align: center;
+    line-height: 1;
+  }
+
+  .accidental {
+    font-size: 28px;
+    color: var(--ink-soft);
+    align-self: flex-start;
+    margin-top: 6px;
+  }
+
+  .freq {
+    text-align: center;
+    font-size: 12px;
+    color: var(--ink-soft);
+    letter-spacing: 0.05em;
+    margin-top: 2px;
+    height: 16px;
+  }
+
+  .cents {
+    text-align: center;
+    font-size: 11px;
+    color: var(--ink-soft);
+    letter-spacing: 0.08em;
+    margin-top: 2px;
+    height: 14px;
+    font-style: italic;
+  }
+
+  .status-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 18px;
+  }
+
+  .led {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: #4a3221;
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.6);
+    transition: background 0.15s, box-shadow 0.15s;
+  }
+  .led.in-tune {
+    background: #7fe39a;
+    box-shadow: 0 0 10px 2px rgba(127,227,154,0.7), inset 0 1px 1px rgba(255,255,255,0.5);
+  }
+  .led.listening {
+    background: #e0a23a;
+    box-shadow: 0 0 8px 1px rgba(224,162,58,0.6);
+  }
+
+  button#powerBtn {
+    appearance: none;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 13px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--face);
+    background: linear-gradient(180deg, var(--wood-light), var(--wood-dark));
+    border-radius: 999px;
+    padding: 10px 22px;
+    box-shadow:
+      0 3px 0 rgba(0,0,0,0.4),
+      inset 0 1px 0 rgba(255,255,255,0.15);
+  }
+  button#powerBtn:active { transform: translateY(2px); box-shadow: inset 0 1px 0 rgba(255,255,255,0.15); }
+
+  .hint {
+    text-align: center;
+    font-size: 11px;
+    color: var(--face-shadow);
+    margin-top: 12px;
+    opacity: 0.8;
+    line-height: 1.5;
+  }
+
+  .note.flat-mode { color: var(--needle); }
+
+  .guide {
+    margin-top: 16px;
+    padding-top: 14px;
+    border-top: 1px solid rgba(237,227,208,0.18);
+  }
+  .guide-title {
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--face-shadow);
+    text-align: center;
+    margin-bottom: 10px;
+    opacity: 0.85;
+  }
+  .guide-rows {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .guide-row {
+    display: grid;
+    grid-template-columns: 28px 1fr 60px;
+    align-items: center;
+    padding: 5px 10px;
+    border-radius: 8px;
+    font-size: 13px;
+    color: var(--face-shadow);
+    transition: background 0.15s, color 0.15s;
+  }
+  .guide-row .gstring { font-weight: 700; color: var(--face); opacity: 0.7; }
+  .guide-row .gnote { text-align: left; }
+  .guide-row .ghz { text-align: right; font-size: 11px; opacity: 0.75; }
+  .guide-row.active {
+    background: rgba(224,162,58,0.18);
+    color: var(--face);
+  }
+  .guide-row.active .gstring { color: #e0a23a; opacity: 1; }
+  .guide-row.match {
+    background: rgba(127,227,154,0.18);
+    color: var(--face);
+  }
+  .guide-row.match .gstring { color: #7fe39a; opacity: 1; }
+  .guide-tip {
+    margin-top: 10px;
+    font-size: 10.5px;
+    color: var(--face-shadow);
+    opacity: 0.75;
+    line-height: 1.5;
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+
+<div class="unit">
+  <div class="brand">Clip-On Tuner</div>
+  <div class="face">
+    <div class="gauge-wrap">
+      <svg class="gauge" viewBox="0 0 300 160">
+        <!-- ticks -->
+        <g id="ticks"></g>
+        <g class="needle" id="needle">
+          <polygon class="needle-body" points="150,150 146,40 154,40"></polygon>
+          <circle class="needle-hub" cx="150" cy="150" r="9"></circle>
+        </g>
+      </svg>
+    </div>
+    <div class="readout">
+      <div class="note" id="note">—</div>
+    </div>
+    <div class="freq" id="freq">&nbsp;</div>
+    <div class="cents" id="cents">&nbsp;</div>
+  </div>
+  <div class="status-row">
+    <div class="led" id="led"></div>
+    <button id="powerBtn">Start listening</button>
+  </div>
+  <div class="hint">Tap start, allow microphone access, then play a single note.<br>If this preview blocks the mic, open the downloaded file directly in your browser.</div>
+
+  <div class="guide">
+    <div class="guide-title">Standard tuning — thickest to thinnest</div>
+    <div class="guide-rows" id="guideRows"></div>
+    <div class="guide-tip">Watch the Hz number, not just the letter. Each letter repeats every octave, so the display can read correctly while a string is tuned a full octave too high.</div>
+  </div>
+</div>
+
+<script>
+const NOTE_NAMES = ['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
+
+function drawTicks() {
+  const g = document.getElementById('ticks');
+  const cx = 150, cy = 150, rOuter = 120, rInner = 104, rLabel = 90;
+  // range -50 to +50 cents mapped across -60deg to +60deg
+  for (let c = -50; c <= 50; c += 10) {
+    const angle = (c / 50) * 60; // degrees
+    const rad = (angle - 90) * Math.PI / 180;
+    const x1 = cx + rOuter * Math.cos(rad);
+    const y1 = cy + rOuter * Math.sin(rad);
+    const isCenter = c === 0;
+    const rI = isCenter ? rInner - 10 : rInner;
+    const x2 = cx + rI * Math.cos(rad);
+    const y2 = cy + rI * Math.sin(rad);
+    const line = document.createElementNS('http://www.w3.org/2000/svg','line');
+    line.setAttribute('x1', x1); line.setAttribute('y1', y1);
+    line.setAttribute('x2', x2); line.setAttribute('y2', y2);
+    line.setAttribute('class', isCenter ? 'tick center' : 'tick');
+    g.appendChild(line);
+  }
+}
+drawTicks();
+
+const STANDARD_TUNING = [
+  { string: 6, note: 'E', freq: 82.41, label: 'low E' },
+  { string: 5, note: 'A', freq: 110.00, label: '' },
+  { string: 4, note: 'D', freq: 146.83, label: '' },
+  { string: 3, note: 'G', freq: 196.00, label: '' },
+  { string: 2, note: 'B', freq: 246.94, label: '' },
+  { string: 1, note: 'E', freq: 329.63, label: 'high E' },
+];
+
+function buildGuide() {
+  const wrap = document.getElementById('guideRows');
+  STANDARD_TUNING.forEach(s => {
+    const row = document.createElement('div');
+    row.className = 'guide-row';
+    row.id = 'guide-' + s.string;
+    row.innerHTML = `
+      <span class="gstring">${s.string}</span>
+      <span class="gnote">${s.note}${s.label ? ' <span style="opacity:0.6;font-size:10px;">(' + s.label + ')</span>' : ''}</span>
+      <span class="ghz">${s.freq.toFixed(1)} Hz</span>
+    `;
+    wrap.appendChild(row);
+  });
+}
+buildGuide();
+
+function updateGuideHighlight(freq) {
+  STANDARD_TUNING.forEach(s => {
+    const row = document.getElementById('guide-' + s.string);
+    row.classList.remove('active', 'match');
+  });
+  if (!freq) return;
+  let nearest = null, nearestDist = Infinity;
+  STANDARD_TUNING.forEach(s => {
+    const dist = Math.abs(freq - s.freq);
+    if (dist < nearestDist) { nearestDist = dist; nearest = s; }
+  });
+  if (!nearest) return;
+  const row = document.getElementById('guide-' + nearest.string);
+  const centsOff = 1200 * Math.log2(freq / nearest.freq);
+  if (Math.abs(centsOff) < 8) row.classList.add('match');
+  else row.classList.add('active');
+}
+
+let audioCtx, analyser, source, mediaStream;
+let running = false;
+let rafId = null;
+let inTuneSince = null;
+
+const needleEl = document.getElementById('needle');
+const noteEl = document.getElementById('note');
+const freqEl = document.getElementById('freq');
+const centsEl = document.getElementById('cents');
+const ledEl = document.getElementById('led');
+const btn = document.getElementById('powerBtn');
+
+function freqToNote(freq) {
+  if (!freq || freq <= 0) return null;
+  const A4 = 440;
+  const semitonesFromA4 = 12 * Math.log2(freq / A4);
+  const rounded = Math.round(semitonesFromA4);
+  const cents = (semitonesFromA4 - rounded) * 100;
+  let noteIndex = (rounded + 9) % 12; // A is index 9 in NOTE_NAMES starting at C
+  if (noteIndex < 0) noteIndex += 12;
+  return { name: NOTE_NAMES[noteIndex], cents, midiOffset: rounded };
+}
+
+// Autocorrelation pitch detection
+function autoCorrelate(buf, sampleRate) {
+  const SIZE = buf.length;
+  let rms = 0;
+  for (let i = 0; i < SIZE; i++) rms += buf[i] * buf[i];
+  rms = Math.sqrt(rms / SIZE);
+  if (rms < 0.01) return -1; // too quiet
+
+  let r1 = 0, r2 = SIZE - 1;
+  const threshold = 0.2;
+  for (let i = 0; i < SIZE / 2; i++) { if (Math.abs(buf[i]) > threshold) { r1 = i; break; } }
+  for (let i = 1; i < SIZE / 2; i++) { if (Math.abs(buf[SIZE - i]) > threshold) { r2 = SIZE - i; break; } }
+
+  const trimmed = buf.slice(r1, r2);
+  const n = trimmed.length;
+  const c = new Array(n).fill(0);
+  for (let lag = 0; lag < n; lag++) {
+    let sum = 0;
+    for (let i = 0; i < n - lag; i++) sum += trimmed[i] * trimmed[i + lag];
+    c[lag] = sum;
+  }
+
+  let d = 0;
+  while (d < n - 1 && c[d] > c[d + 1]) d++;
+
+  let maxVal = -1, maxPos = -1;
+  for (let i = d; i < n; i++) {
+    if (c[i] > maxVal) { maxVal = c[i]; maxPos = i; }
+  }
+  let T0 = maxPos;
+  if (T0 <= 0) return -1;
+
+  // parabolic interpolation for better precision
+  const x1 = c[T0 - 1] || 0, x2 = c[T0], x3 = c[T0 + 1] || 0;
+  const a = (x1 + x3 - 2 * x2) / 2;
+  const b = (x3 - x1) / 2;
+  if (a) T0 = T0 - b / (2 * a);
+
+  return sampleRate / T0;
+}
+
+function update() {
+  const buf = new Float32Array(analyser.fftSize);
+  analyser.getFloatTimeDomainData(buf);
+  const freq = autoCorrelate(buf, audioCtx.sampleRate);
+
+  if (freq > 60 && freq < 1200) {
+    const info = freqToNote(freq);
+    noteEl.textContent = info.name;
+    freqEl.textContent = freq.toFixed(1) + ' Hz';
+    const centsClamped = Math.max(-50, Math.min(50, info.cents));
+    const angle = (centsClamped / 50) * 60;
+    needleEl.style.transform = `rotate(${angle}deg)`;
+    updateGuideHighlight(freq);
+
+    if (Math.abs(info.cents) < 2) {
+      centsEl.textContent = 'in tune';
+      ledEl.className = 'led in-tune';
+    } else {
+      const dir = info.cents > 0 ? 'sharp' : 'flat';
+      centsEl.textContent = `${Math.abs(info.cents).toFixed(0)} cents ${dir}`;
+      ledEl.className = 'led listening';
+    }
+  } else {
+    ledEl.className = 'led';
+    updateGuideHighlight(null);
+  }
+
+  rafId = requestAnimationFrame(update);
+}
+
+async function start() {
+  try {
+    mediaStream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false } });
+  } catch (err) {
+    centsEl.textContent = 'Microphone access blocked — open the downloaded file in your browser.';
+    return;
+  }
+  audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  analyser = audioCtx.createAnalyser();
+  analyser.fftSize = 2048;
+  source = audioCtx.createMediaStreamSource(mediaStream);
+  source.connect(analyser);
+  running = true;
+  btn.textContent = 'Stop listening';
+  update();
+}
+
+function stop() {
+  running = false;
+  if (rafId) cancelAnimationFrame(rafId);
+  if (mediaStream) mediaStream.getTracks().forEach(t => t.stop());
+  if (audioCtx) audioCtx.close();
+  noteEl.textContent = '—';
+  freqEl.textContent = '\u00A0';
+  centsEl.textContent = '\u00A0';
+  needleEl.style.transform = 'rotate(0deg)';
+  ledEl.className = 'led';
+  updateGuideHighlight(null);
+  btn.textContent = 'Start listening';
+}
+
+btn.addEventListener('click', () => {
+  if (running) stop(); else start();
+});
+</script>
+</body>
+</html>
