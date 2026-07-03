@@ -318,6 +318,69 @@
 
   footer strong { color: var(--sky); }
 
+  /* Stage headers */
+  .stage-header {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 26px;
+    letter-spacing: 2px;
+    margin: 44px 0 4px;
+  }
+
+  .stage-sub {
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 18px;
+  }
+
+  /* Status badges */
+  .status-badge {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 9px;
+    letter-spacing: 1.5px;
+    padding: 2px 7px;
+    border-radius: 2px;
+    display: inline-block;
+  }
+
+  .status-badge.final { background: rgba(108,171,221,0.15); color: var(--sky); }
+  .status-badge.upcoming { background: rgba(245,200,66,0.12); color: var(--gold); }
+  .status-badge.pending { background: rgba(255,255,255,0.06); color: var(--muted); }
+
+  .match-score {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    color: var(--text);
+    line-height: 1;
+  }
+
+  /* Eliminated cards */
+  .out-card {
+    background: var(--surface);
+    border: 1px solid rgba(255,255,255,0.05);
+    border-radius: 10px;
+    padding: 16px 18px;
+    margin-bottom: 8px;
+    opacity: 0.6;
+    animation: fadeUp 0.4s ease both;
+  }
+
+  .out-badge {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 9px;
+    letter-spacing: 2px;
+    color: #e57373;
+    background: rgba(229,115,115,0.12);
+    padding: 2px 8px;
+    border-radius: 2px;
+    display: inline-block;
+    margin-bottom: 8px;
+  }
+
+  .out-card .match-teams { color: var(--muted); }
+  .out-card .match-meta { margin-bottom: 8px; }
+
+  .dot-red { background: #e57373; }
+
   @keyframes fadeDown {
     from { opacity: 0; transform: translateY(-16px); }
     to { opacity: 1; transform: translateY(0); }
@@ -332,12 +395,13 @@
 <body>
 
 <div class="hero">
-  <div class="badge">FIFA WORLD CUP 2026 · MAN CITY TRACKER</div>
+  <div class="badge">FIFA WORLD CUP 2026 · ROUND OF 32</div>
   <h1>MAN CITY<span>AT THE WORLD CUP</span></h1>
-  <p class="hero-sub">19 players · 12 nations · All times in Mountain Time (MT)</p>
+  <p class="hero-sub">16 of 19 players still alive · 10 of 12 nations remain · All times in Mountain Time (MT)</p>
   <div class="legend">
     <div class="legend-item"><div class="dot dot-sky"></div> Man City player(s)</div>
     <div class="legend-item"><div class="dot dot-gold"></div> City vs City clash</div>
+    <div class="legend-item"><div class="dot dot-red"></div> Eliminated</div>
   </div>
 </div>
 
@@ -353,472 +417,38 @@
     First time in history: three opening ceremonies across Mexico, Canada & the USA</div>
   </div>
 
-  <!-- GROUP F -->
-  <div class="group-header">
-    <div class="group-label">GROUP F</div>
-    <div class="group-players"><strong>Netherlands:</strong> Nathan Aké · Tijjani Reijnders</div>
-    <div class="divider"></div>
-  </div>
+  <!-- ROUND OF 32 -->
+  <div class="stage-header">ROUND OF 32</div>
+  <div class="stage-sub">Jun 28 – Jul 3 · knockouts underway</div>
 
   <div class="match-card">
     <div>
-      <div class="match-teams">Netherlands vs Japan</div>
-      <div class="match-meta"><span>📅 Jun 14</span><span>📍 AT&T Stadium, Dallas</span></div>
-      <div class="players-list">
-        <div class="player-chip">Nathan Aké</div>
-        <div class="player-chip">Tijjani Reijnders</div>
-      </div>
-    </div>
-    <div class="match-time">
-      <div class="time-mt">2:00 PM</div>
-      <div class="time-label">MT</div>
-    </div>
-  </div>
-
-  <div class="match-card">
-    <div>
-      <div class="match-teams">Netherlands vs Sweden</div>
-      <div class="match-meta"><span>📅 Jun 20</span><span>📍 NRG Stadium, Houston</span></div>
-      <div class="players-list">
-        <div class="player-chip">Nathan Aké</div>
-        <div class="player-chip">Tijjani Reijnders</div>
-      </div>
-    </div>
-    <div class="match-time">
-      <div class="time-mt">11:00 AM</div>
-      <div class="time-label">MT</div>
-    </div>
-  </div>
-
-  <div class="match-card">
-    <div>
-      <div class="match-teams">Tunisia vs Netherlands</div>
-      <div class="match-meta"><span>📅 Jun 25</span><span>📍 Arrowhead Stadium, Kansas City</span></div>
-      <div class="players-list">
-        <div class="player-chip">Nathan Aké</div>
-        <div class="player-chip">Tijjani Reijnders</div>
-      </div>
-    </div>
-    <div class="match-time">
-      <div class="time-mt">5:00 PM</div>
-      <div class="time-label">MT</div>
-    </div>
-  </div>
-
-  <!-- GROUP G -->
-  <div class="group-header">
-    <div class="group-label">GROUP G</div>
-    <div class="group-players"><strong>Belgium:</strong> Jérémy Doku &nbsp;|&nbsp; <strong>Egypt:</strong> Omar Marmoush</div>
-    <div class="divider"></div>
-  </div>
-
-  <div class="match-card city-clash">
-    <div>
-      <div class="clash-badge">🔵 CITY VS CITY</div>
-      <div class="match-teams">Belgium vs Egypt</div>
-      <div class="match-meta"><span>📅 Jun 15</span><span>📍 Lumen Field, Seattle</span></div>
-      <div class="players-list">
-        <div class="player-chip gold">Jérémy Doku</div>
-        <div class="player-chip gold">Omar Marmoush</div>
-      </div>
-    </div>
-    <div class="match-time">
-      <div class="time-mt">1:00 PM</div>
-      <div class="time-label">MT</div>
-    </div>
-  </div>
-
-  <div class="match-card">
-    <div>
-      <div class="match-teams">Iran vs New Zealand</div>
-      <div class="match-meta"><span>📅 Jun 15</span><span>📍 SoFi Stadium, Los Angeles</span></div>
-      <div class="players-list">
-        <div class="player-chip" style="color:var(--muted);border-color:rgba(255,255,255,0.1);background:rgba(255,255,255,0.04)">Affects Group G standings</div>
-      </div>
-    </div>
-    <div class="match-time">
-      <div class="time-mt">7:00 PM</div>
-      <div class="time-label">MT</div>
-    </div>
-  </div>
-
-  <div class="match-card">
-    <div>
-      <div class="match-teams">Belgium vs Iran</div>
-      <div class="match-meta"><span>📅 Jun 21</span><span>📍 SoFi Stadium, Los Angeles</span></div>
-      <div class="players-list">
-        <div class="player-chip">Jérémy Doku</div>
-      </div>
-    </div>
-    <div class="match-time">
-      <div class="time-mt">1:00 PM</div>
-      <div class="time-label">MT</div>
-    </div>
-  </div>
-
-  <div class="match-card">
-    <div>
-      <div class="match-teams">New Zealand vs Egypt</div>
-      <div class="match-meta"><span>📅 Jun 21</span><span>📍 BC Place, Vancouver</span></div>
-      <div class="players-list">
-        <div class="player-chip">Omar Marmoush</div>
-      </div>
-    </div>
-    <div class="match-time">
-      <div class="time-mt">7:00 PM</div>
-      <div class="time-label">MT</div>
-    </div>
-  </div>
-
-  <div class="match-card">
-    <div>
-      <div class="match-teams">New Zealand vs Belgium</div>
-      <div class="match-meta"><span>📅 Jun 26</span><span>📍 BC Place, Vancouver</span></div>
-      <div class="players-list">
-        <div class="player-chip">Jérémy Doku</div>
-      </div>
-    </div>
-    <div class="match-time">
-      <div class="time-mt">9:00 PM</div>
-      <div class="time-label">MT</div>
-    </div>
-  </div>
-
-  <div class="match-card">
-    <div>
-      <div class="match-teams">Egypt vs Iran</div>
-      <div class="match-meta"><span>📅 Jun 26</span><span>📍 Lumen Field, Seattle</span></div>
-      <div class="players-list">
-        <div class="player-chip">Omar Marmoush</div>
-      </div>
-    </div>
-    <div class="match-time">
-      <div class="time-mt">9:00 PM</div>
-      <div class="time-label">MT</div>
-    </div>
-  </div>
-
-  <!-- GROUP H -->
-  <div class="group-header">
-    <div class="group-label">GROUP H</div>
-    <div class="group-players"><strong>Spain:</strong> Rodri</div>
-    <div class="divider"></div>
-  </div>
-
-  <div class="match-card">
-    <div>
-      <div class="match-teams">Spain vs Cape Verde</div>
-      <div class="match-meta"><span>📅 Jun 15</span><span>📍 Mercedes-Benz Stadium, Atlanta</span></div>
-      <div class="players-list"><div class="player-chip">Rodri</div></div>
-    </div>
-    <div class="match-time">
-      <div class="time-mt">10:00 AM</div>
-      <div class="time-label">MT</div>
-    </div>
-  </div>
-
-  <div class="match-card">
-    <div>
-      <div class="match-teams">Spain vs Saudi Arabia</div>
-      <div class="match-meta"><span>📅 Jun 21</span><span>📍 Mercedes-Benz Stadium, Atlanta</span></div>
-      <div class="players-list"><div class="player-chip">Rodri</div></div>
-    </div>
-    <div class="match-time">
-      <div class="time-mt">10:00 AM</div>
-      <div class="time-label">MT</div>
-    </div>
-  </div>
-
-  <div class="match-card">
-    <div>
-      <div class="match-teams">Uruguay vs Spain</div>
-      <div class="match-meta"><span>📅 Jun 26</span><span>📍 Estadio Guadalajara</span></div>
-      <div class="players-list"><div class="player-chip">Rodri</div></div>
-    </div>
-    <div class="match-time">
-      <div class="time-mt">6:00 PM</div>
-      <div class="time-label">MT</div>
-    </div>
-  </div>
-
-  <!-- GROUP I -->
-  <div class="group-header">
-    <div class="group-label">GROUP I</div>
-    <div class="group-players"><strong>France:</strong> Rayan Cherki &nbsp;|&nbsp; <strong>Norway:</strong> Erling Haaland</div>
-    <div class="divider"></div>
-  </div>
-
-  <div class="match-card">
-    <div>
-      <div class="match-teams">France vs Senegal</div>
-      <div class="match-meta"><span>📅 Jun 16</span><span>📍 MetLife Stadium, East Rutherford NJ</span></div>
+      <div class="match-teams">France vs Sweden</div>
+      <div class="match-meta"><span>📅 Jun 30</span><span>📍 MetLife Stadium, East Rutherford NJ</span> <span class="status-badge final">FT</span></div>
       <div class="players-list"><div class="player-chip">Rayan Cherki</div></div>
     </div>
     <div class="match-time">
-      <div class="time-mt">1:00 PM</div>
-      <div class="time-label">MT</div>
+      <div class="match-score">3–0</div>
+      <div class="time-label">FINAL</div>
     </div>
   </div>
 
   <div class="match-card">
     <div>
-      <div class="match-teams">Iraq vs Norway</div>
-      <div class="match-meta"><span>📅 Jun 16</span><span>📍 Gillette Stadium, Boston</span></div>
+      <div class="match-teams">Norway vs Ivory Coast</div>
+      <div class="match-meta"><span>📅 Jun 30</span><span>📍 AT&T Stadium, Arlington TX</span> <span class="status-badge final">FT</span></div>
       <div class="players-list"><div class="player-chip">Erling Haaland</div></div>
     </div>
     <div class="match-time">
-      <div class="time-mt">4:00 PM</div>
-      <div class="time-label">MT</div>
+      <div class="match-score">2–1</div>
+      <div class="time-label">FINAL</div>
     </div>
   </div>
 
   <div class="match-card">
     <div>
-      <div class="match-teams">France vs Iraq</div>
-      <div class="match-meta"><span>📅 Jun 22</span><span>📍 Lincoln Financial Field, Philadelphia</span></div>
-      <div class="players-list"><div class="player-chip">Rayan Cherki</div></div>
-    </div>
-    <div class="match-time">
-      <div class="time-mt">3:00 PM</div>
-      <div class="time-label">MT</div>
-    </div>
-  </div>
-
-  <div class="match-card">
-    <div>
-      <div class="match-teams">Norway vs Senegal</div>
-      <div class="match-meta"><span>📅 Jun 22</span><span>📍 MetLife Stadium, East Rutherford NJ</span></div>
-      <div class="players-list"><div class="player-chip">Erling Haaland</div></div>
-    </div>
-    <div class="match-time">
-      <div class="time-mt">6:00 PM</div>
-      <div class="time-label">MT</div>
-    </div>
-  </div>
-
-  <div class="match-card city-clash">
-    <div>
-      <div class="clash-badge">🔵 CITY VS CITY</div>
-      <div class="match-teams">Norway vs France</div>
-      <div class="match-meta"><span>📅 Jun 26</span><span>📍 Gillette Stadium, Boston</span></div>
-      <div class="players-list">
-        <div class="player-chip gold">Erling Haaland</div>
-        <div class="player-chip gold">Rayan Cherki</div>
-      </div>
-    </div>
-    <div class="match-time">
-      <div class="time-mt">1:00 PM</div>
-      <div class="time-label">MT</div>
-    </div>
-  </div>
-
-  <!-- GROUP J -->
-  <div class="group-header">
-    <div class="group-label">GROUP J</div>
-    <div class="group-players"><strong>Algeria:</strong> Rayan Aït-Nouri</div>
-    <div class="divider"></div>
-  </div>
-
-  <div class="match-card">
-    <div>
-      <div class="match-teams">Argentina vs Algeria</div>
-      <div class="match-meta"><span>📅 Jun 16</span><span>📍 Arrowhead Stadium, Kansas City</span></div>
-      <div class="players-list"><div class="player-chip">Rayan Aït-Nouri</div></div>
-    </div>
-    <div class="match-time">
-      <div class="time-mt">7:00 PM</div>
-      <div class="time-label">MT</div>
-    </div>
-  </div>
-
-  <div class="match-card">
-    <div>
-      <div class="match-teams">Jordan vs Algeria</div>
-      <div class="match-meta"><span>📅 Jun 22</span><span>📍 Levi's Stadium, San Francisco Bay Area</span></div>
-      <div class="players-list"><div class="player-chip">Rayan Aït-Nouri</div></div>
-    </div>
-    <div class="match-time">
-      <div class="time-mt">9:00 PM</div>
-      <div class="time-label">MT</div>
-    </div>
-  </div>
-
-  <div class="match-card">
-    <div>
-      <div class="match-teams">Algeria vs Colombia</div>
-      <div class="match-meta"><span>📅 Jun 27</span><span>📍 Venue TBC</span></div>
-      <div class="players-list"><div class="player-chip">Rayan Aït-Nouri</div></div>
-    </div>
-    <div class="match-time">
-      <div class="time-mt">TBC</div>
-      <div class="time-label">MT</div>
-    </div>
-  </div>
-
-  <!-- GROUP K -->
-  <div class="group-header">
-    <div class="group-label">GROUP K</div>
-    <div class="group-players"><strong>Portugal:</strong> B. Silva · R. Dias · Nunes &nbsp;|&nbsp; <strong>Uzbekistan:</strong> Khusanov</div>
-    <div class="divider"></div>
-  </div>
-
-  <div class="match-card">
-    <div>
-      <div class="match-teams">Portugal vs Congo DR</div>
-      <div class="match-meta"><span>📅 Jun 17</span><span>📍 NRG Stadium, Houston</span></div>
-      <div class="players-list">
-        <div class="player-chip">Bernardo Silva</div>
-        <div class="player-chip">Rúben Dias</div>
-        <div class="player-chip">Matheus Nunes</div>
-      </div>
-    </div>
-    <div class="match-time">
-      <div class="time-mt">11:00 AM</div>
-      <div class="time-label">MT</div>
-    </div>
-  </div>
-
-  <div class="match-card">
-    <div>
-      <div class="match-teams">Uzbekistan vs Colombia</div>
-      <div class="match-meta"><span>📅 Jun 17</span><span>📍 Mexico City Stadium</span></div>
-      <div class="players-list">
-        <div class="player-chip">Abdukodir Khusanov</div>
-      </div>
-    </div>
-    <div class="match-time">
-      <div class="time-mt">8:00 PM</div>
-      <div class="time-label">MT</div>
-    </div>
-  </div>
-
-  <div class="match-card city-clash">
-    <div>
-      <div class="clash-badge">🔵 CITY VS CITY</div>
-      <div class="match-teams">Portugal vs Uzbekistan</div>
-      <div class="match-meta"><span>📅 Jun 23</span><span>📍 NRG Stadium, Houston</span></div>
-      <div class="players-list">
-        <div class="player-chip gold">Bernardo Silva</div>
-        <div class="player-chip gold">Rúben Dias</div>
-        <div class="player-chip gold">Matheus Nunes</div>
-        <div class="player-chip gold">Abdukodir Khusanov</div>
-      </div>
-    </div>
-    <div class="match-time">
-      <div class="time-mt">11:00 AM</div>
-      <div class="time-label">MT</div>
-    </div>
-  </div>
-
-  <div class="match-card">
-    <div>
-      <div class="match-teams">Colombia vs Portugal</div>
-      <div class="match-meta"><span>📅 Jun 27</span><span>📍 Venue TBC</span></div>
-      <div class="players-list">
-        <div class="player-chip">Bernardo Silva</div>
-        <div class="player-chip">Rúben Dias</div>
-        <div class="player-chip">Matheus Nunes</div>
-      </div>
-    </div>
-    <div class="match-time">
-      <div class="time-mt">TBC</div>
-      <div class="time-label">MT</div>
-    </div>
-  </div>
-
-  <div class="match-card">
-    <div>
-      <div class="match-teams">Congo DR vs Uzbekistan</div>
-      <div class="match-meta"><span>📅 Jun 27</span><span>📍 Venue TBC</span></div>
-      <div class="players-list">
-        <div class="player-chip">Abdukodir Khusanov</div>
-      </div>
-    </div>
-    <div class="match-time">
-      <div class="time-mt">TBC</div>
-      <div class="time-label">MT</div>
-    </div>
-  </div>
-
-  <!-- GROUP L -->
-  <div class="group-header">
-    <div class="group-label">GROUP L</div>
-    <div class="group-players"><strong>England:</strong> Trafford · Stones · Guéhi · O'Reilly &nbsp;|&nbsp; <strong>Croatia:</strong> Kovačić · Gvardiol &nbsp;|&nbsp; <strong>Ghana:</strong> Semenyo</div>
-    <div class="divider"></div>
-  </div>
-
-  <div class="match-card city-clash">
-    <div>
-      <div class="clash-badge">🔵 CITY VS CITY</div>
-      <div class="match-teams">England vs Croatia</div>
-      <div class="match-meta"><span>📅 Jun 17</span><span>📍 AT&T Stadium, Dallas</span></div>
-      <div class="players-list">
-        <div class="player-chip gold">James Trafford</div>
-        <div class="player-chip gold">John Stones</div>
-        <div class="player-chip gold">Marc Guéhi</div>
-        <div class="player-chip gold">Nico O'Reilly</div>
-        <div class="player-chip gold">Mateo Kovačić</div>
-        <div class="player-chip gold">Joško Gvardiol</div>
-      </div>
-    </div>
-    <div class="match-time">
-      <div class="time-mt">2:00 PM</div>
-      <div class="time-label">MT</div>
-    </div>
-  </div>
-
-  <div class="match-card">
-    <div>
-      <div class="match-teams">Ghana vs Panama</div>
-      <div class="match-meta"><span>📅 Jun 17</span><span>📍 BMO Field, Toronto</span></div>
-      <div class="players-list">
-        <div class="player-chip">Antoine Semenyo</div>
-      </div>
-    </div>
-    <div class="match-time">
-      <div class="time-mt">5:00 PM</div>
-      <div class="time-label">MT</div>
-    </div>
-  </div>
-
-  <div class="match-card city-clash">
-    <div>
-      <div class="clash-badge">🔵 CITY VS CITY</div>
-      <div class="match-teams">England vs Ghana</div>
-      <div class="match-meta"><span>📅 Jun 23</span><span>📍 Gillette Stadium, Boston</span></div>
-      <div class="players-list">
-        <div class="player-chip gold">James Trafford</div>
-        <div class="player-chip gold">John Stones</div>
-        <div class="player-chip gold">Marc Guéhi</div>
-        <div class="player-chip gold">Nico O'Reilly</div>
-        <div class="player-chip gold">Antoine Semenyo</div>
-      </div>
-    </div>
-    <div class="match-time">
-      <div class="time-mt">2:00 PM</div>
-      <div class="time-label">MT</div>
-    </div>
-  </div>
-
-  <div class="match-card">
-    <div>
-      <div class="match-teams">Panama vs Croatia</div>
-      <div class="match-meta"><span>📅 Jun 23</span><span>📍 BMO Field, Toronto</span></div>
-      <div class="players-list">
-        <div class="player-chip">Mateo Kovačić</div>
-        <div class="player-chip">Joško Gvardiol</div>
-      </div>
-    </div>
-    <div class="match-time">
-      <div class="time-mt">5:00 PM</div>
-      <div class="time-label">MT</div>
-    </div>
-  </div>
-
-  <div class="match-card">
-    <div>
-      <div class="match-teams">Panama vs England</div>
-      <div class="match-meta"><span>📅 Jun 27</span><span>📍 MetLife Stadium, East Rutherford NJ</span></div>
+      <div class="match-teams">England vs DR Congo</div>
+      <div class="match-meta"><span>📅 Jun 30</span><span>📍 Mercedes-Benz Stadium, Atlanta</span> <span class="status-badge final">FT</span></div>
       <div class="players-list">
         <div class="player-chip">James Trafford</div>
         <div class="player-chip">John Stones</div>
@@ -827,7 +457,31 @@
       </div>
     </div>
     <div class="match-time">
-      <div class="time-mt">3:00 PM</div>
+      <div class="match-score">2–1</div>
+      <div class="time-label">FINAL</div>
+    </div>
+  </div>
+
+  <div class="match-card">
+    <div>
+      <div class="match-teams">Belgium vs Senegal</div>
+      <div class="match-meta"><span>📅 Jul 1</span><span>📍 Lumen Field, Seattle</span> <span class="status-badge final">FT</span></div>
+      <div class="players-list"><div class="player-chip">Jérémy Doku</div></div>
+    </div>
+    <div class="match-time">
+      <div class="match-score">3–2</div>
+      <div class="time-label">FINAL</div>
+    </div>
+  </div>
+
+  <div class="match-card">
+    <div>
+      <div class="match-teams">Spain vs Austria</div>
+      <div class="match-meta"><span>📅 Jul 2</span><span>📍 SoFi Stadium, Inglewood CA</span> <span class="status-badge upcoming">UPCOMING</span></div>
+      <div class="players-list"><div class="player-chip">Rodri</div></div>
+    </div>
+    <div class="match-time">
+      <div class="time-mt">1:00 PM</div>
       <div class="time-label">MT</div>
     </div>
   </div>
@@ -835,17 +489,181 @@
   <div class="match-card city-clash">
     <div>
       <div class="clash-badge">🔵 CITY VS CITY</div>
-      <div class="match-teams">Croatia vs Ghana</div>
-      <div class="match-meta"><span>📅 Jun 27</span><span>📍 Lincoln Financial Field, Philadelphia</span></div>
+      <div class="match-teams">Portugal vs Croatia</div>
+      <div class="match-meta"><span>📅 Jul 2</span><span>📍 BMO Field, Toronto</span> <span class="status-badge upcoming">UPCOMING</span></div>
       <div class="players-list">
+        <div class="player-chip gold">Bernardo Silva</div>
+        <div class="player-chip gold">Rúben Dias</div>
+        <div class="player-chip gold">Matheus Nunes</div>
         <div class="player-chip gold">Mateo Kovačić</div>
         <div class="player-chip gold">Joško Gvardiol</div>
-        <div class="player-chip gold">Antoine Semenyo</div>
       </div>
+    </div>
+    <div class="match-time">
+      <div class="time-mt">5:00 PM</div>
+      <div class="time-label">MT</div>
+    </div>
+  </div>
+
+  <div class="match-card">
+    <div>
+      <div class="match-teams">Switzerland vs Algeria</div>
+      <div class="match-meta"><span>📅 Jul 2</span><span>📍 BC Place, Vancouver</span> <span class="status-badge upcoming">UPCOMING</span></div>
+      <div class="players-list"><div class="player-chip">Rayan Aït-Nouri</div></div>
+    </div>
+    <div class="match-time">
+      <div class="time-mt">9:00 PM</div>
+      <div class="time-label">MT</div>
+    </div>
+  </div>
+
+  <div class="match-card">
+    <div>
+      <div class="match-teams">Australia vs Egypt</div>
+      <div class="match-meta"><span>📅 Jul 3</span><span>📍 AT&T Stadium, Arlington TX</span> <span class="status-badge upcoming">UPCOMING</span></div>
+      <div class="players-list"><div class="player-chip">Omar Marmoush</div></div>
+    </div>
+    <div class="match-time">
+      <div class="time-mt">11:00 AM</div>
+      <div class="time-label">MT</div>
+    </div>
+  </div>
+
+  <div class="match-card">
+    <div>
+      <div class="match-teams">Colombia vs Ghana</div>
+      <div class="match-meta"><span>📅 Jul 3</span><span>📍 Arrowhead Stadium, Kansas City</span> <span class="status-badge upcoming">UPCOMING</span></div>
+      <div class="players-list"><div class="player-chip">Antoine Semenyo</div></div>
+    </div>
+    <div class="match-time">
+      <div class="time-mt">7:30 PM</div>
+      <div class="time-label">MT</div>
+    </div>
+  </div>
+
+  <!-- ROUND OF 16 -->
+  <div class="stage-header">ROUND OF 16</div>
+  <div class="stage-sub">Jul 4 – Jul 7 · four matchups locked in, rest wait on Round of 32</div>
+
+  <div class="match-card">
+    <div>
+      <div class="match-teams">France vs Paraguay</div>
+      <div class="match-meta"><span>📅 Jul 4</span><span>📍 Lincoln Financial Field, Philadelphia</span> <span class="status-badge upcoming">SET</span></div>
+      <div class="players-list"><div class="player-chip">Rayan Cherki</div></div>
     </div>
     <div class="match-time">
       <div class="time-mt">3:00 PM</div>
       <div class="time-label">MT</div>
+    </div>
+  </div>
+
+  <div class="match-card">
+    <div>
+      <div class="match-teams">Norway vs Brazil</div>
+      <div class="match-meta"><span>📅 Jul 5</span><span>📍 MetLife Stadium, East Rutherford NJ</span> <span class="status-badge upcoming">SET</span></div>
+      <div class="players-list"><div class="player-chip">Erling Haaland</div></div>
+    </div>
+    <div class="match-time">
+      <div class="time-mt">2:00 PM</div>
+      <div class="time-label">MT</div>
+    </div>
+  </div>
+
+  <div class="match-card">
+    <div>
+      <div class="match-teams">England vs Mexico</div>
+      <div class="match-meta"><span>📅 Jul 5</span><span>📍 Estadio Azteca, Mexico City 🇲🇽</span> <span class="status-badge upcoming">SET</span></div>
+      <div class="players-list">
+        <div class="player-chip">James Trafford</div>
+        <div class="player-chip">John Stones</div>
+        <div class="player-chip">Marc Guéhi</div>
+        <div class="player-chip">Nico O'Reilly</div>
+      </div>
+    </div>
+    <div class="match-time">
+      <div class="time-mt">5:00 PM</div>
+      <div class="time-label">MT</div>
+    </div>
+  </div>
+
+  <div class="match-card">
+    <div>
+      <div class="match-teams">Belgium vs USA</div>
+      <div class="match-meta"><span>📅 Jul 6</span><span>📍 Lumen Field, Seattle</span> <span class="status-badge upcoming">SET</span></div>
+      <div class="players-list"><div class="player-chip">Jérémy Doku</div></div>
+    </div>
+    <div class="match-time">
+      <div class="time-mt">3:00 PM</div>
+      <div class="time-label">MT</div>
+    </div>
+  </div>
+
+  <div class="match-card">
+    <div>
+      <div class="match-teams">Winner: Spain/Austria vs Winner: Portugal/Croatia</div>
+      <div class="match-meta"><span>📅 Jul 6</span><span>📍 AT&T Stadium, Arlington TX</span> <span class="status-badge pending">PENDING R32</span></div>
+      <div class="players-list">
+        <div class="player-chip">Rodri</div>
+        <div class="player-chip">Bernardo Silva</div>
+        <div class="player-chip">Rúben Dias</div>
+        <div class="player-chip">Matheus Nunes</div>
+        <div class="player-chip">Mateo Kovačić</div>
+        <div class="player-chip">Joško Gvardiol</div>
+      </div>
+    </div>
+    <div class="match-time">
+      <div class="time-mt">1:00 PM</div>
+      <div class="time-label">MT</div>
+    </div>
+  </div>
+
+  <div class="match-card">
+    <div>
+      <div class="match-teams">Winner: Argentina/Cape Verde vs Winner: Australia/Egypt</div>
+      <div class="match-meta"><span>📅 Jul 7</span><span>📍 Mercedes-Benz Stadium, Atlanta</span> <span class="status-badge pending">PENDING R32</span></div>
+      <div class="players-list"><div class="player-chip">Omar Marmoush <span style="opacity:0.6">(if Egypt wins)</span></div></div>
+    </div>
+    <div class="match-time">
+      <div class="time-mt">10:00 AM</div>
+      <div class="time-label">MT</div>
+    </div>
+  </div>
+
+  <div class="match-card">
+    <div>
+      <div class="match-teams">Winner: Switzerland/Algeria vs Winner: Colombia/Ghana</div>
+      <div class="match-meta"><span>📅 Jul 7</span><span>📍 BC Place, Vancouver</span> <span class="status-badge pending">PENDING R32</span></div>
+      <div class="players-list">
+        <div class="player-chip">Rayan Aït-Nouri <span style="opacity:0.6">(if Algeria wins)</span></div>
+        <div class="player-chip">Antoine Semenyo <span style="opacity:0.6">(if Ghana wins)</span></div>
+      </div>
+    </div>
+    <div class="match-time">
+      <div class="time-mt">2:00 PM</div>
+      <div class="time-label">MT</div>
+    </div>
+  </div>
+
+  <!-- ELIMINATED -->
+  <div class="stage-header">ELIMINATED</div>
+  <div class="stage-sub">Their World Cup run is over</div>
+
+  <div class="out-card">
+    <div class="out-badge">❌ OUT · ROUND OF 32</div>
+    <div class="match-teams">Netherlands lost to Morocco</div>
+    <div class="match-meta"><span>📅 Jun 29</span><span>📍 Estadio BBVA, Monterrey</span><span>1–1 (3–2 pens)</span></div>
+    <div class="players-list">
+      <div class="player-chip" style="opacity:0.7">Nathan Aké</div>
+      <div class="player-chip" style="opacity:0.7">Tijjani Reijnders</div>
+    </div>
+  </div>
+
+  <div class="out-card">
+    <div class="out-badge">❌ OUT · GROUP STAGE</div>
+    <div class="match-teams">Uzbekistan didn't advance out of Group K</div>
+    <div class="match-meta"><span>Finished 4th in Group K, behind Portugal, Congo DR &amp; Colombia</span></div>
+    <div class="players-list">
+      <div class="player-chip" style="opacity:0.7">Abdukodir Khusanov</div>
     </div>
   </div>
 
@@ -863,7 +681,7 @@
 </div>
 
 <footer>
-  <p>Knockout rounds to be added as teams advance 🔵&nbsp;&nbsp;·&nbsp;&nbsp;Created for <strong>Man City</strong> fans · FIFA World Cup 2026™</p>
+  <p>Updated through the Round of 32 · Quarterfinals onward to be added as the bracket fills in 🔵&nbsp;&nbsp;·&nbsp;&nbsp;Created for <strong>Man City</strong> fans · FIFA World Cup 2026™</p>
 </footer>
 
 </body>
