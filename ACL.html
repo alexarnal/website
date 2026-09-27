@@ -72,35 +72,8 @@
     .chip{font-size:.75rem;color:#555;background:#0f0f0f;border:1px solid #1c1c1c;padding:4px 10px;border-radius:20px;text-decoration:none;transition:background .12s,color .12s,border-color .12s}
     .chip:hover{background:#1a1a2a;color:#8ab4f8;border-color:#3355aa}
 
-    .itin{max-width:820px;margin:0 auto 64px}
-    .itin-title{font-size:1.35rem;font-weight:800;color:#fff;margin-bottom:4px}
-    .itin-sub{font-size:.84rem;color:#666;margin-bottom:28px;line-height:1.6}
-    .itin-day{margin-bottom:38px}
-    .itin-head{display:flex;align-items:baseline;gap:10px;border-bottom:2px solid;padding-bottom:9px;margin-bottom:6px;flex-wrap:wrap}
-    .itin-head .day-name{font-size:1.3rem}
-    .itin-gates{margin-left:auto;font-size:.78rem;color:#555}
-    .slot-row{display:grid;grid-template-columns:96px 1fr;gap:14px;padding:12px 0;border-bottom:1px solid #1a1a1a}
-    .slot-time{font-size:.82rem;font-weight:700;color:#888;font-variant-numeric:tabular-nums;padding-top:2px}
-    .slot-row.must .slot-time{color:#1DB954}
-    .slot-row.light{opacity:.55}
-    .slot-line{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-    .slot-act{font-weight:700;font-size:.98rem;color:#f0ede8}
-    .slot-stage{font-size:.66rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:#666;border:1px solid #2a2a2a;border-radius:4px;padding:2px 6px}
-    .slot-note{font-size:.8rem;color:#777;margin-top:5px;line-height:1.55}
-    .slot-note b{color:#aaa;font-weight:600}
-    .tag-must{background:#0d2a16;color:#1DB954;border:1px solid #1a5a2e}
-    .tag-fork{background:#1f1030;color:#c77dff;border:1px solid #3d2260}
-    .fork{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px}
-    .fork-opt{background:#141414;border:1px solid #222;border-radius:8px;padding:9px 11px}
-    .skipped{font-size:.78rem;color:#555;margin-top:10px;line-height:1.6}
-    .skipped b{color:#777}
     .slot-pill{font-size:.66rem;font-weight:700;color:#888;background:#1a1a1a;border:1px solid #262626;border-radius:4px;padding:2px 6px;white-space:nowrap}
     .chip-time{color:#444;margin-left:4px}
-    @media(max-width:600px){
-      .slot-row{grid-template-columns:72px 1fr;gap:10px}
-      .fork{grid-template-columns:1fr}
-      .itin-gates{margin-left:0;width:100%}
-    }
 
     footer{text-align:center;margin-top:60px;font-size:.78rem;color:#333;line-height:2}
     footer a{color:#444}
@@ -114,182 +87,12 @@
 <body>
 <header>
   <h1>🎸 ACL 2026 — Weekend One</h1>
-  <div class="sub">Oct 2–4 · Zilker Park, Austin TX</div>
+  <div class="sub">Oct 2-4 · Zilker Park, Austin TX</div>
   <div class="legend">
     <span class="legend-item"><span class="avatar av-a">A</span> Alex</span>
     <span class="legend-item"><span class="avatar av-s">S</span> Saralis</span>
   </div>
 </header>
-<section class="itin">
-  <div class="itin-day">
-    <div class="itin-head" style="border-color:#e85d04"><span class="day-name" style="color:#e85d04">Friday</span><span class="day-date">Oct 2</span><span class="itin-gates">Gates 12pm · first set 12:45</span></div>
-    <div class="slot-row must">
-      <div class="slot-time">2:30–3:15</div>
-      <div>
-        <div class="slot-line"><span class="slot-act">New Constellations</span><span class="slot-stage">T-Mobile</span><span class="tag tag-must">Must see</span><span class="avatars"><span class="avatar av-a">A</span><span class="avatar av-s">S</span></span></div>
-        <div class="slot-note">Top score of the day, and you both listen to them. <b>CMAT</b> plays 2:45 at American Express, so you'll miss it.</div>
-      </div>
-    </div>
-    <div class="slot-row ">
-      <div class="slot-time">3:30–4:30</div>
-      <div>
-        <div class="slot-line"><span class="slot-act">Marlon Funaki</span><span class="slot-stage">BeatBox</span><span class="avatars"><span class="avatar av-a">A</span></span></div>
-        <div class="slot-note">Alex's hidden gem. <b>LP</b> plays at the same time on Snapchat, but Saralis has only 1 play of LP.</div>
-      </div>
-    </div>
-    <div class="slot-row light">
-      <div class="slot-time">4:30–5:30</div>
-      <div>
-        <div class="slot-line"><span class="slot-act">Eat / explore</span><span class="slot-stage">—</span><span class="avatars"></span></div>
-        <div class="slot-note">Nothing from your data plays in this hour. Worth trying: <b>Amyl and the Sniffers</b> (Amex) or <b>Rebecca Black</b> (Tito's).</div>
-      </div>
-    </div>
-    <div class="slot-row must">
-      <div class="slot-time">5:30–6:30</div>
-      <div>
-        <div class="slot-line"><span class="tag tag-fork">Your call</span></div>
-        <div class="fork"><div class="fork-opt"><div class="slot-line"><span class="slot-act">Rusowsky</span><span class="slot-stage">BeatBox</span><span class="avatars"><span class="avatar av-a">A</span></span></div><div class="slot-note">Alex · 11 plays</div></div><div class="fork-opt"><div class="slot-line"><span class="slot-act">BUNT.</span><span class="slot-stage">Snapchat</span><span class="avatars"><span class="avatar av-s">S</span></span></div><div class="slot-note">Saralis · 8 plays, 1 liked</div></div></div>
-        <div class="slot-note">Nearly a tie on score (15 vs 13). Split up for an hour or flip a coin.</div>
-      </div>
-    </div>
-    <div class="slot-row light">
-      <div class="slot-time">6:30–7:15</div>
-      <div>
-        <div class="slot-line"><span class="slot-act">Turnstile (second half)</span><span class="slot-stage">T-Mobile</span><span class="avatars"><span class="avatar av-a">A</span></span></div>
-        <div class="slot-note">Optional. Catch the end of Turnstile, then head to Snapchat.</div>
-      </div>
-    </div>
-    <div class="slot-row ">
-      <div class="slot-time">7:30–8:30</div>
-      <div>
-        <div class="slot-line"><span class="slot-act">The Chainsmokers</span><span class="slot-stage">Snapchat</span><span class="avatars"><span class="avatar av-a">A</span><span class="avatar av-s">S</span></span></div>
-        <div class="slot-note">You both listen to them. Leave a few minutes early to get a spot for Charli.</div>
-      </div>
-    </div>
-    <div class="slot-row must">
-      <div class="slot-time">8:40–10:00</div>
-      <div>
-        <div class="slot-line"><span class="slot-act">Charli xcx</span><span class="slot-stage">American Express</span><span class="tag tag-hl">Headliner</span><span class="avatars"><span class="avatar av-a">A</span><span class="avatar av-s">S</span></span></div>
-        <div class="slot-note">Charli beats <b>Skrillex</b> (8:15, T-Mobile) on combined score because you both listen to her. Skrillex is only Alex.</div>
-      </div>
-    </div>
-    <div class="skipped"><b>Tough cuts:</b> Skrillex (Charli's slot), CMAT (New Constellations' slot), LP</div>
-  </div>
-  <div class="itin-day">
-    <div class="itin-head" style="border-color:#7209b7"><span class="day-name" style="color:#7209b7">Saturday</span><span class="day-date">Oct 3</span><span class="itin-gates">Gates 11am · <b style='color:#f5c000'>arrive early for Night Tapes</b></span></div>
-    <div class="slot-row must">
-      <div class="slot-time">1:00–1:45</div>
-      <div>
-        <div class="slot-line"><span class="slot-act">Night Tapes</span><span class="slot-stage">T-Mobile</span><span class="tag tag-must">Must see</span><span class="avatars"><span class="avatar av-a">A</span><span class="avatar av-s">S</span></span></div>
-        <div class="slot-note"><b>The biggest overlap in all your data</b> (233 plays from Alex, 105 from Saralis), and they play the <b>opening slot</b>. Gates open at 11, so plan to be at T-Mobile by 12:45.</div>
-      </div>
-    </div>
-    <div class="slot-row light">
-      <div class="slot-time">1:45–2:30</div>
-      <div>
-        <div class="slot-line"><span class="slot-act">TEMPER CITY</span><span class="slot-stage">Miller Lite</span><span class="avatars"><span class="avatar av-s">S</span></span></div>
-        <div class="slot-note">Optional. Saralis has a couple of plays.</div>
-      </div>
-    </div>
-    <div class="slot-row ">
-      <div class="slot-time">2:30–3:15</div>
-      <div>
-        <div class="slot-line"><span class="slot-act">Balu Brigada</span><span class="slot-stage">T-Mobile</span><span class="avatars"><span class="avatar av-a">A</span></span></div>
-        <div class="slot-note">Same stage as Night Tapes, so you can stay put.</div>
-      </div>
-    </div>
-    <div class="slot-row light">
-      <div class="slot-time">3:15–4:15</div>
-      <div>
-        <div class="slot-line"><span class="slot-act">Rest / explore</span><span class="slot-stage">—</span><span class="avatars"></span></div>
-        <div class="slot-note">No overlap with your data. Try <b>Ryan Beatty</b> (3:30, BeatBox) or <b>Arcy Drive</b> (3:15, Miller Lite).</div>
-      </div>
-    </div>
-    <div class="slot-row ">
-      <div class="slot-time">4:15–5:15</div>
-      <div>
-        <div class="slot-line"><span class="slot-act">Suki Waterhouse</span><span class="slot-stage">T-Mobile</span><span class="avatars"><span class="avatar av-a">A</span></span></div>
-        <div class="slot-note">Alex · 12 plays. <b>Young Miko</b> (4:30, Amex) is the other choice.</div>
-      </div>
-    </div>
-    <div class="slot-row light">
-      <div class="slot-time">5:30–6:30</div>
-      <div>
-        <div class="slot-line"><span class="slot-act">Palace — or dinner</span><span class="slot-stage">BeatBox</span><span class="avatars"><span class="avatar av-a">A</span></span></div>
-        <div class="slot-note">Only a few plays. This is the best dinner window before the stretch that runs to the end of the night.</div>
-      </div>
-    </div>
-    <div class="slot-row must">
-      <div class="slot-time">6:30–7:30</div>
-      <div>
-        <div class="slot-line"><span class="slot-act">Lola Young</span><span class="slot-stage">American Express</span><span class="tag tag-must">Must see</span><span class="avatars"><span class="avatar av-a">A</span><span class="avatar av-s">S</span></span></div>
-        <div class="slot-note">#2 of the day. You've both liked her songs (Alex 8, Saralis 1). <b>Bleachers</b> plays at the same time on T-Mobile.</div>
-      </div>
-    </div>
-    <div class="slot-row ">
-      <div class="slot-time">7:30–8:10</div>
-      <div>
-        <div class="slot-line"><span class="slot-act">Lykke Li</span><span class="slot-stage">Snapchat</span><span class="avatars"><span class="avatar av-s">S</span></span></div>
-        <div class="slot-note">Saralis · 21 plays, 3 liked. Leave around 8:05 to make it to Lorde.</div>
-      </div>
-    </div>
-    <div class="slot-row must">
-      <div class="slot-time">8:15–end</div>
-      <div>
-        <div class="slot-line"><span class="slot-act">Lorde</span><span class="slot-stage">T-Mobile</span><span class="tag tag-hl">Headliner</span><span class="avatars"><span class="avatar av-a">A</span><span class="avatar av-s">S</span></span></div>
-        <div class="slot-note">Saralis has <b>10 liked Lorde songs</b>, and Lorde has the higher combined score. <b>Rüfüs Du Sol</b> (8:30, Amex) has more of Alex's plays. If Lorde finishes before 10, head over for the end of Rüfüs.</div>
-      </div>
-    </div>
-    <div class="skipped"><b>Tough cuts:</b> Rüfüs Du Sol (partial), Bleachers, Young Miko, it's murph and Snow Strippers</div>
-  </div>
-  <div class="itin-day">
-    <div class="itin-head" style="border-color:#0077b6"><span class="day-name" style="color:#0077b6">Sunday</span><span class="day-date">Oct 4</span><span class="itin-gates">Gates 11am · late-loaded day</span></div>
-    <div class="slot-row light">
-      <div class="slot-time">2:45–3:30</div>
-      <div>
-        <div class="slot-line"><span class="slot-act">STELLA LEFTY</span><span class="slot-stage">T-Mobile</span><span class="avatars"><span class="avatar av-s">S</span></span></div>
-        <div class="slot-note">A light start. Sunday's good stuff comes late, so take your time getting in.</div>
-      </div>
-    </div>
-    <div class="slot-row light">
-      <div class="slot-time">3:30–5:30</div>
-      <div>
-        <div class="slot-line"><span class="slot-act">Explore / rest</span><span class="slot-stage">—</span><span class="avatars"></span></div>
-        <div class="slot-note">Try <b>underscores</b> (3:30, BeatBox) or <b>Rio Kosta</b> (4:30, Tito's; Alex has a couple of plays). Eat before 5:30, because the evening has no breaks.</div>
-      </div>
-    </div>
-    <div class="slot-row must">
-      <div class="slot-time">5:30–6:30</div>
-      <div>
-        <div class="slot-line"><span class="slot-act">Cannons</span><span class="slot-stage">Snapchat</span><span class="tag tag-must">Must see</span><span class="avatars"><span class="avatar av-a">A</span><span class="avatar av-s">S</span></span></div>
-        <div class="slot-note">Saralis's biggest artist this weekend (71 plays, 4 liked).</div>
-      </div>
-    </div>
-    <div class="slot-row must">
-      <div class="slot-time">6:30–7:30</div>
-      <div>
-        <div class="slot-line"><span class="tag tag-fork">Your call</span></div>
-        <div class="fork"><div class="fork-opt"><div class="slot-line"><span class="slot-act">Fcukers</span><span class="slot-stage">Tito's</span><span class="avatars"><span class="avatar av-a">A</span></span></div><div class="slot-note">Alex · 29 plays, 2 liked</div></div><div class="fork-opt"><div class="slot-line"><span class="slot-act">Sofi Tukker</span><span class="slot-stage">American Express</span><span class="avatars"><span class="avatar av-a">A</span><span class="avatar av-s">S</span></span></div><div class="slot-note">You both have a few plays</div></div></div>
-        <div class="slot-note">Fcukers scores higher (19 vs 6), but Sofi Tukker is the one you both listen to. <b>Geese</b> (T-Mobile) plays at the same time.</div>
-      </div>
-    </div>
-    <div class="slot-row must">
-      <div class="slot-time">7:30–8:30</div>
-      <div>
-        <div class="slot-line"><span class="slot-act">Blood Orange</span><span class="slot-stage">BeatBox</span><span class="tag tag-must">Must see</span><span class="avatars"><span class="avatar av-a">A</span></span></div>
-        <div class="slot-note">Top score of the day (Alex · 142 plays, 9 liked). This means skipping <b>Parcels</b> (Miller Lite), the hardest cut of the weekend, and <b>The War on Drugs</b> (Snapchat).</div>
-      </div>
-    </div>
-    <div class="slot-row must">
-      <div class="slot-time">8:30–end</div>
-      <div>
-        <div class="slot-line"><span class="slot-act">The xx</span><span class="slot-stage">T-Mobile</span><span class="tag tag-hl">Headliner</span><span class="avatars"><span class="avatar av-a">A</span><span class="avatar av-s">S</span></span></div>
-        <div class="slot-note">The xx easily beats <b>Twenty One Pilots</b> (Amex) on score, and you both listen to them. A good way to close the weekend.</div>
-      </div>
-    </div>
-    <div class="skipped"><b>Tough cuts:</b> Parcels, The War on Drugs, Geese, Twenty One Pilots</div>
-  </div>
-</section>
 <div class="days">
   <div class="day-block">
     <div class="day-header" style="border-color:#e85d04">
@@ -741,7 +544,7 @@
     <div class="chip-list"><a class="chip" href="https://open.spotify.com/search/underscores" target="_blank">underscores ↗</a><a class="chip" href="https://open.spotify.com/search/VILLANELLE" target="_blank">VILLANELLE ↗</a><a class="chip" href="https://open.spotify.com/search/The%20Moriah%20Sisters" target="_blank">The Moriah Sisters ↗</a><a class="chip" href="https://open.spotify.com/search/Solya" target="_blank">Solya ↗</a><a class="chip" href="https://open.spotify.com/search/Saint%20Motel" target="_blank">Saint Motel ↗</a><a class="chip" href="https://open.spotify.com/search/RUBIO" target="_blank">RUBIO ↗</a><a class="chip" href="https://open.spotify.com/search/Paloma%20Morphy" target="_blank">Paloma Morphy ↗</a><a class="chip" href="https://open.spotify.com/search/Noga%20Erez" target="_blank">Noga Erez ↗</a><a class="chip" href="https://open.spotify.com/search/Max%20McNown" target="_blank">Max McNown ↗</a><a class="chip" href="https://open.spotify.com/search/Lauren%20Sanderson" target="_blank">Lauren Sanderson ↗</a><a class="chip" href="https://open.spotify.com/search/JOSH%20CONWAY" target="_blank">JOSH CONWAY ↗</a><a class="chip" href="https://open.spotify.com/search/Fancy%20Hagood" target="_blank">Fancy Hagood ↗</a><a class="chip" href="https://open.spotify.com/search/Claire%20Rosinkranz" target="_blank">Claire Rosinkranz ↗</a><a class="chip" href="https://open.spotify.com/search/Calder%20Allen" target="_blank">Calder Allen ↗</a><a class="chip" href="https://open.spotify.com/search/Britton" target="_blank">Britton ↗</a><a class="chip" href="https://open.spotify.com/search/Audrey%20Hobert" target="_blank">Audrey Hobert ↗</a><a class="chip" href="https://open.spotify.com/search/Aaron%20Rowe" target="_blank">Aaron Rowe ↗</a></div>
   </div></div>
 <footer>
-  Generated July 2026 (itinerary added Sept 2026) from Alex &amp; Saralis's Spotify data &nbsp;·&nbsp; <a href="https://www.aclfestival.com" target="_blank">aclfestival.com</a><br>
+  Generated July 2026 (set times added Sept 2026) from Alex &amp; Saralis's Spotify data &nbsp;·&nbsp; <a href="https://www.aclfestival.com" target="_blank">aclfestival.com</a><br>
   Combined score = (plays × 2 + liked × 5 + hours × 10) per person &nbsp;·&nbsp; Set times → <a href="https://apps.apple.com/us/app/festiverse/id6744997695" target="_blank">Festiverse app</a>
 </footer>
 
@@ -870,14 +673,22 @@ for (const [stage, sets] of Object.entries(SET_TIMES)) {
     slotByName[normName(s.slice(i + 1))] = { time: s.slice(0, i), stage };
   }
 }
-document.querySelectorAll('.artist-card .name-area').forEach(el => {
-  const slot = slotByName[normName(el.querySelector('.artist-name').textContent)];
-  if (slot) el.insertAdjacentHTML('beforeend', `<span class="slot-pill">${slot.time} · ${slot.stage}</span>`);
-});
-document.querySelectorAll('.chip').forEach(el => {
-  const slot = slotByName[normName(el.textContent.replace('↗', ''))];
-  if (slot) el.insertAdjacentHTML('beforeend', `<span class="chip-time">${slot.time}</span>`);
-});
+// Minutes after midnight; every set is noon or later, so 1–11 are pm
+const toMinutes = t => { const [h, m] = t.split(':').map(Number); return (h % 12 + 12) * 60 + m; };
+function tagAndSort(list, itemSel, getName, render) {
+  const items = [...list.querySelectorAll(itemSel)].map(el => {
+    const slot = slotByName[normName(getName(el))];
+    if (slot) render(el, slot);
+    return { el, key: slot ? toMinutes(slot.time) : Infinity };
+  });
+  items.sort((a, b) => a.key - b.key).forEach(({ el }) => list.appendChild(el));
+}
+document.querySelectorAll('.artist-list').forEach(list => tagAndSort(list, '.artist-card',
+  el => el.querySelector('.artist-name').textContent,
+  (el, slot) => el.querySelector('.name-area').insertAdjacentHTML('beforeend', `<span class="slot-pill">${slot.time} · ${slot.stage}</span>`)));
+document.querySelectorAll('.chip-list').forEach(list => tagAndSort(list, '.chip',
+  el => el.textContent.replace('↗', ''),
+  (el, slot) => el.insertAdjacentHTML('beforeend', `<span class="chip-time">${slot.time}</span>`)));
 </script>
 </body>
 </html>
