@@ -644,26 +644,28 @@ function findArtistName(id) { return artistMap[id] || null; }
 // Weekend One set times — shown on each artist card and chip
 const SET_TIMES = {
   "T-Mobile": ["1:00 Asleep at the Wheel","2:30 New Constellations","4:15 Jesse Welles","6:15 Turnstile","8:15 Skrillex",
-               "1:00 Night Tapes","2:30 Balu Brigada","4:15 Suki Waterhouse","6:15 Bleachers","8:15 Lorde",
+               "3:05 Balu Brigada","4:25 Suki Waterhouse","6:15 Bleachers","8:15 Lorde",
                "1:15 Solya","2:45 Stella Lefty","4:30 Audrey Hobert","6:30 Geese","8:30 The xx"],
   "Miller Lite": ["1:45 Faouzia","3:15 Paris Paloma","5:15 Brandon Flowers","7:15 Leon Thomas",
-                  "1:45 Temper City","3:15 Arcy Drive","5:15 Snow Strippers","7:15 Levity",
+                  "2:35 Temper City","3:40 Arcy Drive","5:15 Palace","7:15 Levity",
                   "2:00 Jess Williamson","3:30 Claire Rosinkranz","5:30 Saint Motel","7:30 Parcels"],
   "BMI": ["1:45 Elle Coves","3:30 Izzy Escobar","5:15 Grocery Bag",
-          "12:45 Fightmaster","1:45 Emma Ogier","3:30 Coleman Jennings","5:15 Fai Laci",
+          "2:35 Emma Ogier","3:40 Coleman Jennings","5:15 Fai Laci",
           "12:45 Rubio","2:00 Aaron Rowe","3:30 Fancy Hagood","5:30 Lauren Sanderson"],
   "BeatBox": ["2:00 Night Traveler","3:30 Marlon Funaki","5:30 Rusowsky","7:30 Molly Santana",
-              "2:00 Cure for Paranoia","3:30 Ryan Beatty","5:30 Palace","7:30 fakemink",
+              "2:25 Letrainiump","3:25 Cure for Paranoia","4:25 Night Tapes","5:50 Ryan Beatty","7:35 Snow Strippers",
               "2:00 Britton","3:30 underscores","5:30 Noga Erez","7:30 Blood Orange"],
   "Tito's": ["12:45 The 4411","2:00 Solomon Hicks","3:15 Bo Staloch","4:30 Rebecca Black","6:30 Steve Aoki",
-             "12:45 Left Lucid","2:00 DJ Cassandra","3:15 Don West","4:30 Rodrigo y Gabriela","6:30 ¥ØU$UK€ ¥UK1MAT$U",
+             "2:05 DJ Cassandra","3:15 Don West","4:30 Rodrigo y Gabriela","6:30 ¥ØU$UK€ ¥UK1MAT$U","8:00 Silent Disco",
              "12:45 The Moriah Sisters","2:00 Paloma Morphy","3:15 Calder Allen","4:30 Rio Kosta","6:30 Fcukers"],
   "Snapchat": ["2:00 Elijah Delgado","3:30 LP","5:30 BUNT.","7:30 The Chainsmokers",
-               "2:00 Rochelle Jordan","3:30 Skye Newman","5:30 it's murph","7:30 Lykke Li",
+               "2:45 Rochelle Jordan","3:55 Skye Newman","5:30 it's murph","7:30 Lykke Li",
                "2:00 Sunday (1994)","3:30 Josh Conway","5:30 Cannons","7:30 The War on Drugs"],
   "Amex": ["1:15 Hunx and His Punx","2:45 CMAT","4:30 Amyl and the Sniffers","6:30 Labrinth","8:40 Charli xcx",
-           "1:15 Annie DiRusso","2:45 Finn Wolfhard","4:30 Young Miko","6:30 Lola Young","8:30 Rüfüs Du Sol",
-           "1:15 Villanelle","2:45 Dexter and the Moonrocks","4:30 Max McNown","6:30 Sofi Tukker","8:30 Twenty One Pilots"]
+           "2:15 Annie DiRusso","3:15 Finn Wolfhard","4:40 Young Miko","6:30 Lola Young","8:30 Rüfüs Du Sol",
+           "1:15 Villanelle","2:45 Dexter and the Moonrocks","4:30 Max McNown","6:30 Sofi Tukker","8:30 Twenty One Pilots"],
+  "Bonus Tracks": ["2:30 Antoni Porowski","3:15 Suki Waterhouse with Mack","4:45 Drag Bingo by Extragrams","6:30 9 to 5 Drag: A Dolly Tribute"],
+  "Austin Kiddie Limits": ["2:05 The Barton Hills Choir","3:00 Sonia De Los Santos","4:00 Mega Ran","5:00 Q Brothers"]
 };
 const normName = s => s.toLowerCase().normalize('NFD').replace(/[^a-z0-9]/g, '').replace(/iii$/, '');
 const slotByName = {};
